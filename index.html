@@ -1,222 +1,442 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA: Lost in the Solar System | Interactive Space Adventure</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts: Fredoka (Friendly Display) & Quicksand (Clean School-Age Body) -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-    <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Quicksand', 'sans-serif'],
-                        display: ['Fredoka', 'sans-serif'],
-                    },
-                    colors: {
-                        nasa: {
-                            blue: '#0B3D91',
-                            red: '#FC3D21',
-                            cyan: '#38BDF8',
-                            gold: '#FBBF24',
-                            dark: '#070B19',
-                            card: '#111936'
-                        }
-                    },
-                    animation: {
-                        'float': 'float 4s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'orbit': 'orbit 14s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-8px)' },
-                        },
-                        orbit: {
-                            '0%': { transform: 'rotate(0deg)' },
-                            '100%': { transform: 'rotate(360deg)' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MISSION ECHOES | AstroQuest — An Interactive Space Exploration Story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+<body>
+  <!-- Multi-Layered Cosmic Background Canvas -->
+  <canvas id="cosmos-canvas" aria-hidden="true"></canvas>
 
-    <!-- NASA-STYLE INTRODUCTORY SPLASH SCREEN (Auto-transitions to Guest Mode Home) -->
-    <div id="nasa-splash-screen" class="fixed inset-0 z-50 bg-[#050814] flex flex-col items-center justify-center p-6 text-center select-none">
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full bg-nasa-blue/35 blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full bg-sky-500/15 blur-2xl"></div>
-        </div>
-
-        <div class="relative z-10 max-w-md w-full flex flex-col items-center space-y-6">
-            <div id="nasa-intro-video-slot" class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
-                <div class="absolute inset-0 rounded-full border-2 border-dashed border-sky-400/35 animate-orbit">
-                    <div class="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-lg shadow-amber-400/80 -mt-1.5 mx-auto"></div>
-                </div>
-
-                <div class="w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-[#0B3D91] to-[#061F4A] border-4 border-sky-300/30 shadow-2xl flex flex-col items-center justify-center relative overflow-hidden animate-float">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white absolute top-6 left-9"></span>
-                    <span class="w-1 h-1 rounded-full bg-sky-200 absolute top-8 right-8"></span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-white absolute bottom-7 left-10"></span>
-                    <svg viewBox="0 0 120 120" class="w-full h-full absolute inset-0">
-                        <path d="M 18 78 Q 60 22 104 42 Q 62 46 28 86 Z" fill="#FC3D21" />
-                        <ellipse cx="60" cy="60" rx="46" ry="16" transform="rotate(-28 60 60)" stroke="#F8FAFC" stroke-width="2.5" fill="none" stroke-dasharray="120" />
-                    </svg>
-                    <span class="relative z-10 font-display font-bold text-3xl sm:text-4xl tracking-wider text-white drop-shadow">NASA</span>
-                    <span class="relative z-10 text-[10px] uppercase tracking-widest text-sky-200 font-bold mt-0.5">Space Explorer</span>
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-bold tracking-wide uppercase">
-                    <i class="fa-solid fa-satellite-dish animate-pulse"></i> Initializing Mission Control
-                </div>
-                <h1 class="font-display font-bold text-2xl sm:text-4xl text-white tracking-wide">
-                    Lost in the Solar System
-                </h1>
-                <p class="text-sm text-slate-300 max-w-sm mx-auto">
-                    Get ready to explore the Moon, Mars, and Deep Space with your robot guide, <strong>A.R.I.</strong>!
-                </p>
-            </div>
-
-            <div class="w-64 sm:w-72 space-y-2">
-                <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-slate-700/80 p-0.5">
-                    <div id="splash-progress-bar" class="h-full bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 rounded-full transition-all duration-150" style="width: 5%"></div>
-                </div>
-                <div class="flex items-center justify-center text-xs text-slate-400">
-                    <span id="splash-status-text">Loading Solar System Map...</span>
-                </div>
-            </div>
-        </div>
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="brand-cluster" onclick="navigateTo('home')">
+      <div class="brand-emblem">
+        <span class="pulse-ring"></span>
+        <svg viewBox="0 0 36 36" width="28" height="28" fill="none">
+          <circle cx="18" cy="18" r="15" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <circle cx="18" cy="18" r="6" fill="#f59e0b"/>
+          <path d="M6 26C11 19 25 19 30 10" stroke="#a855f7" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="30" cy="10" r="2.5" fill="#38bdf8"/>
+        </svg>
+      </div>
+      <div>
+        <span class="brand-title">MISSION ECHOES</span>
+        <span class="brand-sub">DEEP SPACE HERITAGE ARCHIVE • ASTROQUEST</span>
+      </div>
     </div>
 
-    <!-- FRIENDLY GUEST STATUS PILL BAR -->
-    <div id="guest-banner" class="hidden bg-gradient-to-r from-indigo-950/90 via-slate-900/90 to-sky-950/90 border-b border-sky-500/25 px-4 py-2 text-xs sm:text-sm">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-2 text-sky-100">
-                <span class="w-6 h-6 rounded-full bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300">
-                    <i class="fa-solid fa-user-astronaut text-xs"></i>
-                </span>
-                <span><strong>Explorer Guest Mode:</strong> You can play right away! Create a free account anytime to save your badges.</span>
-            </div>
-            <button onclick="window.app.openAuthModal('register')" class="px-3.5 py-1 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-display font-bold text-xs transition shadow-sm">
-                <i class="fa-solid fa-floppy-disk mr-1"></i> Save My Progress
-            </button>
+    <nav class="nav-links" aria-label="Primary Navigation">
+      <button class="nav-btn active" id="nav-home" onclick="navigateTo('home')">
+        <span>🏠</span> Home
+      </button>
+      <button class="nav-btn" id="nav-map" onclick="navigateTo('map')">
+        <span>🗺️</span> Solar System Map
+      </button>
+      <button class="nav-btn" id="nav-badges" onclick="navigateTo('badges')">
+        <span>🏅</span> My Badges <span class="badge-pill" id="nav-badge-count">0/8</span>
+      </button>
+    </nav>
+
+    <div class="user-controls">
+      <button class="demo-unlock-btn" id="btn-unlock-all" onclick="toggleUnlockAll()" title="Toggle test mode to unlock all artifacts and Final Mission immediately">
+        🔓 Unlock All: OFF
+      </button>
+      <div class="xp-chip" title="Archivist Exploration XP">
+        <span>⚡</span> <span id="user-xp-display">0 XP</span>
+      </div>
+      <div id="auth-guest-zone">
+        <button class="btn-auth-open" onclick="openAuthModal('signin')">Sign In / Join Archive</button>
+      </div>
+      <div id="auth-user-zone" class="hidden">
+        <div class="user-chip">
+          <span class="status-dot"></span>
+          <span id="active-username-label">Archivist</span>
+          <span class="autosave-tag" id="autosave-indicator">✓ Saved</span>
         </div>
+        <button class="btn-logout" onclick="handleLogout()" title="Sign Out">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       VIEW 1: HOME SCREEN (Strictly Non-Scrollable 100vh)
+       ========================================================= -->
+  <main id="view-home" class="view-section active-view">
+    <div class="home-grid">
+      <!-- Left Narrative Hero Column -->
+      <section class="hero-content">
+        <div class="archive-transmission-pill">
+          <span class="live-beacon"></span>
+          NASA SPACE APPS 2026 • INTERACTIVE HARDWARE ARCHIVE
+        </div>
+        <h1 class="hero-headline">
+          Every Machine Has a <span class="gradient-text-cyan">Story.</span><br />
+          Every Mission Leaves a <span class="gradient-text-amber">Legacy.</span>
+        </h1>
+        <p class="hero-lead">
+          Since the 1960s, humanity has left robotic scouts, rovers, mirrors, and interstellar messengers across the Solar System. Step inside the <strong>Deep Space Heritage Archive</strong> with <strong>Captain Nova</strong> to hear their first-person <em>Echo Logs</em> and uncover the verified science they made possible.
+        </p>
+
+        <!-- 3-Chapter Frontier Preview Strip (Replaces old Fact Cards) -->
+        <div class="frontier-chapter-strip">
+          <div class="frontier-mini-card" onclick="openChapterDirectly(1)">
+            <span class="chapter-roman">CHAPTER I</span>
+            <strong>The Moon</strong>
+            <span>The First Footprints</span>
+          </div>
+          <div class="frontier-mini-card" onclick="openChapterDirectly(2)">
+            <span class="chapter-roman">CHAPTER II</span>
+            <strong>Mars</strong>
+            <span>The Silent Explorers</span>
+          </div>
+          <div class="frontier-mini-card" onclick="openChapterDirectly(3)">
+            <span class="chapter-roman">CHAPTER III</span>
+            <strong>Deep Space</strong>
+            <span>Beyond the Horizon</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-row">
+          <button class="btn-primary-glow" onclick="navigateTo('map')">
+            🚀 Enter the Archive Map
+          </button>
+          <button class="btn-secondary-glass" onclick="startNextUnfinishedArtifact()">
+            📖 Resume Current Story
+          </button>
+          <button class="btn-secondary-glass" onclick="triggerNovaIntro()">
+            🔊 Hear Captain Nova's Briefing
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Interactive Hologram / Archive Status Console -->
+      <aside class="hero-hologram-panel">
+        <div class="holo-card">
+          <div class="holo-header">
+            <span class="holo-tag">LIVE ARCHIVE TELEMETRY</span>
+            <span class="holo-epoch">EPOCH: NOV 2026</span>
+          </div>
+
+          <!-- Visual Solar System Orbits Graphic -->
+          <div class="holo-orrery">
+            <div class="orrery-sun"></div>
+            <div class="orrery-orbit orbit-moon">
+              <span class="orrery-node node-moon" title="Chapter I: The Moon (2 Artifacts)"></span>
+            </div>
+            <div class="orrery-orbit orbit-mars">
+              <span class="orrery-node node-mars" title="Chapter II: Mars (3 Artifacts)"></span>
+            </div>
+            <div class="orrery-orbit orbit-deep">
+              <span class="orrery-node node-deep" title="Chapter III: Deep Space (2 Artifacts)"></span>
+            </div>
+          </div>
+
+          <div class="holo-progress-box">
+            <div class="holo-progress-labels">
+              <span>Archive Stories Restored</span>
+              <strong id="home-progress-text">0 / 7 Artifacts</strong>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="home-progress-bar" style="width: 0%"></div>
+            </div>
+            <p class="holo-layer-note">
+              <span class="pill-echo">Echo Log</span> First-person storytelling clearly paired with <span class="pill-record">Verified NASA Record</span> historical telemetry.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- =========================================================
+       VIEW 2: INTERACTIVE SOLAR SYSTEM MAP (3 Chapters + Final Mission)
+       ========================================================= -->
+  <section id="view-map" class="view-section scrollable-view">
+    <div class="map-container">
+      <div class="map-top-banner">
+        <div>
+          <span class="section-eyebrow">SOLAR SYSTEM SIGNAL SCANNER</span>
+          <h2>Three Exploration Frontiers • Seven Hardware Stories</h2>
+          <p>Select an unlocked artifact node to experience its 8-part story and unlock its verification challenge. Complete all 7 artifacts (or enable <em>Unlock All</em>) to enter the <strong>Final Mission</strong>.</p>
+        </div>
+        <div class="map-legend">
+          <span class="legend-item"><i class="dot dot-completed"></i> Restored</span>
+          <span class="legend-item"><i class="dot dot-unlocked"></i> Signal Active</span>
+          <span class="legend-item"><i class="dot dot-locked"></i> Encrypted</span>
+        </div>
+      </div>
+
+      <!-- Dynamic 3-Chapter Map Grid -->
+      <div id="chapters-map-grid" class="chapters-map-grid"></div>
+
+      <!-- Final Mission Node: The Legacy of Space Exploration -->
+      <div id="final-mission-card" class="final-mission-banner"></div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       VIEW 3: ARTIFACT STORY THEATER & CHALLENGE VIEW
+       ========================================================= -->
+  <section id="view-artifact" class="view-section scrollable-view">
+    <div class="artifact-theater-wrap">
+      <!-- Top Breadcrumb & Mode Bar -->
+      <div class="theater-topbar">
+        <button class="btn-back-map" onclick="navigateTo('map')">
+          ← Back to Solar System Map
+        </button>
+        <div class="artifact-chapter-crumb" id="artifact-crumb-label">
+          CHAPTER I • THE MOON
+        </div>
+        <div class="artifact-mode-tabs">
+          <button class="mode-tab active" id="tab-btn-learn" onclick="switchArtifactTab('learn')">
+            📖 1. Story &amp; Hardware Archive
+          </button>
+          <button class="mode-tab" id="tab-btn-challenge" onclick="switchArtifactTab('challenge')">
+            <span id="challenge-tab-lock-icon">🔒</span> 2. Verification Challenge
+          </button>
+        </div>
+      </div>
+
+      <!-- Artifact Hero Banner -->
+      <div class="artifact-hero-header" id="artifact-hero-header"></div>
+
+      <!-- TAB PANEL A: LEARN & STORYTELLING THEATER -->
+      <div id="panel-artifact-learn" class="artifact-tab-panel">
+        <!-- First-Person Echo Log Audio/Visual Theater Card -->
+        <div class="echo-log-stage" id="echo-log-stage"></div>
+
+        <!-- Story View Controls: Step-by-Step Story Beats vs Full Scroll -->
+        <div class="story-navigation-toolbar">
+          <div class="story-progress-indicator">
+            <span class="story-step-title">8-ACT NARRATIVE JOURNEY:</span>
+            <div class="story-step-dots" id="story-step-dots"></div>
+          </div>
+          <div class="story-view-toggle">
+            <button class="btn-view-mode active" id="btn-mode-beats" onclick="setStoryDisplayMode('beats')">
+              🎬 Story Theater (Step-by-Step)
+            </button>
+            <button class="btn-view-mode" id="btn-mode-scroll" onclick="setStoryDisplayMode('scroll')">
+              📜 Read All 8 Sections
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic 8-Part Story Content Container (A through H) -->
+        <div id="story-sections-container" class="story-sections-container"></div>
+
+        <!-- Bottom Action Bar to Complete Learn & Unlock Challenge -->
+        <div class="learn-completion-footer" id="learn-completion-footer"></div>
+      </div>
+
+      <!-- TAB PANEL B: VERIFICATION CHALLENGE (Quiz + Myth Decoder) -->
+      <div id="panel-artifact-challenge" class="artifact-tab-panel hidden">
+        <div id="challenge-content-box" class="challenge-content-box"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       VIEW 4: FINAL MISSION — THE LEGACY OF SPACE EXPLORATION
+       ========================================================= -->
+  <section id="view-final" class="view-section scrollable-view">
+    <div class="final-mission-wrap" id="final-mission-content"></div>
+  </section>
+
+  <!-- =========================================================
+       VIEW 5: DEDICATED "MY BADGES & ECHO THREADS" PAGE
+       ========================================================= -->
+  <section id="view-badges" class="view-section scrollable-view">
+    <div class="badges-vault-container">
+      <div class="vault-header">
+        <div>
+          <span class="section-eyebrow">DEEP SPACE HERITAGE HALL</span>
+          <h2>My Mission Badges &amp; Echo Threads</h2>
+          <p>Every restored artifact story awards a verified archive emblem. Completing linked missions across chapters unlocks <strong>Echo Thread Cards</strong> showing how earlier machines made future missions possible.</p>
+        </div>
+        <div class="vault-stats-card">
+          <div class="vault-stat">
+            <span>Archivist Rank</span>
+            <strong id="vault-rank-title">Cadet Archivist</strong>
+          </div>
+          <div class="vault-stat">
+            <span>Badges Earned</span>
+            <strong id="vault-badges-ratio">0 / 8</strong>
+          </div>
+          <div class="vault-stat">
+            <span>Echo Threads</span>
+            <strong id="vault-threads-ratio">0 / 3</strong>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="vault-subheading">🏅 Mission Archive Badges (8 Total)</h3>
+      <div id="badges-grid" class="badges-grid"></div>
+
+      <h3 class="vault-subheading">🔗 Cross-Mission Echo Threads (How Missions Connect)</h3>
+      <div id="echo-threads-grid" class="echo-threads-grid"></div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FLOATING ANIMATED ASTRONAUT ("CAPTAIN NOVA") + SPEECH BUBBLE
+       ========================================================= -->
+  <aside class="nova-companion-dock" aria-live="polite">
+    <div class="nova-speech-bubble" id="nova-speech-bubble">
+      <div class="nova-bubble-header">
+        <div class="nova-title-group">
+          <span class="nova-badge-dot"></span>
+          <strong>CAPTAIN NOVA</strong>
+          <span class="nova-role-tag">Chief Mission Archivist</span>
+        </div>
+        <div class="nova-audio-controls">
+          <div class="voice-equalizer" id="nova-equalizer" title="Voice Transmission Active">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <button class="nova-icon-btn" id="btn-nova-mute" onclick="toggleNovaVoice()" title="Toggle Voice Narration">
+            🔊
+          </button>
+          <button class="nova-icon-btn" onclick="replayNovaSpeech()" title="Replay Current Message">
+            ↻
+          </button>
+          <button class="nova-icon-btn" onclick="minimizeNovaBubble()" title="Minimize Bubble">
+            −
+          </button>
+        </div>
+      </div>
+      <p class="nova-speech-text" id="nova-speech-text">
+        "Hey there, explorer! Welcome to MISSION ECHOES. I'm Captain Nova—click me or any mission node to hear the stories of the machines humanity left across the Solar System!"
+      </p>
     </div>
 
-    <!-- TOP NAVIGATION BAR -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-2.5 flex items-center justify-between gap-3">
-            <button onclick="window.app.navigate('landing')" class="flex items-center gap-3 text-left group focus:outline-none">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-nasa-blue to-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/20 border-2 border-sky-300/40 group-hover:scale-105 transition">
-                    <i class="fa-solid fa-rocket text-white text-lg"></i>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-display font-bold text-lg sm:text-xl tracking-wide text-white">NASA: Solar System Explorer</span>
-                    </div>
-                    <p class="text-xs text-sky-300/90 hidden sm:block">Interactive Space Hardware Adventure</p>
-                </div>
-            </button>
+    <!-- Animated SVG Astronaut Character -->
+    <button class="nova-avatar-btn" id="nova-avatar-btn" onclick="toggleNovaBubble()" title="Click to talk with Captain Nova">
+      <div class="nova-avatar-glow"></div>
+      <svg class="nova-svg" viewBox="0 0 120 135" width="84" height="94">
+        <defs>
+          <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0ea5e9" />
+            <stop offset="50%" stop-color="#1e1b4b" />
+            <stop offset="100%" stop-color="#f59e0b" />
+          </linearGradient>
+          <linearGradient id="suitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#f8fafc" />
+            <stop offset="100%" stop-color="#cbd5e1" />
+          </linearGradient>
+        </defs>
+        <!-- Jetpack Thruster Plumes -->
+        <ellipse class="thruster-flame flame-left" cx="38" cy="122" rx="6" ry="10" fill="#f59e0b" />
+        <ellipse class="thruster-flame flame-right" cx="82" cy="122" rx="6" ry="10" fill="#38bdf8" />
+        <!-- Backpack PLSS -->
+        <rect x="26" y="45" width="68" height="58" rx="12" fill="#64748b" stroke="#94a3b8" stroke-width="2" />
+        <!-- Antenna -->
+        <line x1="82" y1="20" x2="82" y2="8" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+        <circle class="antenna-beacon" cx="82" cy="6" r="4.5" fill="#f59e0b" />
+        <!-- Left & Right Arms (Floating Waving Animation) -->
+        <g class="nova-arm-left">
+          <rect x="14" y="58" width="18" height="34" rx="9" transform="rotate(18 23 58)" fill="url(#suitGrad)" stroke="#475569" stroke-width="2"/>
+          <circle cx="15" cy="89" r="7" fill="#f59e0b"/>
+        </g>
+        <g class="nova-arm-right">
+          <rect x="88" y="54" width="18" height="34" rx="9" transform="rotate(-24 97 54)" fill="url(#suitGrad)" stroke="#475569" stroke-width="2"/>
+          <circle cx="107" cy="82" r="7" fill="#f59e0b"/>
+        </g>
+        <!-- Torso & Chest Mission Patch -->
+        <rect x="32" y="56" width="56" height="50" rx="16" fill="url(#suitGrad)" stroke="#475569" stroke-width="2.5" />
+        <rect x="44" y="68" width="32" height="20" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" />
+        <circle cx="52" cy="78" r="3" fill="#22c55e" />
+        <circle cx="60" cy="78" r="3" fill="#f59e0b" />
+        <circle cx="68" cy="78" r="3" fill="#38bdf8" />
+        <!-- Helmet -->
+        <circle cx="60" cy="36" r="26" fill="url(#suitGrad)" stroke="#475569" stroke-width="2.5" />
+        <!-- Visor -->
+        <rect x="39" y="21" width="42" height="28" rx="14" fill="url(#visorGrad)" stroke="#38bdf8" stroke-width="2" />
+        <!-- Visor Reflection & Animated Speaking Mouth Wave -->
+        <path d="M45 26 Q54 23 64 26" stroke="rgba(255,255,255,0.65)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        <ellipse class="nova-visor-mouth" cx="60" cy="40" rx="8" ry="2.5" fill="#38bdf8" />
+      </svg>
+    </button>
+  </aside>
 
-            <nav class="hidden md:flex items-center gap-1.5 bg-slate-950/90 p-1.5 rounded-2xl border border-slate-800">
-                <button onclick="window.app.navigate('landing')" id="nav-landing" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition">
-                    <i class="fa-solid fa-house mr-1.5"></i>Home
-                </button>
-                <button onclick="window.app.navigate('map')" id="nav-map" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition">
-                    <i class="fa-solid fa-earth-americas mr-1.5"></i>Space Map
-                </button>
-                <button onclick="window.app.navigate('archive')" id="nav-archive" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition">
-                    <i class="fa-solid fa-layer-group mr-1.5"></i>Fact Cards <span id="nav-facts-count" class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-sky-300 text-xs">0</span>
-                </button>
-                <button onclick="window.app.navigate('badges')" id="nav-badges" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition">
-                    <i class="fa-solid fa-medal mr-1.5"></i>My Badges <span id="nav-badges-count" class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 text-xs">0</span>
-                </button>
-            </nav>
+  <!-- =========================================================
+       AUTHENTICATION MODAL (Sign In / Sign Up with Strict Validation)
+       ========================================================= -->
+  <div id="auth-modal-backdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+    <div class="auth-modal-card">
+      <button class="modal-close-btn" onclick="closeAuthModal()" aria-label="Close modal">✕</button>
 
-            <div class="flex items-center gap-2">
-                <div id="auth-header-area" class="flex items-center gap-2"></div>
-            </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signin" onclick="switchAuthMode('signin')">Sign In</button>
+        <button class="auth-tab" id="tab-signup" onclick="switchAuthMode('signup')">Create Archivist ID</button>
+      </div>
+
+      <h3 id="auth-modal-title">Sign In to Mission Echoes</h3>
+      <p class="auth-subtitle" id="auth-modal-subtitle">
+        Enter your registered Archivist credentials to load and autosave your mission progress.
+      </p>
+
+      <!-- Inline Error / Alert Box (Prevents fake login redirect) -->
+      <div id="auth-alert-box" class="auth-alert-box hidden"></div>
+
+      <!-- Occupied Username Suggestions Box -->
+      <div id="username-suggestions-box" class="username-suggestions-box hidden">
+        <span>That username is already occupied! Try one of these available IDs:</span>
+        <div id="username-suggestion-chips" class="suggestion-chips"></div>
+      </div>
+
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" novalidate>
+        <div class="form-group">
+          <div class="label-row">
+            <label for="auth-username">Archivist Username (1–20 characters)</label>
+            <span id="username-char-count" class="char-counter">0 / 20</span>
+          </div>
+          <input
+            type="text"
+            id="auth-username"
+            maxlength="20"
+            placeholder="e.g., StarArchivist"
+            autocomplete="off"
+            oninput="validateAuthInputsLive()"
+          />
+          <small id="username-status-hint" class="field-hint">
+            Pre-occupied test accounts: <code>CaptainNova</code>, <code>Apollo11</code>, <code>Explorer1</code>
+          </small>
         </div>
 
-        <div class="md:hidden flex items-center justify-around border-t border-slate-800/80 bg-slate-950/95 py-2 px-2">
-            <button onclick="window.app.navigate('landing')" id="mob-nav-landing" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-house"></i><span>Home</span>
-            </button>
-            <button onclick="window.app.navigate('map')" id="mob-nav-map" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-earth-americas"></i><span>Space Map</span>
-            </button>
-            <button onclick="window.app.navigate('archive')" id="mob-nav-archive" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-layer-group"></i><span>Fact Cards</span>
-            </button>
-            <button onclick="window.app.navigate('badges')" id="mob-nav-badges" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-medal"></i><span>Badges</span>
-            </button>
+        <div class="form-group">
+          <div class="label-row">
+            <label for="auth-password">Security Passcode (8–20 characters)</label>
+            <span id="password-char-count" class="char-counter">0 / 20</span>
+          </div>
+          <input
+            type="password"
+            id="auth-password"
+            maxlength="20"
+            placeholder="8-20 chars: 1 uppercase, 1 number, 1 symbol"
+            oninput="validateAuthInputsLive()"
+          />
         </div>
-    </header>
 
-    <main id="app-viewport" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"></main>
+        <!-- Live Password Rule Checklist -->
+        <ul class="password-rules-list" id="password-rules-list">
+          <li id="rule-len"><span>○</span> 8 to 20 characters long</li>
+          <li id="rule-upper"><span>○</span> At least 1 uppercase letter (A–Z)</li>
+          <li id="rule-num"><span>○</span> At least 1 number (0–9)</li>
+          <li id="rule-sym"><span>○</span> At least 1 symbol (!@#$%^&amp;* etc.)</li>
+        </ul>
 
-    <!-- PERSISTENT ROBOT GUIDE ("A.R.I.") COMPANION BAR -->
-    <aside class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <div class="glass-panel rounded-3xl p-4 sm:p-5 border-2 border-sky-400/35 shadow-xl flex flex-col sm:flex-row items-center gap-4">
-            <div class="relative flex-shrink-0">
-                <div id="robot-avatar-box" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-sky-400 flex items-center justify-center animate-float shadow-lg shadow-sky-500/15"></div>
-                <span id="robot-mood-badge" class="absolute -bottom-1 -right-1 px-2 py-0.5 text-[10px] font-display font-bold uppercase rounded-full bg-sky-400 text-slate-950 shadow">FRIEND</span>
-            </div>
-            <div class="flex-1 text-center sm:text-left">
-                <div class="flex items-center justify-center sm:justify-start gap-2 mb-1">
-                    <span class="text-sm font-display font-bold tracking-wide text-sky-300">A.R.I. — Your Robot Space Buddy</span>
-                </div>
-                <p id="robot-dialogue-text" class="text-sm sm:text-base text-white leading-relaxed">
-                    Hi Explorer! I'm A.R.I.! Let's travel across the solar system, meet real NASA spacecraft, and collect awesome space badges!
-                </p>
-            </div>
-            <div class="flex-shrink-0">
-                <button onclick="window.app.triggerRobotTip()" class="btn-tactile px-4 py-2.5 rounded-2xl bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/40 text-xs sm:text-sm font-display font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Space Tip!
-                </button>
-            </div>
-        </div>
-    </aside>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-slate-800/80 bg-slate-950/70 py-5 px-4 text-xs text-slate-400">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                <span><strong>NASA: Lost in the Solar System</strong></span>
-            </div>
-            <div class="flex flex-wrap items-center gap-4">
-                <button onclick="window.app.openHowToPlayModal()" class="hover:text-sky-300 transition font-bold"><i class="fa-regular fa-circle-question mr-1"></i>How to Play</button>
-                <button onclick="window.app.resetCurrentProgressPrompt()" class="hover:text-rose-400 transition"><i class="fa-solid fa-rotate-left mr-1"></i>Start Over</button>
-            </div>
-        </div>
-    </footer>
-
-    <!-- MODAL CONTAINER -->
-    <div id="modal-backdrop" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
-        <div id="modal-content" class="glass-panel rounded-2xl max-w-2xl w-full p-6 border border-slate-700 shadow-2xl my-8"></div>
+        <button type="submit" class="btn-auth-submit" id="btn-auth-submit">
+          Authenticate &amp; Enter Archive
+        </button>
+      </form>
     </div>
+  </div>
 
-    <!-- TOAST NOTIFICATION CONTAINER -->
-    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
-
-    <!-- Main JS Module -->
-    <script type="module" src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
