@@ -23,7 +23,7 @@
  *   Badge Collection will automatically create nodes and slots for it.
  ****************************************************************************/
 
-export const MISSIONS_CONFIG = [
+const MISSIONS_CONFIG = [
     // ======================================================================
     // CHAPTER 1: THE MOON (Editable by Developer)
     // ======================================================================
@@ -442,7 +442,7 @@ export const MISSIONS_CONFIG = [
 // FINAL SYNTHESIS MISSION CONFIG (Section 6.6 & 8.6 of PRD)
 // Unlocks automatically when all levels in `MISSIONS_CONFIG` are completed!
 // ==========================================================================
-export const FINAL_MISSION_CONFIG = {
+const FINAL_MISSION_CONFIG = {
     title: "Final Mission: Restore the Solar System Telemetry Core",
     subtitle: "Match the incoming deep-space telemetry transmissions to the correct NASA hardware to complete your certification!",
     robotCelebration: "ALL SECTORS ILLUMINATED! You have restored the entire Solar System Archive! Complete this final transmission check to earn your official NASA Explorer Commendation!",
@@ -1800,4 +1800,3 @@ class NasaSolarApp {
 window.addEventListener("DOMContentLoaded", () => {
     window.app = new NasaSolarApp();
 });
-    
