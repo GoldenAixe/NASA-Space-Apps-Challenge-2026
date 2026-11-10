@@ -1,0 +1,2532 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      NASA: Lost in the Solar System | Interactive Educational Adventure
+    </title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Google Fonts: Inter & Space Grotesk -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Space Grotesk", "sans-serif"],
+            },
+            colors: {
+              nasa: {
+                blue: "#0B3D91",
+                red: "#FC3D21",
+                cyan: "#38BDF8",
+                gold: "#FBBF24",
+                dark: "#060913",
+                card: "#0F172A",
+              },
+            },
+            animation: {
+              float: "float 4s ease-in-out infinite",
+              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0px)" },
+                "50%": { transform: "translateY(-8px)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        background-color: #060913;
+        background-image:
+          radial-gradient(
+            circle at 15% 20%,
+            rgba(11, 61, 145, 0.25) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 85% 80%,
+            rgba(56, 189, 248, 0.12) 0%,
+            transparent 45%
+          ),
+          radial-gradient(white, rgba(255, 255, 255, 0.15) 1px, transparent 2px);
+        background-size:
+          100% 100%,
+          100% 100%,
+          60px 60px;
+        color: #f8fafc;
+        overflow-x: hidden;
+      }
+      .glass-panel {
+        background: rgba(15, 23, 42, 0.82);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+      .map-path-active {
+        stroke-dasharray: 8 6;
+        animation: dashMove 18s linear infinite;
+      }
+      @keyframes dashMove {
+        to {
+          stroke-dashoffset: -200;
+        }
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #060913;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #38bdf8;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white"
+  >
+    <!-- ============================================================================
+         GUEST MODE VOLATILE WARNING BANNER (Shown only when playing as Guest)
+         ============================================================================ -->
+    <div
+      id="guest-banner"
+      class="hidden bg-gradient-to-r from-amber-500/20 via-amber-500/15 to-sky-500/20 border-b border-amber-400/30 px-4 py-2 text-xs sm:text-sm"
+    >
+      <div
+        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2"
+      >
+        <div class="flex items-center gap-2 text-amber-200">
+          <i
+            class="fa-solid fa-triangle-exclamation text-amber-400 animate-pulse"
+          ></i>
+          <span
+            ><strong>Playing as Guest:</strong> Your mission progress is
+            temporary and will reset if you close or refresh the page.</span
+          >
+        </div>
+        <button
+          onclick="window.app.openAuthModal('register')"
+          class="px-3 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-semibold text-xs transition shadow-sm"
+        >
+          <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Register / Connect
+          Google to Save Progress
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================================
+         TOP NAVIGATION BAR
+         ============================================================================ -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3"
+      >
+        <!-- Brand Logo -->
+        <button
+          onclick="window.app.navigate('landing')"
+          class="flex items-center gap-3 text-left group focus:outline-none"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-nasa-blue to-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/20 border border-sky-400/30 group-hover:scale-105 transition"
+          >
+            <i class="fa-solid fa-satellite text-white text-lg"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span
+                class="font-display font-bold text-base sm:text-lg tracking-tight text-white"
+                >NASA: Lost in the Solar System</span
+              >
+              <span
+                class="hidden md:inline-block text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/30"
+                >v1.0-main</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-400 hidden sm:block">
+              Interactive Space Hardware & Discovery Archive
+            </p>
+          </div>
+        </button>
+
+        <!-- Navigation Links -->
+        <nav
+          class="hidden md:flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800"
+        >
+          <button
+            onclick="window.app.navigate('landing')"
+            id="nav-landing"
+            class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium transition"
+          >
+            <i class="fa-solid fa-house mr-1.5"></i>Home
+          </button>
+          <button
+            onclick="window.app.navigate('map')"
+            id="nav-map"
+            class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium transition"
+          >
+            <i class="fa-solid fa-map-location-dot mr-1.5"></i>Space Map
+          </button>
+          <button
+            onclick="window.app.navigate('archive')"
+            id="nav-archive"
+            class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium transition"
+          >
+            <i class="fa-solid fa-database mr-1.5"></i>Fact Archive
+            <span
+              id="nav-facts-count"
+              class="ml-1 px-1.5 py-0.2 rounded-full bg-slate-800 text-sky-400 text-[10px]"
+              >0</span
+            >
+          </button>
+          <button
+            onclick="window.app.navigate('badges')"
+            id="nav-badges"
+            class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium transition"
+          >
+            <i class="fa-solid fa-medal mr-1.5"></i>Badges
+            <span
+              id="nav-badges-count"
+              class="ml-1 px-1.5 py-0.2 rounded-full bg-slate-800 text-amber-400 text-[10px]"
+              >0</span
+            >
+          </button>
+        </nav>
+
+        <!-- Right Controls: Auth Status & Dev Team Guide -->
+        <div class="flex items-center gap-2">
+          <button
+            onclick="window.app.openDevModal()"
+            title="5-Developer GitHub Collaboration Guide"
+            class="px-2.5 py-1.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-400/30 text-xs font-medium flex items-center gap-1.5 transition"
+          >
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="hidden lg:inline">Dev Team Guide</span>
+          </button>
+
+          <!-- Dynamic Auth Container -->
+          <div id="auth-header-area" class="flex items-center gap-2"></div>
+        </div>
+      </div>
+
+      <!-- Mobile Bottom/Sub Navigation Bar -->
+      <div
+        class="md:hidden flex items-center justify-around border-t border-slate-800/80 bg-slate-950/90 py-1.5 px-2"
+      >
+        <button
+          onclick="window.app.navigate('landing')"
+          id="mob-nav-landing"
+          class="px-3 py-1 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-1"
+        >
+          <i class="fa-solid fa-house"></i><span>Home</span>
+        </button>
+        <button
+          onclick="window.app.navigate('map')"
+          id="mob-nav-map"
+          class="px-3 py-1 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-1"
+        >
+          <i class="fa-solid fa-map-location-dot"></i><span>Map</span>
+        </button>
+        <button
+          onclick="window.app.navigate('archive')"
+          id="mob-nav-archive"
+          class="px-3 py-1 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-1"
+        >
+          <i class="fa-solid fa-database"></i><span>Facts</span>
+        </button>
+        <button
+          onclick="window.app.navigate('badges')"
+          id="mob-nav-badges"
+          class="px-3 py-1 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-1"
+        >
+          <i class="fa-solid fa-medal"></i><span>Badges</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============================================================================
+         MAIN DYNAMIC VIEW CONTAINER
+         ============================================================================ -->
+    <main
+      id="app-viewport"
+      class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
+    ></main>
+
+    <!-- ============================================================================
+         PERSISTENT ROBOT GUIDE ("A.R.I.") FLOATING ASSISTANT BAR
+         ============================================================================ -->
+    <aside class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+      <div
+        class="glass-panel rounded-2xl p-4 border border-sky-500/30 shadow-xl flex flex-col sm:flex-row items-center gap-4"
+      >
+        <!-- Robot SVG Avatar with Dynamic Expression -->
+        <div class="relative flex-shrink-0">
+          <div
+            id="robot-avatar-box"
+            class="w-16 h-16 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-sky-400/60 flex items-center justify-center animate-float shadow-lg shadow-sky-500/10"
+          >
+            <!-- Rendered dynamically via getRobotSVG(mood) -->
+          </div>
+          <span
+            id="robot-mood-badge"
+            class="absolute -bottom-1 -right-1 px-1.5 py-0.5 text-[10px] font-bold uppercase rounded bg-sky-500 text-slate-950"
+            >ONLINE</span
+          >
+        </div>
+        <!-- Dialogue Content -->
+        <div class="flex-1 text-center sm:text-left">
+          <div
+            class="flex items-center justify-center sm:justify-start gap-2 mb-1"
+          >
+            <span
+              class="text-xs font-display font-bold uppercase tracking-wider text-sky-400"
+              >A.R.I. — Archive Reconnaissance Intelligence</span
+            >
+            <span class="text-[11px] text-slate-400"
+              >(Robot Mission Guide)</span
+            >
+          </div>
+          <p
+            id="robot-dialogue-text"
+            class="text-sm sm:text-base text-slate-200 leading-relaxed"
+          >
+            Welcome, Explorer! I am A.R.I. Together, we will locate NASA
+            hardware across the solar system and unlock their scientific
+            discoveries!
+          </p>
+        </div>
+        <!-- Quick Action Button -->
+        <div class="flex-shrink-0">
+          <button
+            onclick="window.app.triggerRobotTip()"
+            class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 text-xs font-medium transition flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Ask A.R.I. for a Tip
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============================================================================
+         FOOTER
+         ============================================================================ -->
+    <footer
+      class="border-t border-slate-800/80 bg-slate-950/70 py-5 px-4 text-xs text-slate-400"
+    >
+      <div
+        class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3"
+      >
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span
+            ><strong>NASA: Lost in the Solar System</strong> — Educational Web
+            Application (Main Branch Template)</span
+          >
+        </div>
+        <div class="flex flex-wrap items-center gap-4">
+          <button
+            onclick="window.app.openHowToPlayModal()"
+            class="hover:text-sky-300 transition"
+          >
+            <i class="fa-regular fa-circle-question mr-1"></i>How to Play
+          </button>
+          <button
+            onclick="window.app.openDevModal()"
+            class="hover:text-indigo-300 transition"
+          >
+            <i class="fa-solid fa-code mr-1"></i>5-Dev Repo Architecture
+          </button>
+          <button
+            onclick="window.app.resetCurrentProgressPrompt()"
+            class="hover:text-rose-400 transition"
+          >
+            <i class="fa-solid fa-rotate-left mr-1"></i>Reset Session
+          </button>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ============================================================================
+         MODAL CONTAINER (Auth, Celebrations, Dev Guide, How-To-Play)
+         ============================================================================ -->
+    <div
+      id="modal-backdrop"
+      class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto"
+    >
+      <div
+        id="modal-content"
+        class="glass-panel rounded-2xl max-w-2xl w-full p-6 border border-slate-700 shadow-2xl my-8"
+      ></div>
+    </div>
+
+    <!-- ============================================================================
+         TOAST NOTIFICATION CONTAINER
+         ============================================================================ -->
+    <div
+      id="toast-container"
+      class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"
+    ></div>
+
+    <!-- ============================================================================
+         APPLICATION ARCHITECTURE & CONFIGURATION SCRIPT
+         ============================================================================ -->
+    <script type="module">
+      /****************************************************************************
+       * 🛠️ 5-DEVELOPER TEAM COLLABORATION GUIDE (MAIN BRANCH CONFIG)
+       * ==========================================================================
+       * Welcome team! Everything in this website is 100% DATA-DRIVEN from the
+       * `MISSIONS_CONFIG` array below.
+       *
+       * HOW TO SPLIT WORK ACROSS YOUR 5 TEAM MEMBERS WITHOUT MERGE CONFLICTS:
+       * - Dev 1 (Architecture / Auth / State): Manages Firebase config & Auth state.
+       * - Dev 2 (Level 1 - The Moon & Level 2 - Mars): Edits mission objects 1 & 2,
+       *   adds extra lessons to `lessons: [...]`, and swaps `[PLACEHOLDER]` URLs.
+       * - Dev 3 (Level 3 - Deep Space & Level 4 - Legacy): Edits mission objects 3 & 4
+       *   and adds more quiz questions to `questions: [...]`.
+       * - Dev 4 (Visuals / SVG Assets / UI Polish): Replaces `imagePlaceholder` with
+       *   official NASA images or custom illustrations.
+       * - Dev 5 (QA / Final Mission / Fact Cards): Expands `factCards` & `finalMission`.
+       *
+       * HOW TO ADD MORE LESSONS OR MISSIONS:
+       * - To add a new Lesson slide inside a mission: Just push a new object into
+       *   that mission's `lessons` array! The slide deck automatically adjusts.
+       * - To add a new Quiz Question: Push a new object into `questions` array!
+       * - To add a brand new Planet/Level: Push a new mission object into
+       *   `MISSIONS_CONFIG`! The Solar System Map, Progress Bar, Fact Archive, and
+       *   Badge Collection will automatically create nodes and slots for it.
+       ****************************************************************************/
+
+      export const MISSIONS_CONFIG = [
+        // ======================================================================
+        // LEVEL 1: THE MOON (Editable by Developer)
+        // ======================================================================
+        {
+          id: "level-1-moon",
+          order: 1,
+          title: "Level 1: The Moon — Moon Explorer",
+          shortName: "The Moon",
+          sectorName: "Lunar Orbit Sector",
+          mapCoords: { x: 18, y: 65 }, // Percentage position on the Solar System SVG Map
+          themeColor: "#38BDF8",
+          iconClass: "fa-solid fa-moon",
+          hardwareName:
+            "Lunar Reconnaissance Orbiter (LRO) & Apollo Surface Relics",
+          missionStatus: "Operational (LRO) / Historic Relics (Apollo)",
+          statusType: "operational", // "operational" | "completed" | "lost-contact"
+          launchYear: "2009 (LRO) / 1969–1972 (Apollo)",
+          summary:
+            "Discover how NASA's Lunar Reconnaissance Orbiter maps the Moon in 3D and even photographs equipment left behind by Apollo astronauts!",
+          robotIntro:
+            "BEEP-BOOP! First stop: Earth's Moon! Did you know there are still rovers, experiments, and spacecraft orbiting and resting on the lunar surface right now?",
+
+          // DEVELOPERS: Add or edit as many Lesson Slides as you want here!
+          // When your real NASA images are ready, put the URL in `assetUrl`.
+          lessons: [
+            {
+              slideTitle: "Meet the Lunar Reconnaissance Orbiter (LRO)",
+              content:
+                "Launched in 2009, the Lunar Reconnaissance Orbiter (LRO) is a robotic spacecraft that orbits the Moon from pole to pole. Its main purpose is to create a high-resolution 3D map of the lunar surface and find safe landing sites for future astronauts.",
+              highlightFact:
+                "LRO's cameras are so sharp they can see the footprints and rover tracks left by Apollo astronauts over 50 years ago!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert Official NASA LRO Spacecraft Illustration / Photo - Asset ID: MOON_LRO_01]",
+              assetUrl: "", // Leave empty to render stylized SVG placeholder until team assets arrive
+              svgType: "orbiter",
+            },
+            {
+              slideTitle: "Searching for Water Ice in Shadowed Craters",
+              content:
+                "Some deep craters near the Moon's South Pole never receive sunlight. They are among the coldest places in the solar system! LRO carries instruments that discovered frozen water ice hidden inside these permanently shadowed craters.",
+              highlightFact:
+                "Future lunar explorers could melt and filter this lunar ice for drinking water, breathable oxygen, and even rocket fuel!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert NASA South Pole Crater Map Image - Asset ID: MOON_CRATER_02]",
+              assetUrl: "",
+              svgType: "crater",
+            },
+            {
+              slideTitle: "Apollo Hardware Still Working on the Moon",
+              content:
+                "Even after astronauts returned home, they left behind laser mirrors called 'Retroreflectors'. Scientists on Earth still bounce laser beams off these mirrors today to measure the exact distance to the Moon within millimeters!",
+              highlightFact:
+                "Thanks to Apollo retroreflectors, we discovered the Moon is slowly drifting away from Earth by about 3.8 centimeters every year.",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert Apollo 11 Laser Retroreflector Photo - Asset ID: MOON_APOLLO_03]",
+              assetUrl: "",
+              svgType: "reflector",
+            },
+          ],
+
+          // DEVELOPERS: Add as many interactive questions as needed!
+          questions: [
+            {
+              id: "q1-moon",
+              type: "multiple-choice",
+              prompt:
+                "What is the primary job of NASA's Lunar Reconnaissance Orbiter (LRO)?",
+              options: [
+                "To bring lunar rocks back to Earth inside a capsule",
+                "To orbit the Moon, create detailed 3D maps, and locate resources like water ice",
+                "To drill deep tunnels underneath the Moon's volcanoes",
+                "To push asteroids away from Earth's orbit",
+              ],
+              correctIndex: 1,
+              hint: "Think about its name: 'Reconnaissance Orbiter'—it scouts and maps the surface from orbit!",
+              explanation:
+                "Correct! LRO orbits the Moon to map its surface in 3D, spot water ice in shadowed craters, and scout safe landing zones.",
+            },
+            {
+              id: "q2-moon",
+              type: "true-false",
+              prompt:
+                "True or False: The Lunar Reconnaissance Orbiter is still operational and sending scientific data back to Earth today.",
+              options: ["True", "False"],
+              correctIndex: 0,
+              hint: "Check the Verified Mission Status badge at the top of this mission briefing!",
+              explanation:
+                "Spot on! Launched in 2009, LRO continues to operate in lunar orbit, making it one of NASA's longest-serving lunar scouts.",
+            },
+            {
+              id: "q3-moon",
+              type: "multiple-choice",
+              prompt:
+                "How do Apollo laser retroreflectors left on the Moon still help scientists today?",
+              options: [
+                "They charge solar batteries for passing satellites",
+                "They broadcast radio music to deep space",
+                "Scientists bounce laser beams off them to measure the exact distance to the Moon",
+                "They predict lunar weather storms",
+              ],
+              correctIndex: 2,
+              hint: "A reflector bounces light back to where it came from!",
+              explanation:
+                "Awesome job! By timing how long a laser pulse takes to bounce back from the Moon, scientists found the Moon moves 3.8 cm away each year.",
+            },
+          ],
+
+          // Reward Badge unlocked upon completing this mission
+          badge: {
+            id: "badge-moon-explorer",
+            name: "Moon Explorer",
+            icon: "fa-solid fa-moon",
+            color: "from-sky-400 to-blue-600",
+            description:
+              "Mastered how NASA orbiters and Apollo surface instruments study Earth's Moon.",
+          },
+
+          // Collectible Fact Card unlocked upon completing this mission
+          factCard: {
+            id: "fact-moon-01",
+            title: "Footprints That Last Millions of Years",
+            category: "Lunar Science",
+            summary:
+              "Because the Moon has no wind or rain, the rover tracks and astronaut bootprints photographed by LRO will stay preserved for millions of years!",
+            sourceLabel: "NASA Lunar Reconnaissance Orbiter Mission Archive",
+            placeholderAsset:
+              "[PLACEHOLDER: Insert LRO Apollo Landing Site Overhead Photo - Asset ID: FACT_MOON_IMG]",
+          },
+        },
+
+        // ======================================================================
+        // LEVEL 2: MARS (Editable by Developer)
+        // ======================================================================
+        {
+          id: "level-2-mars",
+          order: 2,
+          title: "Level 2: Mars — Mars Detective",
+          shortName: "Mars",
+          sectorName: "Red Planet Surface Sector",
+          mapCoords: { x: 42, y: 35 },
+          themeColor: "#FB7185",
+          iconClass: "fa-solid fa-truck-monster",
+          hardwareName: "Opportunity Rover (MER-B)",
+          missionStatus: "Mission Completed (2004–2018)",
+          statusType: "lost-contact",
+          launchYear: "2003 (Landed Jan 2004)",
+          summary:
+            "Investigate how a golf-cart-sized Mars rover designed to last just 90 days explored the Red Planet for nearly 15 years!",
+          robotIntro:
+            "WHEELS ENGAGED! Welcome to Mars! My robotic cousin, the Opportunity rover, holds one of the greatest endurance records in space history. Let's investigate its detective work!",
+
+          lessons: [
+            {
+              slideTitle: "The 90-Day Rover That Explored for 15 Years",
+              content:
+                "When NASA landed the Opportunity rover on Mars in January 2004, engineers planned its primary mission for 90 Martian days (sols). They worried Martian dust would quickly cover its solar panels. Instead, helpful Martian wind gusts cleaned the panels off again and again!",
+              highlightFact:
+                "Opportunity operated for 5,111 Martian days—almost 15 Earth years—and drove a marathon distance of 45.16 kilometers (28 miles)!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert NASA Opportunity Rover Self-Portrait / Illustration - Asset ID: MARS_OPPY_01]",
+              assetUrl: "",
+              svgType: "rover",
+            },
+            {
+              slideTitle: "Clues in the Rocks: 'Blueberries' on Mars",
+              content:
+                "Like a robotic geologist, Opportunity used its panoramic cameras and robotic arm to inspect Martian rocks. It discovered thousands of tiny, round mineral spheres nicknamed 'blueberries' made of hematite.",
+              highlightFact:
+                "On Earth, hematite spheres like these form in wet environments—proving that liquid water once soaked the Martian surface and flowed across ancient Mars!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert Opportunity 'Martian Blueberries' Microscopic Image - Asset ID: MARS_ROCKS_02]",
+              assetUrl: "",
+              svgType: "rocks",
+            },
+            {
+              slideTitle: "The Final Dust Storm & Lasting Legacy",
+              content:
+                "In June 2018, a gigantic planet-wide dust storm blanketed Mars and blocked out the Sun above Perseverance Valley. Opportunity went into low-power sleep mode and never woke up. NASA officially declared its mission complete in February 2019.",
+              highlightFact:
+                "Even though Opportunity is now silent on Mars, its discovery of ancient water paved the way for Curiosity and Perseverance to search for signs of ancient microbial life!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert Opportunity Perseverance Valley Panorama - Asset ID: MARS_VALLEY_03]",
+              assetUrl: "",
+              svgType: "storm",
+            },
+          ],
+
+          questions: [
+            {
+              id: "q1-mars",
+              type: "multiple-choice",
+              prompt:
+                "How long was Opportunity originally designed to operate on Mars, and how long did it actually last?",
+              options: [
+                "Designed for 10 years, lasted 1 year",
+                "Designed for 90 Martian days, lasted nearly 15 years",
+                "Designed for 2 days, lasted 2 weeks",
+                "It is still driving around on Mars today",
+              ],
+              correctIndex: 1,
+              hint: "Martian wind helped clean off its solar panels so it could outlive its 90-day warranty by many years!",
+              explanation:
+                "Incredible, right? Opportunity turned a 90-day mission into a 15-year marathon across the Martian plains!",
+            },
+            {
+              id: "q2-mars",
+              type: "multiple-choice",
+              prompt:
+                "What major scientific discovery did Opportunity make by studying mineral 'blueberries' and rock layers?",
+              options: [
+                "That Mars once had liquid water on its surface",
+                "That Mars has active jungles hidden underground",
+                "That Mars is made entirely of solid gold",
+                "That Mars has thicker air than Earth",
+              ],
+              correctIndex: 0,
+              hint: "Hematite spheres usually form where minerals are soaked in something wet!",
+              explanation:
+                "Correct! Opportunity proved that ancient Mars had liquid water that could have supported habitable environments.",
+            },
+            {
+              id: "q3-mars",
+              type: "true-false",
+              prompt:
+                "True or False: Opportunity stopped communicating with Earth in 2018 after a massive global dust storm blocked sunlight from reaching its solar panels.",
+              options: ["True", "False"],
+              correctIndex: 0,
+              hint: "Remember how Opportunity generated its electricity!",
+              explanation:
+                "True! Without sunlight to recharge its batteries during the historic 2018 dust storm, Opportunity's mission came to a heroic rest.",
+            },
+          ],
+
+          badge: {
+            id: "badge-mars-detective",
+            name: "Mars Detective",
+            icon: "fa-solid fa-magnifying-glass-location",
+            color: "from-rose-500 to-amber-500",
+            description:
+              "Uncovered the geological clues left by water on Mars with the Opportunity rover.",
+          },
+
+          factCard: {
+            id: "fact-mars-02",
+            title: "First Marathon Runner on Another Planet",
+            category: "Martian Exploration",
+            summary:
+              "Opportunity drove 45.16 km (28.06 miles) across Mars—farther than any off-Earth wheeled vehicle in history!",
+            sourceLabel: "NASA Mars Exploration Rover Archive",
+            placeholderAsset:
+              "[PLACEHOLDER: Insert Opportunity Odyssey Crater Track Map - Asset ID: FACT_MARS_IMG]",
+          },
+        },
+
+        // ======================================================================
+        // LEVEL 3: DEEP SPACE (Editable by Developer)
+        // ======================================================================
+        {
+          id: "level-3-voyager",
+          order: 3,
+          title: "Level 3: Deep Space — Deep Space Traveler",
+          shortName: "Deep Space",
+          sectorName: "Interstellar Boundary Sector",
+          mapCoords: { x: 68, y: 62 },
+          themeColor: "#A855F7",
+          iconClass: "fa-solid fa-satellite-dish",
+          hardwareName: "Voyager 1 Interstellar Probe",
+          missionStatus: "Operational in Interstellar Space (Launched 1977)",
+          statusType: "operational",
+          launchYear: "1977",
+          summary:
+            "Travel beyond the giant planets with Voyager 1, the farthest human-made object in the universe!",
+          robotIntro:
+            "LONG-RANGE ANTENNA LOCKED! We are now over 24 billion kilometers from Earth! Out here in the dark between the stars flies Voyager 1—still whispering back to Earth!",
+
+          lessons: [
+            {
+              slideTitle: "The Grand Tour of the Giant Planets",
+              content:
+                "Launched in September 1977, Voyager 1 flew past Jupiter and Saturn using gravity-assist slingshots. It revealed active volcanoes on Jupiter's moon Io and studied the thick orange atmosphere of Saturn's moon Titan.",
+              highlightFact:
+                "In 1990, from 6 billion kilometers away, Voyager 1 turned its camera around and took the famous 'Pale Blue Dot' photo showing Earth as a tiny speck in a sunbeam!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert Voyager 1 Spacecraft & Pale Blue Dot Photo - Asset ID: DEEP_VOYAGER_01]",
+              assetUrl: "",
+              svgType: "voyager",
+            },
+            {
+              slideTitle: "Crossing into Interstellar Space",
+              content:
+                "In August 2012, Voyager 1 made history by crossing the heliopause—the boundary where the Sun's solar wind gives way to the space between the stars. Because sunlight is way too faint out there, Voyager runs on nuclear heat generators (RTGs).",
+              highlightFact:
+                "Voyager 1 is so far away that its radio signals—traveling at the speed of light—take more than 22 hours just to reach NASA's Deep Space Network dishes on Earth!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert Heliopause / Interstellar Boundary Diagram - Asset ID: DEEP_HELIO_02]",
+              assetUrl: "",
+              svgType: "interstellar",
+            },
+            {
+              slideTitle: "The Golden Record: A Time Capsule from Earth",
+              content:
+                "Bolted to Voyager 1's side is a 12-inch gold-plated copper phonograph record called the Golden Record. Chosen by a team led by Carl Sagan, it contains sounds of Earth (rain, whales, laughter), music, 115 images, and greetings in 55 languages.",
+              highlightFact:
+                "Long after Voyager's power runs out in the late 2020s or 2030s, the Golden Record will survive for over a billion years as a message from humanity!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert NASA Golden Record Cover Diagram - Asset ID: DEEP_RECORD_03]",
+              assetUrl: "",
+              svgType: "record",
+            },
+          ],
+
+          questions: [
+            {
+              id: "q1-voyager",
+              type: "multiple-choice",
+              prompt:
+                "What milestone made Voyager 1 the first spacecraft of its kind in 2012?",
+              options: [
+                "It landed on the surface of Pluto",
+                "It crossed the heliopause into interstellar space (the space between stars)",
+                "It flew directly into the Sun's corona",
+                "It returned to Earth and landed in the ocean",
+              ],
+              correctIndex: 1,
+              hint: "It traveled past all the planets and exited the Sun's magnetic bubble!",
+              explanation:
+                "Yes! Voyager 1 became the first human-made spacecraft to enter interstellar space in 2012.",
+            },
+            {
+              id: "q2-voyager",
+              type: "multiple-choice",
+              prompt: "What is the 'Golden Record' carried aboard Voyager 1?",
+              options: [
+                "A trophy for driving the fastest on Mars",
+                "A gold solar panel that reflects sunlight back to Earth",
+                "A time capsule containing sounds, music, images, and greetings from Earth",
+                "A spare computer hard drive for the International Space Station",
+              ],
+              correctIndex: 2,
+              hint: "It was designed as a message about life and culture on Earth for any future spacefarers!",
+              explanation:
+                "Correct! The Golden Record carries greetings in 55 languages, music, and images of Earth across the Milky Way.",
+            },
+            {
+              id: "q3-voyager",
+              type: "true-false",
+              prompt:
+                "True or False: Even though Voyager 1 was launched in 1977, it still communicates with NASA through the Deep Space Network.",
+              options: ["True", "False"],
+              correctIndex: 0,
+              hint: "Look at Voyager 1's Verified Mission Status!",
+              explanation:
+                "True! Despite being nearly half a century old and over 24 billion km away, Voyager 1 still sends data back to Earth!",
+            },
+          ],
+
+          badge: {
+            id: "badge-deep-space",
+            name: "Deep Space Traveler",
+            icon: "fa-solid fa-compass",
+            color: "from-purple-500 to-indigo-600",
+            description:
+              "Journeyed beyond the planets with Voyager 1 into interstellar space.",
+          },
+
+          factCard: {
+            id: "fact-voyager-03",
+            title: "22+ Hours for a Single 'Hello'",
+            category: "Deep Space Communications",
+            summary:
+              "Radio waves travel at 300,000 km per second, yet Voyager 1 is so distant that a one-way message takes over 22 hours to arrive on Earth!",
+            sourceLabel: "NASA Jet Propulsion Laboratory (JPL) Voyager Status",
+            placeholderAsset:
+              "[PLACEHOLDER: Insert Deep Space Network Antenna Dish Photo - Asset ID: FACT_VOYAGER_IMG]",
+          },
+        },
+
+        // ======================================================================
+        // LEVEL 4: THE LEGACY (Editable by Developer)
+        // ======================================================================
+        {
+          id: "level-4-legacy",
+          order: 4,
+          title: "Level 4: The Legacy — Science Keeper",
+          shortName: "The Legacy",
+          sectorName: "Solar System Synthesis Archive",
+          mapCoords: { x: 88, y: 28 },
+          themeColor: "#FBBF24",
+          iconClass: "fa-solid fa-award",
+          hardwareName: "LRO, Opportunity & Voyager 1 — Combined Legacy",
+          missionStatus: "Enduring Scientific Archive",
+          statusType: "completed",
+          launchYear: "1969 – Present",
+          summary:
+            "Connect all the machines we explored to see why scientific discoveries remain priceless even after hardware stops functioning!",
+          robotIntro:
+            "ARCHIVE CORE UNLOCKED! You've visited the Moon, Mars, and Interstellar Space. Now let's discover the most important lesson of all: why a mission's knowledge never truly ends!",
+
+          lessons: [
+            {
+              slideTitle: "Hardware Ages, But Data Lives Forever",
+              content:
+                "Every spacecraft eventually runs out of fuel, loses battery power, or faces harsh space weather—like Opportunity in the 2018 Mars dust storm. However, the terabytes of photographs, chemical readings, and maps they transmitted back to Earth are stored in public NASA archives forever.",
+              highlightFact:
+                "Students and scientists today regularly make brand-new discoveries by re-analyzing decades-old data from Apollo, Opportunity, and Voyager!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert NASA Planetary Data System Archive Graphic - Asset ID: LEGACY_DATA_01]",
+              assetUrl: "",
+              svgType: "archive",
+            },
+            {
+              slideTitle: "Stepping Stones of Exploration",
+              content:
+                "Each generation of NASA hardware builds on the lessons of the machines before it: LRO's water-ice maps guide future Artemis Moon landings; Opportunity's water discoveries guided Perseverance's search for ancient Martian life; and Voyager mapped the outer planets for specialized missions like Juno and Cassini.",
+              highlightFact:
+                "No spacecraft works alone—every mission is a stepping stone that makes the next giant leap possible!",
+              assetPlaceholderLabel:
+                "[PLACEHOLDER: Insert Stepping Stones of NASA Exploration Timeline - Asset ID: LEGACY_TIMELINE_02]",
+              assetUrl: "",
+              svgType: "stepping",
+            },
+          ],
+
+          questions: [
+            {
+              id: "q1-legacy",
+              type: "multiple-choice",
+              prompt:
+                "Which statement correctly matches each NASA machine with its major scientific contribution?",
+              options: [
+                "LRO drove on Mars; Opportunity entered interstellar space; Voyager mapped the Moon",
+                "LRO maps the Moon & water ice; Opportunity proved ancient water existed on Mars; Voyager 1 explores interstellar space",
+                "All three spacecraft landed on Venus and returned rock samples",
+                "None of the spacecraft ever sent pictures back to Earth",
+              ],
+              correctIndex: 1,
+              hint: "Review your journey across Levels 1, 2, and 3!",
+              explanation:
+                "Bullseye! You accurately connected LRO (Moon), Opportunity (Mars), and Voyager 1 (Interstellar Space) to their discoveries.",
+            },
+            {
+              id: "q2-legacy",
+              type: "multiple-choice",
+              prompt:
+                "Why is a NASA spacecraft still scientifically valuable even after it stops communicating with Earth?",
+              options: [
+                "Because its collected data, photos, and discoveries remain in archives and guide future missions",
+                "It isn't valuable anymore—scientists delete all the data when a rover stops moving",
+                "Because astronauts immediately fly out to repair every deep space probe",
+                "Because silent rovers turn into communication satellites",
+              ],
+              correctIndex: 0,
+              hint: "Think about how Opportunity's discoveries helped design the newer Perseverance rover!",
+              explanation:
+                "Exactly! Hardware may stop working, but the scientific knowledge it gathered continues to answer questions and inspire new missions.",
+            },
+            {
+              id: "q3-legacy",
+              type: "true-false",
+              prompt:
+                "True or False: Today, both LRO (at the Moon) and Voyager 1 (in interstellar space) are still operational, while Opportunity completed its mission on Mars in 2018.",
+              options: ["True", "False"],
+              correctIndex: 0,
+              hint: "Compare which two spacecraft are still transmitting today versus the rover that rested in the 2018 dust storm.",
+              explanation:
+                "True! Distinguishing between active spacecraft and completed missions is the mark of a true NASA Science Keeper!",
+            },
+          ],
+
+          badge: {
+            id: "badge-science-keeper",
+            name: "Science Keeper",
+            icon: "fa-solid fa-book-journal-whills",
+            color: "from-amber-400 to-orange-500",
+            description:
+              "Connected NASA hardware across the solar system to humanity's permanent scientific archive.",
+          },
+
+          factCard: {
+            id: "fact-legacy-04",
+            title: "Open Science for Everyone on Earth",
+            category: "NASA Legacy",
+            summary:
+              "All NASA mission data and images are placed in the public domain so students, teachers, and researchers worldwide can explore the universe together!",
+            sourceLabel: "NASA Open Data & Planetary Data System",
+            placeholderAsset:
+              "[PLACEHOLDER: Insert NASA Solar System Fleet Family Portrait - Asset ID: FACT_LEGACY_IMG]",
+          },
+        },
+      ];
+
+      // ==========================================================================
+      // FINAL SYNTHESIS MISSION CONFIG (Section 6.6 & 8.6 of PRD)
+      // Unlocks automatically when all levels in `MISSIONS_CONFIG` are completed!
+      // ==========================================================================
+      export const FINAL_MISSION_CONFIG = {
+        title: "Final Mission: Restore the Solar System Telemetry Core",
+        subtitle:
+          "Match the incoming deep-space telemetry transmissions to the correct NASA hardware to complete your certification!",
+        robotCelebration:
+          "ALL SECTORS ILLUMINATED! You have restored the entire Solar System Archive! Complete this final transmission check to earn your official NASA Explorer Commendation!",
+        challenges: [
+          {
+            transmission:
+              "SIGNAL #01: 'High-resolution 3D laser altimeter scan complete. Permanent shadow crater at Lunar South Pole confirmed to hold water ice.'",
+            options: [
+              "Opportunity Rover (Mars)",
+              "Lunar Reconnaissance Orbiter (The Moon)",
+              "Voyager 1 (Interstellar Space)",
+            ],
+            correctIndex: 1,
+          },
+          {
+            transmission:
+              "SIGNAL #02: 'Microscopic imager detected spherical hematite concretions ('blueberries') in Meridiani Planum, confirming ancient liquid water.'",
+            options: [
+              "Opportunity Rover (Mars)",
+              "Apollo 11 Laser Retroreflector (The Moon)",
+              "Voyager 1 (Interstellar Space)",
+            ],
+            correctIndex: 0,
+          },
+          {
+            transmission:
+              "SIGNAL #03: 'Plasma wave instrument confirms spacecraft has crossed the heliopause. Carrying the Golden Record over 24 billion km from Earth.'",
+            options: [
+              "Lunar Reconnaissance Orbiter (The Moon)",
+              "Opportunity Rover (Mars)",
+              "Voyager 1 (Interstellar Space)",
+            ],
+            correctIndex: 2,
+          },
+        ],
+      };
+
+      // ==========================================================================
+      // APPLICATION STATE & STORAGE KEYS
+      // ==========================================================================
+      const STORAGE_KEYS = {
+        USER_ACCOUNT: "nasa_lost_user_account_v1",
+        SAVED_PROGRESS: "nasa_lost_saved_progress_v1",
+        USERS_DB: "nasa_lost_registered_users_db_v1",
+      };
+
+      function createFreshProgress() {
+        return {
+          completedMissionIds: [],
+          earnedBadgeIds: [],
+          unlockedFactIds: [],
+          finalMissionCompleted: false,
+          explorerRank: "Cadet Scout",
+        };
+      }
+
+      // ==========================================================================
+      // CUSTOM SVG ILLUSTRATIONS (Robot Moods & Placeholder Mission Graphics)
+      // ==========================================================================
+      function getRobotSVG(mood = "normal") {
+        const eyeColor =
+          mood === "happy"
+            ? "#34D399"
+            : mood === "hint"
+              ? "#FBBF24"
+              : "#38BDF8";
+        const mouthPath =
+          mood === "happy"
+            ? "M 22 40 Q 32 48 42 40"
+            : mood === "hint"
+              ? "M 24 42 L 40 42"
+              : "M 23 41 Q 32 45 41 41";
+
+        return `
+                <svg viewBox="0 0 64 64" class="w-12 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="32" y1="6" x2="32" y2="14" stroke="${eyeColor}" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="32" cy="5" r="3.5" fill="${eyeColor}"/>
+                    <rect x="12" y="14" width="40" height="36" rx="10" fill="#0F172A" stroke="${eyeColor}" stroke-width="2.5"/>
+                    <rect x="17" y="20" width="30" height="14" rx="5" fill="#020617" stroke="#1E293B" stroke-width="1.5"/>
+                    <circle cx="25" cy="27" r="3.5" fill="${eyeColor}"/>
+                    <circle cx="39" cy="27" r="3.5" fill="${eyeColor}"/>
+                    <path d="${mouthPath}" stroke="${eyeColor}" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <rect x="8" y="26" width="4" height="12" rx="2" fill="${eyeColor}"/>
+                    <rect x="52" y="26" width="4" height="12" rx="2" fill="${eyeColor}"/>
+                </svg>
+            `;
+      }
+
+      function getHardwarePlaceholderSVG(svgType, color = "#38BDF8") {
+        return `
+                <svg viewBox="0 0 400 180" class="w-full h-44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="400" height="180" rx="12" fill="#090D16"/>
+                    <circle cx="60" cy="40" r="1.5" fill="#94A3B8"/>
+                    <circle cx="340" cy="30" r="2" fill="#E2E8F0"/>
+                    <circle cx="310" cy="140" r="1.5" fill="#64748B"/>
+                    <circle cx="90" cy="135" r="1" fill="#94A3B8"/>
+                    <circle cx="200" cy="90" r="62" stroke="${color}" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="6 4"/>
+                    <circle cx="200" cy="90" r="42" fill="${color}" fill-opacity="0.1" stroke="${color}" stroke-width="2"/>
+                    <rect x="140" y="80" width="38" height="20" rx="3" fill="#1E293B" stroke="${color}" stroke-width="1.5"/>
+                    <rect x="222" y="80" width="38" height="20" rx="3" fill="#1E293B" stroke="${color}" stroke-width="1.5"/>
+                    <rect x="184" y="74" width="32" height="32" rx="6" fill="#0F172A" stroke="#F8FAFC" stroke-width="2"/>
+                    <circle cx="200" cy="90" r="6" fill="${color}"/>
+                    <text x="200" y="166" text-anchor="middle" fill="#94A3B8" font-size="11" font-family="monospace">
+                        DEV ASSET SLOT [${svgType.toUpperCase()}]
+                    </text>
+                </svg>
+            `;
+      }
+
+      // ==========================================================================
+      // MAIN APPLICATION CONTROLLER
+      // ==========================================================================
+      class NasaSolarApp {
+        constructor() {
+          this.currentView = "landing";
+          this.user = null; // null = Guest (volatile memory), object = Registered/Google User (persisted)
+          this.progress = createFreshProgress();
+
+          // Active Mission State
+          this.activeMissionId = null;
+          this.activeLessonIdx = 0;
+          this.activeTab = "lessons"; // "lessons" | "quiz"
+          this.quizAnswers = {}; // { questionId: { selectedIdx, isCorrect, hintShown } }
+          this.finalQuizAnswers = {}; // { idx: selectedIdx }
+
+          this.loadSavedUserAndProgress();
+          this.initUI();
+        }
+
+        // ----------------------------------------------------------------------
+        // AUTH & PERSISTENCE LOGIC (Guest vs Registered/Google User)
+        // ----------------------------------------------------------------------
+        loadSavedUserAndProgress() {
+          try {
+            const savedUserRaw = localStorage.getItem(
+              STORAGE_KEYS.USER_ACCOUNT,
+            );
+            if (savedUserRaw) {
+              this.user = JSON.parse(savedUserRaw);
+              const savedProgRaw = localStorage.getItem(
+                STORAGE_KEYS.SAVED_PROGRESS + "_" + this.user.email,
+              );
+              if (savedProgRaw) {
+                this.progress = JSON.parse(savedProgRaw);
+              }
+            } else {
+              // Starts in Guest Mode (in-memory only, not saved across refreshes)
+              this.user = null;
+              this.progress = createFreshProgress();
+            }
+          } catch (e) {
+            console.warn(
+              "Storage unavailable, running in Guest memory mode.",
+              e,
+            );
+          }
+        }
+
+        saveProgressIfRegistered() {
+          this.updateRank();
+          if (this.user && this.user.email) {
+            try {
+              localStorage.setItem(
+                STORAGE_KEYS.SAVED_PROGRESS + "_" + this.user.email,
+                JSON.stringify(this.progress),
+              );
+            } catch (e) {
+              console.warn("Could not save progress to localStorage:", e);
+            }
+          }
+          this.updateTopCounters();
+        }
+
+        updateRank() {
+          const count = this.progress.completedMissionIds.length;
+          if (this.progress.finalMissionCompleted) {
+            this.progress.explorerRank = "Chief NASA Science Keeper";
+          } else if (count >= 3) {
+            this.progress.explorerRank = "Interstellar Navigator";
+          } else if (count >= 2) {
+            this.progress.explorerRank = "Planetary Detective";
+          } else if (count >= 1) {
+            this.progress.explorerRank = "Lunar Specialist";
+          } else {
+            this.progress.explorerRank = "Cadet Scout";
+          }
+        }
+
+        continueAsGuest() {
+          this.user = null;
+          this.showToast(
+            "Continuing as Guest! Note: Progress won't save unless you register.",
+            "amber",
+          );
+          this.updateAuthUI();
+          this.navigate("map");
+        }
+
+        registerOrLoginUser({ name, email, provider = "email" }) {
+          const cleanEmail = (email || "explorer@nasa.student")
+            .trim()
+            .toLowerCase();
+          const cleanName = (
+            name ||
+            cleanEmail.split("@")[0] ||
+            "Space Explorer"
+          ).trim();
+
+          this.user = {
+            name: cleanName,
+            email: cleanEmail,
+            provider,
+            joinedAt: new Date().toISOString(),
+          };
+
+          try {
+            localStorage.setItem(
+              STORAGE_KEYS.USER_ACCOUNT,
+              JSON.stringify(this.user),
+            );
+
+            // Merge any current guest session progress with previously saved progress for this user
+            const existingSavedRaw = localStorage.getItem(
+              STORAGE_KEYS.SAVED_PROGRESS + "_" + cleanEmail,
+            );
+            if (existingSavedRaw) {
+              const existingProg = JSON.parse(existingSavedRaw);
+              this.progress.completedMissionIds = Array.from(
+                new Set([
+                  ...existingProg.completedMissionIds,
+                  ...this.progress.completedMissionIds,
+                ]),
+              );
+              this.progress.earnedBadgeIds = Array.from(
+                new Set([
+                  ...existingProg.earnedBadgeIds,
+                  ...this.progress.earnedBadgeIds,
+                ]),
+              );
+              this.progress.unlockedFactIds = Array.from(
+                new Set([
+                  ...existingProg.unlockedFactIds,
+                  ...this.progress.unlockedFactIds,
+                ]),
+              );
+              this.progress.finalMissionCompleted =
+                existingProg.finalMissionCompleted ||
+                this.progress.finalMissionCompleted;
+            }
+            this.saveProgressIfRegistered();
+          } catch (e) {
+            console.warn("Storage write error:", e);
+          }
+
+          this.closeModal();
+          this.updateAuthUI();
+          this.renderCurrentView();
+          this.setRobotDialogue(
+            `Hooray, ${this.user.name}! Your account is connected (${provider === "google" ? "Google Account" : "Registered Explorer"}) and your mission progress is now automatically saved!`,
+            "happy",
+          );
+          this.showToast(
+            `Welcome, ${this.user.name}! Progress saving enabled.`,
+            "emerald",
+          );
+        }
+
+        logoutUser() {
+          try {
+            localStorage.removeItem(STORAGE_KEYS.USER_ACCOUNT);
+          } catch (e) {}
+          this.user = null;
+          this.progress = createFreshProgress();
+          this.updateAuthUI();
+          this.updateTopCounters();
+          this.navigate("landing");
+          this.showToast(
+            "Signed out. Switched to temporary Guest mode.",
+            "sky",
+          );
+        }
+
+        // ----------------------------------------------------------------------
+        // INITIALIZATION & NAVIGATION
+        // ----------------------------------------------------------------------
+        initUI() {
+          this.updateAuthUI();
+          this.updateTopCounters();
+          this.setRobotDialogue(
+            "Welcome, Explorer! I am A.R.I., your robot mission guide. Play as a Guest or Register with Google to save your discoveries across the solar system!",
+            "normal",
+          );
+          this.navigate("landing");
+        }
+
+        updateAuthUI() {
+          const guestBanner = document.getElementById("guest-banner");
+          const authArea = document.getElementById("auth-header-area");
+
+          if (!this.user) {
+            guestBanner.classList.remove("hidden");
+            authArea.innerHTML = `
+                        <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs">
+                            <i class="fa-solid fa-user-astronaut"></i> Guest Mode (Unsaved)
+                        </span>
+                        <button onclick="window.app.openAuthModal('register')" class="px-3 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition shadow">
+                            <i class="fa-solid fa-user-plus mr-1"></i> Register / Sign In
+                        </button>
+                    `;
+          } else {
+            guestBanner.classList.add("hidden");
+            const providerIcon =
+              this.user.provider === "google"
+                ? '<i class="fa-brands fa-google text-sky-300"></i>'
+                : '<i class="fa-solid fa-shield-halved text-emerald-400"></i>';
+            authArea.innerHTML = `
+                        <div class="flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-900 border border-emerald-500/30 text-xs">
+                            ${providerIcon}
+                            <span class="font-semibold text-white truncate max-w-[120px]">${this.escapeHtml(this.user.name)}</span>
+                            <span class="hidden md:inline-block text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300">Saved</span>
+                            <button onclick="window.app.logoutUser()" title="Sign Out" class="text-slate-400 hover:text-rose-400 ml-1 transition">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </button>
+                        </div>
+                    `;
+          }
+        }
+
+        updateTopCounters() {
+          const factsEl = document.getElementById("nav-facts-count");
+          const badgesEl = document.getElementById("nav-badges-count");
+          if (factsEl)
+            factsEl.textContent = `${this.progress.unlockedFactIds.length}/${MISSIONS_CONFIG.length}`;
+          if (badgesEl)
+            badgesEl.textContent = `${this.progress.earnedBadgeIds.length}/${MISSIONS_CONFIG.length}`;
+        }
+
+        setRobotDialogue(text, mood = "normal") {
+          const avatarBox = document.getElementById("robot-avatar-box");
+          const textEl = document.getElementById("robot-dialogue-text");
+          const badgeEl = document.getElementById("robot-mood-badge");
+
+          if (avatarBox) avatarBox.innerHTML = getRobotSVG(mood);
+          if (textEl) textEl.textContent = text;
+          if (badgeEl) {
+            badgeEl.textContent =
+              mood === "happy"
+                ? "CELEBRATING"
+                : mood === "hint"
+                  ? "HINT MODE"
+                  : "ONLINE";
+            badgeEl.className = `absolute -bottom-1 -right-1 px-1.5 py-0.5 text-[10px] font-bold uppercase rounded ${
+              mood === "happy"
+                ? "bg-emerald-400 text-slate-950"
+                : mood === "hint"
+                  ? "bg-amber-400 text-slate-950"
+                  : "bg-sky-500 text-slate-950"
+            }`;
+          }
+        }
+
+        triggerRobotTip() {
+          const tips = [
+            "Tip from A.R.I.: Every mission has interactive Lesson Slides AND a Mission Quiz. Read the slides first so you can ace every question!",
+            "Developer Note: Want to add more lessons or levels? Just add objects to MISSIONS_CONFIG in index.html—the map and UI update automatically!",
+            "Tip from A.R.I.: Playing as a Guest lets you test everything right away, and registering or connecting Google saves your badges right where you left off!",
+            "Science Tip: Even when a spacecraft like Opportunity loses power, its archive of photos and data helps scientists plan brand-new missions!",
+          ];
+          const randomTip = tips[Math.floor(Math.random() * tips.length)];
+          this.setRobotDialogue(randomTip, "hint");
+        }
+
+        navigate(viewName, missionId = null) {
+          this.currentView = viewName;
+          if (missionId) {
+            this.activeMissionId = missionId;
+            this.activeLessonIdx = 0;
+            this.activeTab = "lessons";
+            this.quizAnswers = {};
+          }
+
+          // Highlight active nav tab
+          ["landing", "map", "archive", "badges"].forEach((tab) => {
+            const desktopBtn = document.getElementById(`nav-${tab}`);
+            const mobileBtn = document.getElementById(`mob-nav-${tab}`);
+            const isActive =
+              viewName === tab ||
+              (viewName === "mission" && tab === "map") ||
+              (viewName === "final" && tab === "map");
+            if (desktopBtn) {
+              desktopBtn.className = `nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium transition ${
+                isActive
+                  ? "bg-sky-500 text-slate-950 font-semibold shadow"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+              }`;
+            }
+            if (mobileBtn) {
+              mobileBtn.className = `px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1 ${
+                isActive
+                  ? "bg-sky-500/20 text-sky-300 border border-sky-500/30"
+                  : "text-slate-400"
+              }`;
+            }
+          });
+
+          this.renderCurrentView();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        renderCurrentView() {
+          const viewport = document.getElementById("app-viewport");
+          if (!viewport) return;
+
+          switch (this.currentView) {
+            case "landing":
+              viewport.innerHTML = this.renderLandingView();
+              break;
+            case "map":
+              viewport.innerHTML = this.renderMapView();
+              break;
+            case "mission":
+              viewport.innerHTML = this.renderMissionView();
+              break;
+            case "archive":
+              viewport.innerHTML = this.renderArchiveView();
+              break;
+            case "badges":
+              viewport.innerHTML = this.renderBadgesView();
+              break;
+            case "final":
+              viewport.innerHTML = this.renderFinalMissionView();
+              break;
+            default:
+              viewport.innerHTML = this.renderLandingView();
+          }
+        }
+
+        // ----------------------------------------------------------------------
+        // VIEW 1: LANDING PAGE (Section 6.1)
+        // ----------------------------------------------------------------------
+        renderLandingView() {
+          const hasProgress = this.progress.completedMissionIds.length > 0;
+          return `
+                    <div class="space-y-8">
+                        <!-- Hero Section -->
+                        <div class="glass-panel rounded-3xl p-6 sm:p-10 border border-sky-500/30 relative overflow-hidden">
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                                <div class="lg:col-span-7 space-y-5">
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-medium">
+                                        <i class="fa-solid fa-rocket"></i> Interactive Space Science Adventure
+                                    </div>
+                                    <h1 class="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight leading-tight">
+                                        NASA: <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-300 to-indigo-400">Lost in the Solar System</span>
+                                    </h1>
+                                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                                        Across the Moon, Mars, and deep interstellar space, historic NASA spacecraft have spent decades unlocking the secrets of our universe. Join robot guide <strong>A.R.I.</strong> to locate NASA hardware, complete interactive lessons, collect verified scientific fact cards, and restore the Solar System Telemetry Map!
+                                    </p>
+
+                                    <!-- Primary Call To Action Buttons -->
+                                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                                        <button onclick="window.app.navigate('map')" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-display font-bold text-sm sm:text-base shadow-lg shadow-sky-500/25 transition flex items-center gap-2">
+                                            <i class="fa-solid fa-shuttle-space"></i>
+                                            <span>${hasProgress ? "Continue Journey" : "Start Exploration"}</span>
+                                        </button>
+
+                                        ${
+                                          !this.user
+                                            ? `
+                                            <button onclick="window.app.continueAsGuest()" class="px-5 py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-sm transition flex items-center gap-2">
+                                                <i class="fa-solid fa-user-clock text-amber-400"></i>
+                                                <span>Continue as Guest (Unsaved)</span>
+                                            </button>
+                                            <button onclick="window.app.openAuthModal('register')" class="px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm transition flex items-center gap-2 shadow">
+                                                <i class="fa-brands fa-google text-rose-500"></i>
+                                                <span>Connect Google / Register</span>
+                                            </button>
+                                        `
+                                            : `
+                                            <div class="px-4 py-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+                                                <i class="fa-solid fa-cloud-check text-base"></i>
+                                                <span>Signed in as <strong>${this.escapeHtml(this.user.name)}</strong> — Progress Auto-Saved!</span>
+                                            </div>
+                                        `
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- Right Visual Card: Mission Telemetry Preview -->
+                                <div class="lg:col-span-5">
+                                    <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-4 shadow-inner">
+                                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+                                                <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-300">Solar System Archive Status</span>
+                                            </div>
+                                            <span class="text-xs font-mono text-sky-400">${this.progress.completedMissionIds.length} / ${MISSIONS_CONFIG.length} Sectors Restored</span>
+                                        </div>
+
+                                        <!-- Dynamic Preview of Configured Missions -->
+                                        <div class="space-y-2.5">
+                                            ${MISSIONS_CONFIG.map((m, idx) => {
+                                              const isDone =
+                                                this.progress.completedMissionIds.includes(
+                                                  m.id,
+                                                );
+                                              const isUnlocked =
+                                                idx === 0 ||
+                                                this.progress.completedMissionIds.includes(
+                                                  MISSIONS_CONFIG[idx - 1].id,
+                                                );
+                                              return `
+                                                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border ${isDone ? "border-emerald-500/40" : isUnlocked ? "border-sky-500/40" : "border-slate-800 opacity-60"}">
+                                                        <div class="flex items-center gap-3">
+                                                            <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-800 text-sm" style="color:${m.themeColor}">
+                                                                <i class="${m.iconClass}"></i>
+                                                            </div>
+                                                            <div>
+                                                                <div class="text-xs font-bold text-white">${m.shortName}</div>
+                                                                <div class="text-[11px] text-slate-400">${m.hardwareName}</div>
+                                                            </div>
+                                                        </div>
+                                                        <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded ${
+                                                          isDone
+                                                            ? "bg-emerald-500/20 text-emerald-300"
+                                                            : isUnlocked
+                                                              ? "bg-sky-500/20 text-sky-300"
+                                                              : "bg-slate-800 text-slate-400"
+                                                        }">
+                                                            ${isDone ? '<i class="fa-solid fa-check mr-1"></i>Done' : isUnlocked ? "Ready" : '<i class="fa-solid fa-lock mr-1"></i>Locked'}
+                                                        </span>
+                                                    </div>
+                                                `;
+                                            }).join("")}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- How It Works / Simple Instructions Section (PRD 6.1) -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="glass-panel rounded-2xl p-5 border border-slate-800">
+                                <div class="w-10 h-10 rounded-xl bg-sky-500/15 text-sky-400 flex items-center justify-center mb-3 text-lg">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <h3 class="font-display font-bold text-white text-base mb-1">1. Explore the Solar System Map</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    Start at Earth's Moon and unlock missions to Mars, Deep Space, and the NASA Legacy Archive as you complete each sector.
+                                </p>
+                            </div>
+                            <div class="glass-panel rounded-2xl p-5 border border-slate-800">
+                                <div class="w-10 h-10 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center mb-3 text-lg">
+                                    <i class="fa-solid fa-microchip"></i>
+                                </div>
+                                <h3 class="font-display font-bold text-white text-base mb-1">2. Inspect Hardware & Answer Quizzes</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    Learn each spacecraft's purpose, discoveries, and current operational status. Need help? Ask A.R.I. for a friendly hint!
+                                </p>
+                            </div>
+                            <div class="glass-panel rounded-2xl p-5 border border-slate-800">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center mb-3 text-lg">
+                                    <i class="fa-solid fa-medal"></i>
+                                </div>
+                                <h3 class="font-display font-bold text-white text-base mb-1">3. Collect Badges & Save Progress</h3>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    Unlock Mission Badges and Fact Cards. Play right away as a Guest, or connect your Google account to save your achievements!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        }
+
+        // ----------------------------------------------------------------------
+        // VIEW 2: INTERACTIVE SPACE MAP (Section 6.2 & 8.1)
+        // ----------------------------------------------------------------------
+        renderMapView() {
+          const totalLevels = MISSIONS_CONFIG.length;
+          const completedCount = this.progress.completedMissionIds.length;
+          const progressPct = Math.round((completedCount / totalLevels) * 100);
+          const allCompleted = completedCount === totalLevels;
+
+          // Build SVG Flight lines between consecutive mission nodes
+          let svgLines = "";
+          for (let i = 0; i < MISSIONS_CONFIG.length - 1; i++) {
+            const curr = MISSIONS_CONFIG[i];
+            const next = MISSIONS_CONFIG[i + 1];
+            const isRestored = this.progress.completedMissionIds.includes(
+              curr.id,
+            );
+            svgLines += `
+                        <line x1="${curr.mapCoords.x}%" y1="${curr.mapCoords.y}%"
+                              x2="${next.mapCoords.x}%" y2="${next.mapCoords.y}%"
+                              stroke="${isRestored ? "#38BDF8" : "#334155"}"
+                              stroke-width="${isRestored ? "3" : "2"}"
+                              class="${isRestored ? "map-path-active" : ""}" />
+                    `;
+          }
+
+          return `
+                    <div class="space-y-6">
+                        <!-- Top Telemetry & Map Restoration Progress Bar -->
+                        <div class="glass-panel rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h2 class="font-display font-bold text-xl text-white">Interactive Solar System Map</h2>
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                                        Rank: ${this.progress.explorerRank}
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1">Select an unlocked sector below to launch its lessons and mission quiz.</p>
+                            </div>
+
+                            <div class="w-full md:w-72 space-y-1.5">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-300 font-medium">Map Telemetry Restoration</span>
+                                    <span class="text-sky-400 font-bold">${progressPct}% (${completedCount}/${totalLevels})</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                                    <div class="h-full bg-gradient-to-r from-sky-500 to-emerald-400 transition-all duration-500" style="width: ${progressPct}%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Visual Star Chart Map -->
+                        <div class="glass-panel rounded-3xl p-4 sm:p-6 border border-sky-500/30 relative overflow-hidden">
+                            <div class="relative w-full h-[360px] sm:h-[420px] rounded-2xl bg-slate-950/90 border border-slate-800/90 overflow-hidden">
+                                <!-- Decorative Sun Glow on Left Edge -->
+                                <div class="absolute -left-16 top-1/2 -translate-y-1/2 w-36 h-36 rounded-full bg-amber-400/20 blur-2xl pointer-events-none"></div>
+
+                                <!-- SVG Connecting Trajectory Lines -->
+                                <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                                    ${svgLines}
+                                </svg>
+
+                                <!-- Interactive Planet/Mission Nodes -->
+                                ${MISSIONS_CONFIG.map((mission, idx) => {
+                                  const isCompleted =
+                                    this.progress.completedMissionIds.includes(
+                                      mission.id,
+                                    );
+                                  const isUnlocked =
+                                    idx === 0 ||
+                                    this.progress.completedMissionIds.includes(
+                                      MISSIONS_CONFIG[idx - 1].id,
+                                    );
+
+                                  const statusBadge = isCompleted
+                                    ? '<span class="px-2 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>COMPLETED</span>'
+                                    : isUnlocked
+                                      ? '<span class="px-2 py-0.5 rounded-full bg-sky-400 text-slate-950 text-[10px] font-bold animate-pulse">AVAILABLE</span>'
+                                      : '<span class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-bold"><i class="fa-solid fa-lock mr-1"></i>LOCKED</span>';
+
+                                  return `
+                                        <div style="left: ${mission.mapCoords.x}%; top: ${mission.mapCoords.y}%;"
+                                             class="absolute -translate-x-1/2 -translate-y-1/2 z-10 text-center group">
+                                            <button onclick="window.app.selectMapNode('${mission.id}', ${isUnlocked})"
+                                                    class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex flex-col items-center justify-center transition transform group-hover:scale-110 shadow-xl border-2 ${
+                                                      isCompleted
+                                                        ? "bg-emerald-950/90 border-emerald-400 text-emerald-300 shadow-emerald-500/20"
+                                                        : isUnlocked
+                                                          ? "bg-slate-900/95 border-sky-400 text-sky-300 shadow-sky-500/30"
+                                                          : "bg-slate-900/60 border-slate-700 text-slate-500 cursor-not-allowed"
+                                                    }">
+                                                <i class="${mission.iconClass} text-xl sm:text-2xl mb-1"></i>
+                                                <span class="text-[10px] font-bold">Level ${mission.order}</span>
+                                            </button>
+                                            <div class="mt-2 flex flex-col items-center">
+                                                <span class="text-xs font-display font-bold text-white whitespace-nowrap bg-slate-950/90 px-2 py-0.5 rounded border border-slate-800">${mission.shortName}</span>
+                                                <div class="mt-1">${statusBadge}</div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join("")}
+                            </div>
+                        </div>
+
+                        <!-- Final Mission Banner (Unlocks when all levels are completed) -->
+                        <div class="glass-panel rounded-2xl p-5 border ${allCompleted ? "border-amber-400/60 bg-amber-500/10" : "border-slate-800 opacity-75"} flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl ${allCompleted ? "bg-amber-400 text-slate-950" : "bg-slate-800 text-slate-500"}">
+                                    <i class="fa-solid ${allCompleted ? "fa-trophy" : "fa-lock"}"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-display font-bold text-base sm:text-lg text-white">Final Synthesis Mission: Telemetry Core Restoration</h3>
+                                    <p class="text-xs text-slate-300">
+                                        ${
+                                          allCompleted
+                                            ? "All 4 levels complete! Enter the Final Mission to test your solar system knowledge and claim your completion summary!"
+                                            : `Complete all ${totalLevels} sector missions above (${completedCount}/${totalLevels} finished) to unlock the Final Mission.`
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <button ${allCompleted ? `onclick="window.app.navigate('final')"` : "disabled"}
+                                    class="px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm transition flex-shrink-0 ${
+                                      allCompleted
+                                        ? "bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-lg shadow-amber-500/20"
+                                        : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                                    }">
+                                ${allCompleted ? '<i class="fa-solid fa-play mr-1.5"></i>Launch Final Mission' : '<i class="fa-solid fa-lock mr-1.5"></i>Locked'}
+                            </button>
+                        </div>
+
+                        <!-- Detailed Mission Cards Grid (Easy access & developer overview) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${MISSIONS_CONFIG.map((mission, idx) => {
+                              const isCompleted =
+                                this.progress.completedMissionIds.includes(
+                                  mission.id,
+                                );
+                              const isUnlocked =
+                                idx === 0 ||
+                                this.progress.completedMissionIds.includes(
+                                  MISSIONS_CONFIG[idx - 1].id,
+                                );
+                              return `
+                                    <div class="glass-panel rounded-2xl p-5 border ${isCompleted ? "border-emerald-500/40" : isUnlocked ? "border-sky-500/30" : "border-slate-800 opacity-65"} flex flex-col justify-between gap-4">
+                                        <div class="space-y-2">
+                                            <div class="flex items-center justify-between gap-2">
+                                                <span class="text-xs font-bold uppercase tracking-wider" style="color:${mission.themeColor}">${mission.sectorName}</span>
+                                                <span class="text-[11px] px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300">
+                                                    ${mission.lessons.length} Lessons • ${mission.questions.length} Questions
+                                                </span>
+                                            </div>
+                                            <h3 class="font-display font-bold text-lg text-white">${mission.title}</h3>
+                                            <p class="text-xs text-slate-300 leading-relaxed">${mission.summary}</p>
+                                            <div class="text-[11px] text-slate-400 pt-1">
+                                                <strong>Featured Hardware:</strong> ${mission.hardwareName}
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                                            <span class="text-xs ${isCompleted ? "text-emerald-400" : "text-slate-400"}">
+                                                <i class="fa-solid fa-medal mr-1"></i>Reward: <strong>${mission.badge.name}</strong>
+                                            </span>
+                                            <button onclick="window.app.selectMapNode('${mission.id}', ${isUnlocked})"
+                                                    class="px-4 py-2 rounded-xl text-xs font-semibold transition ${
+                                                      isUnlocked
+                                                        ? "bg-sky-500 hover:bg-sky-400 text-slate-950"
+                                                        : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                                                    }">
+                                                ${isCompleted ? "Replay Mission" : isUnlocked ? "Enter Mission" : "Locked"}
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join("")}
+                        </div>
+                    </div>
+                `;
+        }
+
+        selectMapNode(missionId, isUnlocked) {
+          if (!isUnlocked) {
+            this.setRobotDialogue(
+              "Hold on, Explorer! That sector's telemetry link is still locked. Complete the previous mission first to unlock it!",
+              "hint",
+            );
+            this.showToast(
+              "Complete the previous mission to unlock this sector!",
+              "amber",
+            );
+            return;
+          }
+          const mission = MISSIONS_CONFIG.find((m) => m.id === missionId);
+          if (mission) {
+            this.setRobotDialogue(mission.robotIntro, "normal");
+            this.navigate("mission", missionId);
+          }
+        }
+
+        // ----------------------------------------------------------------------
+        // VIEW 3: MISSION LEVEL PAGE (Lessons + Interactive Quiz - Section 6.3)
+        // ----------------------------------------------------------------------
+        renderMissionView() {
+          const mission =
+            MISSIONS_CONFIG.find((m) => m.id === this.activeMissionId) ||
+            MISSIONS_CONFIG[0];
+          const lesson =
+            mission.lessons[this.activeLessonIdx] || mission.lessons[0];
+          const allQuestionsAnsweredCorrectly = mission.questions.every(
+            (q) => this.quizAnswers[q.id]?.isCorrect,
+          );
+
+          const statusColor =
+            mission.statusType === "operational"
+              ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+              : "bg-amber-500/20 text-amber-300 border-amber-500/40";
+
+          return `
+                    <div class="space-y-6">
+                        <!-- Mission Top Header -->
+                        <div class="glass-panel rounded-2xl p-5 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button onclick="window.app.navigate('map')" class="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1 mr-2">
+                                        <i class="fa-solid fa-arrow-left"></i> Back to Space Map
+                                    </button>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${statusColor}">
+                                        <i class="fa-solid fa-satellite-dish mr-1"></i>Verified Status: ${mission.missionStatus}
+                                    </span>
+                                </div>
+                                <h2 class="font-display font-bold text-2xl text-white">${mission.title}</h2>
+                                <p class="text-xs text-slate-400">Featured NASA Hardware: <strong class="text-slate-200">${mission.hardwareName}</strong> • Launched: ${mission.launchYear}</p>
+                            </div>
+
+                            <!-- Mode Switcher: Lesson Slides vs Interactive Quiz -->
+                            <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 self-start lg:self-auto">
+                                <button onclick="window.app.switchMissionTab('lessons')"
+                                        class="px-4 py-2 rounded-lg text-xs font-semibold transition ${
+                                          this.activeTab === "lessons"
+                                            ? "bg-sky-500 text-slate-950 shadow"
+                                            : "text-slate-300 hover:text-white"
+                                        }">
+                                    <i class="fa-solid fa-book-open mr-1.5"></i>1. Hardware Lessons (${mission.lessons.length})
+                                </button>
+                                <button onclick="window.app.switchMissionTab('quiz')"
+                                        class="px-4 py-2 rounded-lg text-xs font-semibold transition ${
+                                          this.activeTab === "quiz"
+                                            ? "bg-sky-500 text-slate-950 shadow"
+                                            : "text-slate-300 hover:text-white"
+                                        }">
+                                    <i class="fa-solid fa-circle-question mr-1.5"></i>2. Mission Challenge (${mission.questions.length})
+                                </button>
+                            </div>
+                        </div>
+
+                        ${
+                          this.activeTab === "lessons"
+                            ? `
+                            <!-- LESSON SLIDE DECK -->
+                            <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-sky-500/30 space-y-6">
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                    <span class="text-xs font-mono uppercase tracking-wider text-sky-400">
+                                        Lesson Briefing ${this.activeLessonIdx + 1} of ${mission.lessons.length}
+                                    </span>
+                                    <div class="flex gap-1.5">
+                                        ${mission.lessons
+                                          .map(
+                                            (_, idx) => `
+                                            <button onclick="window.app.goToLesson(${idx})"
+                                                    class="w-7 h-2 rounded-full transition ${idx === this.activeLessonIdx ? "bg-sky-400" : "bg-slate-700 hover:bg-slate-600"}"></button>
+                                        `,
+                                          )
+                                          .join("")}
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                    <!-- Visual Placeholder / Asset Slot for Dev Team -->
+                                    <div class="lg:col-span-5 bg-slate-950/90 rounded-2xl p-4 border border-dashed border-slate-700 text-center space-y-3">
+                                        ${
+                                          lesson.assetUrl
+                                            ? `<img src="${lesson.assetUrl}" alt="${this.escapeHtml(lesson.slideTitle)}" class="w-full h-48 object-cover rounded-xl">`
+                                            : getHardwarePlaceholderSVG(
+                                                lesson.svgType || "spacecraft",
+                                                mission.themeColor,
+                                              )
+                                        }
+                                        <div class="px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono text-amber-300">
+                                            ${lesson.assetPlaceholderLabel}
+                                        </div>
+                                    </div>
+
+                                    <!-- Lesson Text & Scientific Contribution -->
+                                    <div class="lg:col-span-7 space-y-4">
+                                        <h3 class="font-display font-bold text-xl sm:text-2xl text-white">${lesson.slideTitle}</h3>
+                                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">${lesson.content}</p>
+                                        <div class="p-4 rounded-2xl bg-sky-500/10 border border-sky-400/30 flex items-start gap-3">
+                                            <i class="fa-solid fa-lightbulb text-amber-400 text-lg mt-0.5"></i>
+                                            <div>
+                                                <div class="text-xs font-bold uppercase tracking-wider text-sky-300 mb-0.5">Key Scientific Discovery</div>
+                                                <p class="text-xs sm:text-sm text-slate-200">${lesson.highlightFact}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide Controls -->
+                                <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                                    <button onclick="window.app.prevLesson()"
+                                            ${this.activeLessonIdx === 0 ? "disabled" : ""}
+                                            class="px-4 py-2.5 rounded-xl text-xs font-semibold border border-slate-700 ${
+                                              this.activeLessonIdx === 0
+                                                ? "text-slate-600 cursor-not-allowed"
+                                                : "text-slate-200 hover:bg-slate-800"
+                                            }">
+                                        <i class="fa-solid fa-chevron-left mr-1"></i> Previous Lesson
+                                    </button>
+
+                                    ${
+                                      this.activeLessonIdx <
+                                      mission.lessons.length - 1
+                                        ? `
+                                        <button onclick="window.app.nextLesson()" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs sm:text-sm transition">
+                                            Next Lesson <i class="fa-solid fa-chevron-right ml-1"></i>
+                                        </button>
+                                    `
+                                        : `
+                                        <button onclick="window.app.switchMissionTab('quiz')" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-sky-500 text-slate-950 font-display font-bold text-xs sm:text-sm shadow-lg transition">
+                                            Start Mission Quiz <i class="fa-solid fa-bolt ml-1"></i>
+                                        </button>
+                                    `
+                                    }
+                                </div>
+                            </div>
+                        `
+                            : `
+                            <!-- INTERACTIVE QUESTIONS & HINT SYSTEM -->
+                            <div class="space-y-4">
+                                ${mission.questions
+                                  .map((q, qIdx) => {
+                                    const state = this.quizAnswers[q.id] || {};
+                                    return `
+                                        <div class="glass-panel rounded-2xl p-5 sm:p-6 border ${
+                                          state.isCorrect
+                                            ? "border-emerald-500/50"
+                                            : state.selectedIdx !== undefined
+                                              ? "border-rose-500/50"
+                                              : "border-slate-800"
+                                        } space-y-4">
+                                            <div class="flex items-start justify-between gap-4">
+                                                <div class="space-y-1">
+                                                    <span class="text-[11px] font-mono uppercase text-sky-400">Question ${qIdx + 1} of ${mission.questions.length}</span>
+                                                    <h4 class="font-display font-bold text-base sm:text-lg text-white">${q.prompt}</h4>
+                                                </div>
+                                                <button onclick="window.app.toggleHint('${mission.id}', '${q.id}')"
+                                                        class="px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-400/30 text-xs font-medium flex-shrink-0 transition">
+                                                    <i class="fa-regular fa-lightbulb mr-1"></i> Hint
+                                                </button>
+                                            </div>
+
+                                            ${
+                                              state.hintShown
+                                                ? `
+                                                <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-400/30 text-xs text-amber-200 flex items-center gap-2">
+                                                    <i class="fa-solid fa-robot text-amber-400"></i>
+                                                    <span><strong>A.R.I. Hint:</strong> ${q.hint}</span>
+                                                </div>
+                                            `
+                                                : ""
+                                            }
+
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                                ${q.options
+                                                  .map((opt, optIdx) => {
+                                                    const isSelected =
+                                                      state.selectedIdx ===
+                                                      optIdx;
+                                                    let btnStyle =
+                                                      "bg-slate-900/90 hover:bg-slate-800 border-slate-700 text-slate-200";
+                                                    if (
+                                                      isSelected &&
+                                                      state.isCorrect
+                                                    ) {
+                                                      btnStyle =
+                                                        "bg-emerald-500/20 border-emerald-400 text-emerald-200 font-semibold";
+                                                    } else if (
+                                                      isSelected &&
+                                                      !state.isCorrect
+                                                    ) {
+                                                      btnStyle =
+                                                        "bg-rose-500/20 border-rose-400 text-rose-200";
+                                                    }
+                                                    return `
+                                                        <button onclick="window.app.submitAnswer('${mission.id}', '${q.id}', ${optIdx})"
+                                                                class="p-3.5 rounded-xl border text-left text-xs sm:text-sm transition flex items-center justify-between gap-2 ${btnStyle}">
+                                                            <span>${opt}</span>
+                                                            ${isSelected ? (state.isCorrect ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-400"></i>') : ""}
+                                                        </button>
+                                                    `;
+                                                  })
+                                                  .join("")}
+                                            </div>
+
+                                            ${
+                                              state.selectedIdx !== undefined
+                                                ? `
+                                                <div class="p-3.5 rounded-xl text-xs sm:text-sm ${
+                                                  state.isCorrect
+                                                    ? "bg-emerald-500/15 text-emerald-200 border border-emerald-500/30"
+                                                    : "bg-rose-500/15 text-rose-200 border border-rose-500/30"
+                                                }">
+                                                    ${
+                                                      state.isCorrect
+                                                        ? `<i class="fa-solid fa-check mr-1.5"></i>${q.explanation}`
+                                                        : `<i class="fa-solid fa-rotate-right mr-1.5"></i>Not quite! Try another option or click the Hint button above for help from A.R.I.`
+                                                    }
+                                                </div>
+                                            `
+                                                : ""
+                                            }
+                                        </div>
+                                    `;
+                                  })
+                                  .join("")}
+
+                                <!-- Mission Completion Banner -->
+                                ${
+                                  allQuestionsAnsweredCorrectly
+                                    ? `
+                                    <div class="glass-panel rounded-2xl p-6 border-2 border-emerald-400 bg-emerald-950/20 text-center space-y-4">
+                                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${mission.badge.color} mx-auto flex items-center justify-center text-white text-2xl shadow-lg">
+                                            <i class="${mission.badge.icon}"></i>
+                                        </div>
+                                        <h3 class="font-display font-bold text-2xl text-white">Mission Complete! You Earned the "${mission.badge.name}" Badge!</h3>
+                                        <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto">
+                                            You also unlocked the <strong>"${mission.factCard.title}"</strong> Fact Card in your Archive, and restored the next sector on the Solar System Map!
+                                        </p>
+                                        <div class="flex flex-wrap justify-center gap-3 pt-2">
+                                            <button onclick="window.app.navigate('map')" class="px-6 py-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-display font-bold text-xs sm:text-sm transition shadow-lg">
+                                                <i class="fa-solid fa-map-location-dot mr-1.5"></i>Return to Restored Space Map
+                                            </button>
+                                            <button onclick="window.app.navigate('archive')" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold transition">
+                                                <i class="fa-solid fa-database mr-1.5"></i>View Unlocked Fact Card
+                                            </button>
+                                        </div>
+                                    </div>
+                                `
+                                    : ""
+                                }
+                            </div>
+                        `
+                        }
+                    </div>
+                `;
+        }
+
+        switchMissionTab(tab) {
+          this.activeTab = tab;
+          if (tab === "quiz") {
+            this.setRobotDialogue(
+              "Challenge time! Answer each question below. If you get stuck, click 'Hint' and I'll help you out!",
+              "normal",
+            );
+          }
+          this.renderCurrentView();
+        }
+
+        goToLesson(idx) {
+          this.activeLessonIdx = idx;
+          this.renderCurrentView();
+        }
+
+        prevLesson() {
+          if (this.activeLessonIdx > 0) {
+            this.activeLessonIdx--;
+            this.renderCurrentView();
+          }
+        }
+
+        nextLesson() {
+          const mission = MISSIONS_CONFIG.find(
+            (m) => m.id === this.activeMissionId,
+          );
+          if (mission && this.activeLessonIdx < mission.lessons.length - 1) {
+            this.activeLessonIdx++;
+            this.renderCurrentView();
+          }
+        }
+
+        toggleHint(missionId, questionId) {
+          const mission = MISSIONS_CONFIG.find((m) => m.id === missionId);
+          const question = mission?.questions.find((q) => q.id === questionId);
+          if (!question) return;
+
+          if (!this.quizAnswers[questionId]) {
+            this.quizAnswers[questionId] = {};
+          }
+          this.quizAnswers[questionId].hintShown = true;
+          this.setRobotDialogue(`HINT: ${question.hint}`, "hint");
+          this.renderCurrentView();
+        }
+
+        submitAnswer(missionId, questionId, selectedIdx) {
+          const mission = MISSIONS_CONFIG.find((m) => m.id === missionId);
+          const question = mission?.questions.find((q) => q.id === questionId);
+          if (!question) return;
+
+          const isCorrect = selectedIdx === question.correctIndex;
+          this.quizAnswers[questionId] = {
+            ...(this.quizAnswers[questionId] || {}),
+            selectedIdx,
+            isCorrect,
+          };
+
+          if (isCorrect) {
+            this.setRobotDialogue(`AWESOME! ${question.explanation}`, "happy");
+          } else {
+            this.setRobotDialogue(
+              `Almost! Give it another try or use the Hint button—every great scientist learns by testing!`,
+              "hint",
+            );
+          }
+
+          // Check if all questions in this mission are now solved
+          const allCorrect = mission.questions.every(
+            (q) => this.quizAnswers[q.id]?.isCorrect,
+          );
+          if (allCorrect) {
+            const isFirstTime = !this.progress.completedMissionIds.includes(
+              mission.id,
+            );
+            if (isFirstTime) {
+              this.progress.completedMissionIds.push(mission.id);
+            }
+            if (!this.progress.earnedBadgeIds.includes(mission.badge.id)) {
+              this.progress.earnedBadgeIds.push(mission.badge.id);
+            }
+            if (!this.progress.unlockedFactIds.includes(mission.factCard.id)) {
+              this.progress.unlockedFactIds.push(mission.factCard.id);
+            }
+            this.saveProgressIfRegistered();
+            if (isFirstTime) {
+              this.showToast(
+                `Unlocked "${mission.badge.name}" Badge & Fact Card!`,
+                "emerald",
+              );
+              this.setRobotDialogue(
+                `MISSION ACCOMPLISHED! You earned the ${mission.badge.name} badge and restored telemetry for ${mission.shortName}!`,
+                "happy",
+              );
+            }
+          }
+
+          this.renderCurrentView();
+        }
+
+        // ----------------------------------------------------------------------
+        // VIEW 4: MISSION ARCHIVE / COLLECTIBLE FACT CARDS (Section 6.4)
+        // ----------------------------------------------------------------------
+        renderArchiveView() {
+          return `
+                    <div class="space-y-6">
+                        <div class="glass-panel rounded-2xl p-5 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="font-display font-bold text-2xl text-white">Mission Archive — Collectible Fact Cards</h2>
+                                <p class="text-xs text-slate-400">Complete mission levels to unlock verified scientific fact cards for your collection.</p>
+                            </div>
+                            <span class="px-3 py-1.5 rounded-xl bg-sky-500/15 text-sky-300 border border-sky-500/30 text-xs font-bold">
+                                ${this.progress.unlockedFactIds.length} / ${MISSIONS_CONFIG.length} Cards Unlocked
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            ${MISSIONS_CONFIG.map((m) => {
+                              const card = m.factCard;
+                              const unlocked =
+                                this.progress.unlockedFactIds.includes(card.id);
+                              return `
+                                    <div class="glass-panel rounded-2xl p-5 border ${unlocked ? "border-sky-500/40" : "border-slate-800 opacity-60"} flex flex-col justify-between gap-4">
+                                        ${
+                                          unlocked
+                                            ? `
+                                            <div class="space-y-3">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-sky-500/20 text-sky-300">${card.category}</span>
+                                                    <span class="text-xs text-emerald-400 font-semibold"><i class="fa-solid fa-unlock mr-1"></i>Unlocked</span>
+                                                </div>
+                                                <div class="p-3 rounded-xl bg-slate-950 border border-dashed border-slate-800 text-[11px] font-mono text-amber-300 text-center">
+                                                    ${card.placeholderAsset}
+                                                </div>
+                                                <h3 class="font-display font-bold text-lg text-white">${card.title}</h3>
+                                                <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${card.summary}</p>
+                                            </div>
+                                            <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+                                                <span><i class="fa-solid fa-book-bookmark mr-1 text-sky-400"></i>Source: ${card.sourceLabel}</span>
+                                                <button onclick="window.app.selectMapNode('${m.id}', true)" class="text-sky-400 hover:underline">Review Mission</button>
+                                            </div>
+                                        `
+                                            : `
+                                            <div class="py-10 text-center space-y-2">
+                                                <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 mx-auto flex items-center justify-center text-slate-500 text-xl">
+                                                    <i class="fa-solid fa-lock"></i>
+                                                </div>
+                                                <h3 class="font-display font-bold text-base text-slate-300">Encrypted Telemetry Fact Card</h3>
+                                                <p class="text-xs text-slate-500">Complete <strong>${m.title}</strong> to unlock this scientific discovery card.</p>
+                                            </div>
+                                        `
+                                        }
+                                    </div>
+                                `;
+                            }).join("")}
+                        </div>
+                    </div>
+                `;
+        }
+
+        // ----------------------------------------------------------------------
+        // VIEW 5: BADGE COLLECTION (Section 6.5)
+        // ----------------------------------------------------------------------
+        renderBadgesView() {
+          return `
+                    <div class="space-y-6">
+                        <div class="glass-panel rounded-2xl p-5 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="font-display font-bold text-2xl text-white">Explorer Mission Badges</h2>
+                                <p class="text-xs text-slate-400">Each completed level awards a unique NASA hardware commendation badge.</p>
+                            </div>
+                            <span class="px-3 py-1.5 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 text-xs font-bold">
+                                ${this.progress.earnedBadgeIds.length} / ${MISSIONS_CONFIG.length} Badges Earned
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                            ${MISSIONS_CONFIG.map((m) => {
+                              const b = m.badge;
+                              const earned =
+                                this.progress.earnedBadgeIds.includes(b.id);
+                              return `
+                                    <div class="glass-panel rounded-2xl p-6 border ${earned ? "border-amber-400/50" : "border-slate-800 opacity-60"} text-center space-y-3 flex flex-col justify-between">
+                                        <div class="space-y-3">
+                                            <div class="w-20 h-20 rounded-3xl mx-auto flex items-center justify-center text-3xl shadow-lg ${
+                                              earned
+                                                ? `bg-gradient-to-br ${b.color} text-white`
+                                                : "bg-slate-900 text-slate-600 border border-slate-800"
+                                            }">
+                                                <i class="${earned ? b.icon : "fa-solid fa-lock"}"></i>
+                                            </div>
+                                            <h3 class="font-display font-bold text-lg text-white">${b.name}</h3>
+                                            <p class="text-xs text-slate-300 leading-relaxed">${b.description}</p>
+                                        </div>
+                                        <div class="pt-3 border-t border-slate-800/80">
+                                            <span class="text-[11px] font-bold uppercase px-2.5 py-1 rounded-full ${
+                                              earned
+                                                ? "bg-emerald-500/20 text-emerald-300"
+                                                : "bg-slate-900 text-slate-500"
+                                            }">
+                                                ${earned ? '<i class="fa-solid fa-check mr-1"></i>Earned' : "Locked"}
+                                            </span>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join("")}
+                        </div>
+                    </div>
+                `;
+        }
+
+        // ----------------------------------------------------------------------
+        // VIEW 6: FINAL MISSION & COMPLETION SUMMARY (Section 6.6)
+        // ----------------------------------------------------------------------
+        renderFinalMissionView() {
+          const allCorrect = FINAL_MISSION_CONFIG.challenges.every(
+            (c, idx) => this.finalQuizAnswers[idx] === c.correctIndex,
+          );
+
+          return `
+                    <div class="space-y-6">
+                        <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-amber-400/40 space-y-4">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold">
+                                <i class="fa-solid fa-star"></i> Final Synthesis Challenge
+                            </div>
+                            <h2 class="font-display font-bold text-2xl sm:text-3xl text-white">${FINAL_MISSION_CONFIG.title}</h2>
+                            <p class="text-sm text-slate-300">${FINAL_MISSION_CONFIG.subtitle}</p>
+
+                            <div class="space-y-4 pt-2">
+                                ${FINAL_MISSION_CONFIG.challenges
+                                  .map((c, idx) => {
+                                    const picked = this.finalQuizAnswers[idx];
+                                    const isRight = picked === c.correctIndex;
+                                    return `
+                                        <div class="p-4 rounded-2xl bg-slate-950/80 border ${isRight ? "border-emerald-500/50" : "border-slate-800"} space-y-3">
+                                            <p class="font-mono text-xs sm:text-sm text-sky-300">${c.transmission}</p>
+                                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                                ${c.options
+                                                  .map(
+                                                    (opt, oIdx) => `
+                                                    <button onclick="window.app.submitFinalAnswer(${idx}, ${oIdx})"
+                                                            class="p-2.5 rounded-xl border text-xs font-semibold transition ${
+                                                              picked === oIdx
+                                                                ? isRight
+                                                                  ? "bg-emerald-500/20 border-emerald-400 text-emerald-200"
+                                                                  : "bg-rose-500/20 border-rose-400 text-rose-200"
+                                                                : "bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-800"
+                                                            }">
+                                                        ${opt}
+                                                    </button>
+                                                `,
+                                                  )
+                                                  .join("")}
+                                            </div>
+                                        </div>
+                                    `;
+                                  })
+                                  .join("")}
+                            </div>
+                        </div>
+
+                        ${
+                          allCorrect
+                            ? `
+                            <!-- GRAND COMPLETION SUMMARY -->
+                            <div class="glass-panel rounded-3xl p-8 border-2 border-amber-400 text-center space-y-5 bg-gradient-to-b from-amber-500/10 to-slate-950">
+                                <div class="w-20 h-20 rounded-3xl bg-amber-400 text-slate-950 mx-auto flex items-center justify-center text-4xl shadow-xl">
+                                    <i class="fa-solid fa-award"></i>
+                                </div>
+                                <h3 class="font-display font-bold text-3xl text-white">Congratulations, ${this.user ? this.escapeHtml(this.user.name) : "Solar System Explorer"}!</h3>
+                                <p class="text-sm sm:text-base text-slate-200 max-w-2xl mx-auto">
+                                    ${FINAL_MISSION_CONFIG.robotCelebration}
+                                </p>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto pt-2">
+                                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
+                                        <div class="text-2xl font-display font-bold text-sky-400">${MISSIONS_CONFIG.length}/${MISSIONS_CONFIG.length}</div>
+                                        <div class="text-xs text-slate-400">Missions Restored</div>
+                                    </div>
+                                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
+                                        <div class="text-2xl font-display font-bold text-amber-400">${this.progress.earnedBadgeIds.length}</div>
+                                        <div class="text-xs text-slate-400">Mission Badges Earned</div>
+                                    </div>
+                                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
+                                        <div class="text-2xl font-display font-bold text-emerald-400">${this.progress.unlockedFactIds.length}</div>
+                                        <div class="text-xs text-slate-400">Scientific Fact Cards</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap justify-center gap-3 pt-3">
+                                    <button onclick="window.app.navigate('map')" class="px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-bold text-sm transition">
+                                        <i class="fa-solid fa-rotate mr-1.5"></i>Replay Any Mission
+                                    </button>
+                                    <button onclick="window.app.navigate('badges')" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-sm font-semibold transition">
+                                        View All Badges
+                                    </button>
+                                </div>
+                            </div>
+                        `
+                            : ""
+                        }
+                    </div>
+                `;
+        }
+
+        submitFinalAnswer(challengeIdx, optionIdx) {
+          this.finalQuizAnswers[challengeIdx] = optionIdx;
+          const allCorrect = FINAL_MISSION_CONFIG.challenges.every(
+            (c, idx) => this.finalQuizAnswers[idx] === c.correctIndex,
+          );
+          if (allCorrect) {
+            this.progress.finalMissionCompleted = true;
+            this.saveProgressIfRegistered();
+            this.setRobotDialogue(
+              FINAL_MISSION_CONFIG.robotCelebration,
+              "happy",
+            );
+            this.showToast(
+              "Telemetry Core Restored! Official Commendation Unlocked!",
+              "emerald",
+            );
+          }
+          this.renderCurrentView();
+        }
+
+        // ----------------------------------------------------------------------
+        // MODALS: AUTH (Guest / Register / Google Connect), DEV GUIDE, RESET
+        // ----------------------------------------------------------------------
+        openAuthModal() {
+          const modal = document.getElementById("modal-backdrop");
+          const content = document.getElementById("modal-content");
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+
+          content.innerHTML = `
+                    <div class="space-y-5">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-user-astronaut"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-display font-bold text-lg text-white">Save Your Space Exploration Progress</h3>
+                                    <p class="text-xs text-slate-400">Register an Explorer Account or connect Google to save badges & facts</p>
+                                </div>
+                            </div>
+                            <button onclick="window.app.closeModal()" class="text-slate-400 hover:text-white text-lg">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                        <!-- Option 1: One-Click Google Account Connect -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-slate-400">Fastest Option</label>
+                            <button onclick="window.app.handleGoogleConnect()"
+                                    class="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm flex items-center justify-center gap-2.5 shadow transition">
+                                <i class="fa-brands fa-google text-rose-500 text-base"></i>
+                                <span>Continue with Google Account</span>
+                            </button>
+                        </div>
+
+                        <div class="relative flex py-1 items-center">
+                            <div class="flex-grow border-t border-slate-800"></div>
+                            <span class="flex-shrink mx-3 text-xs text-slate-500 uppercase">or register with explorer name & email</span>
+                            <div class="flex-grow border-t border-slate-800"></div>
+                        </div>
+
+                        <!-- Option 2: Standard Registration Form -->
+                        <form onsubmit="window.app.handleFormRegister(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs text-slate-300 mb-1">Explorer Callsign / Name</label>
+                                <input id="reg-name" type="text" required placeholder="e.g., Cadet Alex"
+                                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-300 mb-1">School or Personal Email</label>
+                                <input id="reg-email" type="email" required placeholder="alex@school.edu"
+                                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-400">
+                            </div>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-display font-bold text-sm transition">
+                                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>Register & Save Current Progress
+                            </button>
+                        </form>
+
+                        <!-- Option 3: Continue as Guest -->
+                        <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                            <span>Prefer not to save right now?</span>
+                            <button onclick="window.app.closeModal(); window.app.continueAsGuest();" class="text-amber-300 hover:underline font-medium">
+                                Continue as Guest (Unsaved)
+                            </button>
+                        </div>
+                    </div>
+                `;
+        }
+
+        handleGoogleConnect() {
+          // Simulated Google OAuth popup flow ready for Firebase Auth / Google Identity Services swap
+          const content = document.getElementById("modal-content");
+          content.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-brands fa-google text-rose-500 text-lg"></i>
+                                <h3 class="font-display font-bold text-base text-white">Connect Your Google Account</h3>
+                            </div>
+                            <button onclick="window.app.closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            Select or enter your Google Account below to link with <strong>NASA: Lost in the Solar System</strong> and automatically sync your mission progress:
+                        </p>
+                        <form onsubmit="window.app.completeGoogleSignIn(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs text-slate-300 mb-1">Google Display Name</label>
+                                <input id="google-name" type="text" required value="NASA Student Explorer"
+                                       class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-300 mb-1">Google Email (@gmail.com)</label>
+                                <input id="google-email" type="email" required value="explorer@gmail.com"
+                                       class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white">
+                            </div>
+                            <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-sm transition">
+                                <i class="fa-brands fa-google mr-1.5"></i>Authorize & Save Progress
+                            </button>
+                        </form>
+                    </div>
+                `;
+        }
+
+        completeGoogleSignIn(e) {
+          e.preventDefault();
+          const name = document.getElementById("google-name")?.value;
+          const email = document.getElementById("google-email")?.value;
+          this.registerOrLoginUser({ name, email, provider: "google" });
+        }
+
+        handleFormRegister(e) {
+          e.preventDefault();
+          const name = document.getElementById("reg-name")?.value;
+          const email = document.getElementById("reg-email")?.value;
+          this.registerOrLoginUser({ name, email, provider: "email" });
+        }
+
+        openDevModal() {
+          const modal = document.getElementById("modal-backdrop");
+          const content = document.getElementById("modal-content");
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+
+          content.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div class="flex items-center gap-2 text-indigo-300">
+                                <i class="fa-solid fa-code-branch text-lg"></i>
+                                <h3 class="font-display font-bold text-lg text-white">5-Developer GitHub Repo Collaboration Guide</h3>
+                            </div>
+                            <button onclick="window.app.closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            This main branch template is designed so all <strong>5 team members</strong> can edit missions, add lessons, and swap placeholder assets without breaking the UI:
+                        </p>
+
+                        <div class="space-y-2 text-xs">
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                                <strong class="text-sky-300">1. How to Add or Edit Lessons & Questions:</strong>
+                                <p class="text-slate-400 mt-1">Open <code class="text-amber-300">MISSIONS_CONFIG</code> in <code class="text-amber-300">index.html</code>. Each mission has a <code class="text-emerald-300">lessons: [...]</code> array and a <code class="text-emerald-300">questions: [...]</code> array. Add as many lesson objects or question objects as you want—the slide counter and quiz validator scale automatically!</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                                <strong class="text-sky-300">2. How to Swap Placeholder Images Later:</strong>
+                                <p class="text-slate-400 mt-1">When your NASA images or illustrations arrive, simply paste the image path/URL into <code class="text-emerald-300">assetUrl: "assets/your-image.jpg"</code> on any lesson object. It automatically replaces the SVG placeholder!</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                                <strong class="text-sky-300">3. Recommended 5-Member Task Split:</strong>
+                                <ul class="list-disc list-inside text-slate-400 mt-1 space-y-1">
+                                    <li><strong>Member 1:</strong> Core UI, Auth integration (Firebase/Google OAuth), & Map layout</li>
+                                    <li><strong>Member 2:</strong> Level 1 (The Moon) lessons, questions, and NASA LRO assets</li>
+                                    <li><strong>Member 3:</strong> Level 2 (Mars) lessons, questions, and Opportunity rover assets</li>
+                                    <li><strong>Member 4:</strong> Level 3 (Deep Space) lessons, questions, and Voyager 1 assets</li>
+                                    <li><strong>Member 5:</strong> Level 4 (The Legacy), Final Mission, Fact Archive & QA Testing</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-2">
+                            <button onclick="window.app.closeModal()" class="px-4 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white text-xs font-semibold">Got It!</button>
+                        </div>
+                    </div>
+                `;
+        }
+
+        openHowToPlayModal() {
+          const modal = document.getElementById("modal-backdrop");
+          const content = document.getElementById("modal-content");
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+
+          content.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h3 class="font-display font-bold text-lg text-white"><i class="fa-regular fa-circle-question text-sky-400 mr-2"></i>How to Play</h3>
+                            <button onclick="window.app.closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <ol class="list-decimal list-inside space-y-2 text-xs sm:text-sm text-slate-300">
+                            <li>Open the <strong>Space Map</strong> and select an available destination starting with Level 1: The Moon.</li>
+                            <li>Read the short <strong>Hardware Lessons</strong> with your robot guide A.R.I.</li>
+                            <li>Switch to the <strong>Mission Challenge</strong> tab and answer the interactive questions. Use the <strong>Hint</strong> button if you need help!</li>
+                            <li>Unlock your <strong>Mission Badge</strong> and <strong>Fact Card</strong> to illuminate the next destination on the map.</li>
+                            <li>Register or connect your <strong>Google Account</strong> at any time to save your progress!</li>
+                        </ol>
+                        <div class="flex justify-end">
+                            <button onclick="window.app.closeModal()" class="px-4 py-2 rounded-xl bg-sky-500 text-slate-950 font-bold text-xs">Close</button>
+                        </div>
+                    </div>
+                `;
+        }
+
+        resetCurrentProgressPrompt() {
+          const modal = document.getElementById("modal-backdrop");
+          const content = document.getElementById("modal-content");
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+
+          content.innerHTML = `
+                    <div class="space-y-4">
+                        <h3 class="font-display font-bold text-lg text-white">Reset Mission Progress?</h3>
+                        <p class="text-xs text-slate-300">This will clear your current badges, unlocked levels, and fact cards so you can test the experience from the beginning.</p>
+                        <div class="flex justify-end gap-2">
+                            <button onclick="window.app.closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs">Cancel</button>
+                            <button onclick="window.app.confirmResetProgress()" class="px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-xs">Reset Everything</button>
+                        </div>
+                    </div>
+                `;
+        }
+
+        confirmResetProgress() {
+          this.progress = createFreshProgress();
+          this.quizAnswers = {};
+          this.finalQuizAnswers = {};
+          this.saveProgressIfRegistered();
+          this.closeModal();
+          this.navigate("landing");
+          this.showToast("Mission progress has been reset.", "rose");
+        }
+
+        closeModal() {
+          const modal = document.getElementById("modal-backdrop");
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
+        }
+
+        showToast(message, color = "sky") {
+          const container = document.getElementById("toast-container");
+          if (!container) return;
+          const toast = document.createElement("div");
+          const borderColors = {
+            sky: "border-sky-400 text-sky-200",
+            emerald: "border-emerald-400 text-emerald-200",
+            amber: "border-amber-400 text-amber-200",
+            rose: "border-rose-400 text-rose-200",
+          };
+          toast.className = `glass-panel px-4 py-3 rounded-xl border-l-4 ${borderColors[color] || borderColors.sky} text-xs font-medium shadow-xl pointer-events-auto transition-all duration-300`;
+          toast.innerHTML = message;
+          container.appendChild(toast);
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            setTimeout(() => toast.remove(), 300);
+          }, 3600);
+        }
+
+        escapeHtml(str) {
+          return String(str || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+      }
+
+      // Start application on window load
+      window.addEventListener("DOMContentLoaded", () => {
+        window.app = new NasaSolarApp();
+      });
+    </script>
+  </body>
+</html>
