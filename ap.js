@@ -562,19 +562,24 @@ class NasaSolarApp {
 
         this.loadSavedUserAndProgress();
         this.initUI();
-        this.startSplashSequence();
+        // Initial splash is driven by the inline script in index.html
+        // so it works reliably on file:// and http://. Use replaySplashIntro() to show it again.
     }
 
     // ----------------------------------------------------------------------
     // NASA SPLASH SCREEN SEQUENCE (Auto-launches into Guest Mode Home)
     // ----------------------------------------------------------------------
     startSplashSequence() {
+        // Splash progress is handled by the lightweight inline script in index.html
+        // so it always works (including when opening via file://).
+        // This method is kept for replaySplashIntro().
         const splash = document.getElementById("nasa-splash-screen");
         const bar = document.getElementById("splash-progress-bar");
         const status = document.getElementById("splash-status-text");
         if (!splash || !bar) return;
 
         splash.classList.remove("hidden", "splash-fade-out");
+        bar.style.width = "5%";
         let pct = 10;
         const messages = [
             "Calibrating Lunar Orbiter cameras...",
@@ -600,6 +605,10 @@ class NasaSolarApp {
 
     finishSplashScreen() {
         if (this.splashInterval) clearInterval(this.splashInterval);
+        if (typeof window.finishNasaSplash === "function") {
+            window.finishNasaSplash();
+            return;
+        }
         const splash = document.getElementById("nasa-splash-screen");
         if (splash && !splash.classList.contains("splash-fade-out")) {
             splash.classList.add("splash-fade-out");

@@ -4,7 +4,7 @@ body {
         radial-gradient(circle at 15% 18%, rgba(11, 61, 145, 0.38) 0%, transparent 45%),
         radial-gradient(circle at 85% 82%, rgba(56, 189, 248, 0.18) 0%, transparent 45%),
         radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
-        radial-gradient(white, rgba(255,255,255,.18) 1px, transparent 2px);
+        radial-gradient(rgb(78, 74, 74), rgba(255,255,255,.18) 1px, transparent 2px);
     background-size: 100% 100%, 100% 100%, 100% 100%, 56px 56px;
     color: #F8FAFC;
     overflow-x: hidden;
