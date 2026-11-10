@@ -1,1268 +1,1532 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NASA: Lost in the Solar System | Interactive Space Adventure</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-<script>
-tailwind.config = {
-  darkMode: 'class',
-  theme: { extend: {
-    fontFamily: { sans: ['Quicksand','sans-serif'], display: ['Fredoka','sans-serif'] },
-    colors: { nasa: { blue:'#0B3D91', red:'#FC3D21', cyan:'#38BDF8', gold:'#FBBF24', dark:'#070B19', card:'#111936' } },
-    animation: { 'float':'float 4s ease-in-out infinite', 'orbit':'orbit 14s linear infinite', 'twinkle':'twinkle 2.5s ease-in-out infinite' },
-    keyframes: {
-      float: { '0%,100%':{transform:'translateY(0px)'}, '50%':{transform:'translateY(-8px)'} },
-      orbit: { '0%':{transform:'rotate(0deg)'}, '100%':{transform:'rotate(360deg)'} },
-      twinkle: { '0%,100%':{opacity:1}, '50%':{opacity:.25} }
-    }
-  }}
-}
-</script>
-<style>
-  html,body{background:#050814;}
-  .glass-panel{background:rgba(17,25,54,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
-  .nav-tab{color:#cbd5e1;}
-  .nav-tab:hover{color:#fff;background:rgba(56,189,248,.12);}
-  .nav-tab.active{color:#fff;background:linear-gradient(135deg,#0B3D91,#38BDF8);box-shadow:0 4px 16px rgba(56,189,248,.35);}
-  .btn-tactile{transition:transform .08s ease, box-shadow .2s;}
-  .btn-tactile:active{transform:scale(.96);}
-  /* ===== HOME STARFIELD ===== */
-  #star-canvas{position:absolute;inset:0;width:100%;height:100%;}
-  .nebula{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;}
-  .hero-grid{
-    background-image:linear-gradient(rgba(56,189,248,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.06) 1px,transparent 1px);
-    background-size:56px 56px;
-    mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
-    -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
-  }
-  .shooting-star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;box-shadow:0 0 8px 2px rgba(255,255,255,.8);animation:shoot 1.4s linear forwards;pointer-events:none;}
-  @keyframes shoot{0%{transform:translate(0,0) rotate(215deg);opacity:1}100%{transform:translate(-340px,240px) rotate(215deg);opacity:0}}
-  .star-dot{position:absolute;background:#fff;border-radius:50%;animation:tw 3s ease-in-out infinite;}
-  @keyframes tw{0%,100%{opacity:.9}50%{opacity:.2}}
-  /* ===== MAP ===== */
-  .orbit-ring{fill:none;stroke:rgba(148,163,184,.14);stroke-width:1.4;stroke-dasharray:3 7;}
-  .map-node{cursor:pointer;transition:transform .25s ease;}
-  .map-node:hover{transform:scale(1.12);}
-  .map-node.locked{cursor:not-allowed;}
-  .planet-body{filter:drop-shadow(0 0 10px rgba(56,189,248,.35));}
-  .node-label{font-family:Fredoka,sans-serif;font-size:11px;fill:#e2e8f0;text-anchor:middle;}
-  .node-sub{font-size:8.5px;fill:#7dd3fc;text-anchor:middle;font-family:Quicksand,sans-serif;}
-  @keyframes pulseRing{0%{r:8;opacity:.9}100%{r:26;opacity:0}}
-  .pulse-ring{fill:none;stroke:#FBBF24;stroke-width:2;animation:pulseRing 1.8s ease-out infinite;}
-  @keyframes rocketBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  .rocket-bob{animation:rocketBob 3s ease-in-out infinite;}
-  /* ===== QUIZ ===== */
-  .quiz-opt{transition:all .15s ease;}
-  .quiz-opt:hover:not(:disabled){transform:translateX(4px);border-color:#38BDF8;background:rgba(56,189,248,.12);}
-  .quiz-opt.correct{border-color:#34d399!important;background:rgba(52,211,153,.18)!important;}
-  .quiz-opt.wrong{border-color:#f87171!important;background:rgba(248,113,113,.18)!important;}
-  .fact-card{transition:transform .2s ease, box-shadow .2s;}
-  .fact-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(56,189,248,.15);}
-  .badge-locked{filter:grayscale(1);opacity:.45;}
-  .toast-in{animation:toastIn .3s ease forwards;}
-  @keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-  ::-webkit-scrollbar{width:8px;height:8px}
-  ::-webkit-scrollbar-track{background:#0b1120}
-  ::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:8px}
-  .locked-overlay{position:absolute;inset:0;background:rgba(5,8,20,.55);backdrop-filter:blur(2px);border-radius:inherit;display:flex;align-items:center;justify-content:center;}
-  .timer-bar{transition:width 1s linear;}
-  .planet-hero-glow{box-shadow:0 0 60px 12px var(--glow,rgba(56,189,248,.25));}
-</style>
-<base target="_blank">
-</head>
-<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>The Incomplete One</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --panel: #fff6e6;
+                --ink: #2a2340;
+                --accent: #d9582b;
+                --chip: #ffe2b8;
+                box-sizing: border-box;
+                color-scheme: light dark
+            }
 
-<!-- SPLASH -->
-<div id="nasa-splash-screen" class="fixed inset-0 z-50 bg-[#050814] flex flex-col items-center justify-center p-6 text-center select-none">
-  <div class="absolute inset-0 overflow-hidden pointer-events-none">
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full bg-nasa-blue/35 blur-3xl"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full bg-sky-500/15 blur-2xl"></div>
-  </div>
-  <div class="relative z-10 max-w-md w-full flex flex-col items-center space-y-6">
-    <div class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
-      <div class="absolute inset-0 rounded-full border-2 border-dashed border-sky-400/35 animate-orbit">
-        <div class="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-lg shadow-amber-400/80 -mt-1.5 mx-auto"></div>
-      </div>
-      <div class="w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-[#0B3D91] to-[#061F4A] border-4 border-sky-300/30 shadow-2xl flex flex-col items-center justify-center relative overflow-hidden animate-float">
-        <svg viewBox="0 0 120 120" class="w-full h-full absolute inset-0">
-          <path d="M 18 78 Q 60 22 104 42 Q 62 46 28 86 Z" fill="#FC3D21"/>
-          <ellipse cx="60" cy="60" rx="46" ry="16" transform="rotate(-28 60 60)" stroke="#F8FAFC" stroke-width="2.5" fill="none" stroke-dasharray="120"/>
-        </svg>
-        <span class="relative z-10 font-display font-bold text-3xl sm:text-4xl tracking-wider text-white drop-shadow">NASA</span>
-        <span class="relative z-10 text-[10px] uppercase tracking-widest text-sky-200 font-bold mt-0.5">Space Explorer</span>
-      </div>
-    </div>
-    <div class="space-y-2">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-bold tracking-wide uppercase">
-        <i class="fa-solid fa-satellite-dish animate-pulse"></i> Initializing Mission Control
-      </div>
-      <h1 class="font-display font-bold text-2xl sm:text-4xl text-white tracking-wide">Lost in the Solar System</h1>
-      <p class="text-sm text-slate-300 max-w-sm mx-auto">Explore all 8 planets, earn every badge, then complete the <strong class="text-amber-300">Final Mission</strong> to fly home!</p>
-    </div>
-    <div class="w-64 sm:w-72 space-y-2">
-      <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-slate-700/80 p-0.5">
-        <div id="splash-progress-bar" class="h-full bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 rounded-full transition-all duration-150" style="width:5%"></div>
-      </div>
-      <div class="flex items-center justify-center text-xs text-slate-400"><span id="splash-status-text">Loading Solar System Map...</span></div>
-    </div>
-  </div>
-</div>
+            @media (prefers-color-scheme: dark) {
+                :root:not([data-theme="light"]) {
+                    --panel:#161430;
+                    --ink: #efeaff;
+                    --accent: #ffb454;
+                    --chip: #2c2858;
+                    color-scheme: dark
+                }
+            }
 
-<!-- GUEST BANNER -->
-<div id="guest-banner" class="hidden bg-gradient-to-r from-indigo-950/90 via-slate-900/90 to-sky-950/90 border-b border-sky-500/25 px-4 py-2 text-xs sm:text-sm">
-  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-    <div class="flex items-center gap-2 text-sky-100">
-      <span class="w-6 h-6 rounded-full bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300"><i class="fa-solid fa-user-astronaut text-xs"></i></span>
-      <span><strong>Explorer Guest Mode:</strong> Your progress saves on this device. Sign in to keep it tied to your account.</span>
-    </div>
-    <button onclick="app.openAuthModal('register')" class="px-3.5 py-1 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-display font-bold text-xs transition shadow-sm">
-      <i class="fa-solid fa-floppy-disk mr-1"></i> Save My Progress
-    </button>
-  </div>
-</div>
+            :root[data-theme="dark"] {
+                --panel: #161430;
+                --ink: #efeaff;
+                --accent: #ffb454;
+                --chip: #2c2858;
+                color-scheme: dark
+            }
 
-<!-- HEADER -->
-<header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
-    <button onclick="app.navigate('landing')" class="flex items-center gap-3 text-left group focus:outline-none">
-      <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-nasa-blue to-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/20 border-2 border-sky-300/40 group-hover:scale-105 transition">
-        <i class="fa-solid fa-rocket text-white text-lg"></i>
-      </div>
-      <div>
-        <div class="font-display font-bold text-lg sm:text-xl tracking-wide text-white">NASA: Solar System Explorer</div>
-        <p class="text-xs text-sky-300/90 hidden sm:block">Interactive Space Adventure</p>
-      </div>
-    </button>
-    <nav class="hidden md:flex items-center gap-1.5 bg-slate-950/90 p-1.5 rounded-2xl border border-slate-800">
-      <button onclick="app.navigate('landing')" id="nav-landing" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition"><i class="fa-solid fa-house mr-1.5"></i>Home</button>
-      <button onclick="app.navigate('map')" id="nav-map" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition"><i class="fa-solid fa-earth-americas mr-1.5"></i>Space Map</button>
-      <button onclick="app.navigate('archive')" id="nav-archive" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition"><i class="fa-solid fa-layer-group mr-1.5"></i>Fact Cards <span id="nav-facts-count" class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-sky-300 text-xs">0</span></button>
-      <button onclick="app.navigate('badges')" id="nav-badges" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition"><i class="fa-solid fa-medal mr-1.5"></i>My Badges <span id="nav-badges-count" class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 text-xs">0</span></button>
-    </nav>
-    <div id="auth-header-area" class="flex items-center gap-2"></div>
-  </div>
-  <div class="md:hidden flex items-center justify-around border-t border-slate-800/80 bg-slate-950/95 py-2 px-2">
-    <button onclick="app.navigate('landing')" id="mob-nav-landing" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-house"></i><span>Home</span></button>
-    <button onclick="app.navigate('map')" id="mob-nav-map" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-earth-americas"></i><span>Space Map</span></button>
-    <button onclick="app.navigate('archive')" id="mob-nav-archive" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-layer-group"></i><span>Cards</span></button>
-    <button onclick="app.navigate('badges')" id="mob-nav-badges" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-medal"></i><span>Badges</span></button>
-  </div>
-</header>
+            html,body {
+                margin: 0;
+                height: 100%;
+                overflow: hidden;
+                background: #05060c;
+                font-family: 'Outfit',system-ui,sans-serif;
+                color: #f4f1ff
+            }
 
-<main id="app-viewport" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"></main>
+            canvas {
+                display: block;
+                position: fixed;
+                inset: 0;
+                touch-action: none
+            }
 
-<!-- A.R.I. -->
-<aside class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-  <div class="glass-panel rounded-3xl p-4 sm:p-5 border-2 border-sky-400/35 shadow-xl flex flex-col sm:flex-row items-center gap-4">
-    <div class="relative flex-shrink-0">
-      <div id="robot-avatar-box" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-sky-400 flex items-center justify-center animate-float shadow-lg shadow-sky-500/15"></div>
-      <span id="robot-mood-badge" class="absolute -bottom-1 -right-1 px-2 py-0.5 text-[10px] font-display font-bold uppercase rounded-full bg-sky-400 text-slate-950 shadow">FRIEND</span>
-    </div>
-    <div class="flex-1 text-center sm:text-left">
-      <div class="flex items-center justify-center sm:justify-start gap-2 mb-1">
-        <span class="text-sm font-display font-bold tracking-wide text-sky-300">A.R.I. — Your Robot Space Buddy</span>
-      </div>
-      <p id="robot-dialogue-text" class="text-sm sm:text-base text-white leading-relaxed">Hi Explorer! I'm A.R.I.! Let's travel across the solar system and collect all 8 planet badges!</p>
-    </div>
-    <div class="flex-shrink-0">
-      <button onclick="app.triggerRobotTip()" class="btn-tactile px-4 py-2.5 rounded-2xl bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/40 text-xs sm:text-sm font-display font-bold transition flex items-center gap-2">
-        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Space Tip!
-      </button>
-    </div>
-  </div>
-</aside>
+            #hud {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                padding: calc(12px + env(safe-area-inset-top,0px)) 14px 0;
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                pointer-events: none;
+                z-index: 3
+            }
 
-<!-- FOOTER -->
-<footer class="border-t border-slate-800/80 bg-slate-950/70 py-5 px-4 text-xs text-slate-400">
-  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-    <div class="flex items-center gap-2">
-      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-      <span><strong>NASA: Lost in the Solar System</strong> — an educational fan project</span>
-    </div>
-    <div class="flex flex-wrap items-center gap-4">
-      <button onclick="app.openHowToPlayModal()" class="hover:text-sky-300 transition font-bold"><i class="fa-regular fa-circle-question mr-1"></i>How to Play</button>
-      <button onclick="app.resetCurrentProgressPrompt()" class="hover:text-rose-400 transition"><i class="fa-solid fa-rotate-left mr-1"></i>Start Over</button>
-    </div>
-  </div>
-</footer>
+            .box {
+                background: linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
+                border: 1px solid rgba(255,255,255,.14);
+                box-shadow: 0 8px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12);
+                -webkit-backdrop-filter: blur(14px) saturate(1.3);
+                backdrop-filter: blur(14px) saturate(1.3);
+                border-radius: 16px;
+                padding: 9px 14px
+            }
 
-<!-- MODAL -->
-<div id="modal-backdrop" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
-  <div id="modal-content" class="glass-panel rounded-2xl max-w-2xl w-full p-6 border border-slate-700 shadow-2xl my-8"></div>
-</div>
+            #act {
+                font-size: 15px;
+                font-weight: 600;
+                letter-spacing: .04em
+            }
 
-<div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
-<canvas id="confetti-canvas" class="fixed inset-0 z-[60] pointer-events-none hidden"></canvas>
+            #act small {
+                display: block;
+                font-weight: 300;
+                opacity: .75;
+                font-size: 12px;
+                letter-spacing: .08em;
+                text-transform: uppercase
+            }
 
-<script>
-/* =====================================================================
-   NASA: LOST IN THE SOLAR SYSTEM — full app logic (single file)
-   ===================================================================== */
-"use strict";
+            #dist {
+                font-size: 24px;
+                font-weight: 300;
+                text-align: right;
+                font-variant-numeric: tabular-nums
+            }
 
-/* ---------------- DATA ---------------- */
-const PLANETS = [
- { id:'mercury', name:'Mercury', color:'#b8a89a', dist:0, size:15, blurb:'The speedy little world closest to the Sun.',
-   facts:[
-    "Mercury is the smallest planet in our solar system — only a little bigger than Earth's Moon!",
-    "A single day on Mercury (sunrise to sunrise) lasts 176 Earth days!",
-    "Mercury has almost no atmosphere, so its surface is covered in craters like our Moon.",
-    "Temperatures swing from -180°C at night to +430°C during the day — the biggest range of any planet!"],
-   quiz:[
-    {q:"Mercury is the ___ planet from the Sun.", opts:["first","second","third","fourth"], a:0},
-    {q:"What covers most of Mercury's surface?", opts:["Oceans","Craters","Forests","Ice cities"], a:1},
-    {q:"How long is one full day on Mercury?", opts:["24 hours","48 hours","88 hours","176 Earth days"], a:3}]},
- { id:'venus', name:'Venus', color:'#e8c46a', dist:1, size:22, blurb:'The hottest planet, wrapped in thick clouds.',
-   facts:[
-    "Venus is the hottest planet at about 465°C — hot enough to melt lead!",
-    "Venus spins backwards compared to most planets, so the Sun rises in the west!",
-    "A day on Venus is longer than its year — it rotates that slowly!",
-    "Thick clouds of sulfuric acid hide Venus's rocky surface from view."],
-   quiz:[
-    {q:"What is the hottest planet in our solar system?", opts:["Mercury","Venus","Mars","Jupiter"], a:1},
-    {q:"Venus spins in which direction?", opts:["Backwards","Very fast","It doesn't spin","Sideways only"], a:0},
-    {q:"What are Venus's clouds mostly made of?", opts:["Water","Sulfuric acid","Salt","Smoke"], a:1}]},
- { id:'earth', name:'Earth', color:'#3b82f6', dist:2, size:24, blurb:'Our home — the only known world with life.',
-   facts:[
-    "Earth is the only known planet with living things — and liquid water oceans!",
-    "About 71% of Earth's surface is covered by water.",
-    "Earth's atmosphere protects us from harmful space radiation and incoming meteors.",
-    "Our planet is the densest in the solar system, thanks to its iron core."],
-   quiz:[
-    {q:"How much of Earth's surface is covered by water?", opts:["About 25%","About 50%","About 71%","About 95%"], a:2},
-    {q:"What protects Earth from harmful space radiation?", opts:["Its rings","Its atmosphere","Its moons","Its gravity only"], a:1},
-    {q:"Earth is the only known planet with…", opts:["Mountains","Volcanoes","Living things","Ice"], a:2}]},
- { id:'mars', name:'Mars', color:'#e0653a', dist:3, size:18, blurb:'The red planet — NASA\'s robotic frontier.',
-   facts:[
-    "Mars is called the Red Planet because of iron oxide — rust — in its soil!",
-    "Mars hosts Olympus Mons, the tallest volcano in the solar system — about 3× Everest!",
-    "NASA rovers like Perseverance and Curiosity are exploring Mars right now.",
-    "Mars has two small moons named Phobos and Deimos."],
-   quiz:[
-    {q:"Why is Mars called the Red Planet?", opts:["Red clouds","Rust in its soil","Red oceans","Hot surface"], a:1},
-    {q:"Olympus Mons on Mars is a giant…", opts:["Canyon","River","Volcano","Crater lake"], a:2},
-    {q:"Name one NASA rover exploring Mars.", opts:["Voyager","Perseverance","Hubble","Pioneer"], a:1}]},
- { id:'jupiter', name:'Jupiter', color:'#d9a066', dist:4, size:36, blurb:'The giant king of planets.',
-   facts:[
-    "Jupiter is the largest planet — more than 11 times wider than Earth!",
-    "The Great Red Spot is a giant storm bigger than Earth that has raged for centuries.",
-    "Jupiter has at least 95 known moons, including the icy ocean moon Europa.",
-    "Jupiter's day is the shortest of all planets — just under 10 hours!"],
-   quiz:[
-    {q:"What is Jupiter's Great Red Spot?", opts:["A volcano","A giant storm","A desert","A moon shadow"], a:1},
-    {q:"About how many moons does Jupiter have?", opts:["1","4","Over 90","Exactly 500"], a:2},
-    {q:"How long is a day on Jupiter?", opts:["24 hours","10 hours","100 hours","1 week"], a:1}]},
- { id:'saturn', name:'Saturn', color:'#e3cf8e', dist:5, size:32, blurb:'The ringed jewel of the solar system.',
-   facts:[
-    "Saturn's famous rings are made of billions of chunks of ice and rock!",
-    "Saturn is the least dense planet — it would float if you could find a big enough ocean!",
-    "Saturn's moon Titan has lakes and rivers of liquid methane.",
-    "The rings are surprisingly thin — in places only about 10 meters thick!"],
-   quiz:[
-    {q:"What are Saturn's rings made of?", opts:["Solid metal","Ice and rock","Burning gas","Colorful dust only"], a:1},
-    {q:"Saturn is so light it would…", opts:["Sink in water","Float in water","Disappear","Turn into a star"], a:1},
-    {q:"Which Saturn moon has methane lakes?", opts:["Europa","Titan","Io","Phobos"], a:1}]},
- { id:'uranus', name:'Uranus', color:'#7dd3fc', dist:6, size:26, blurb:'The tilted ice giant rolling on its side.',
-   facts:[
-    "Uranus rotates on its side — its axis is tilted about 98 degrees!",
-    "Uranus is an ice giant made mostly of water, methane, and ammonia ices.",
-    "Methane gas in Uranus's atmosphere gives the planet its pale blue-green color.",
-    "Uranus was the first planet discovered with a telescope, in 1781."],
-   quiz:[
-    {q:"Uranus is unusual because it rotates…", opts:["Backwards","On its side","Extremely fast","Not at all"], a:1},
-    {q:"What gives Uranus its blue-green color?", opts:["Oceans","Methane","Painted clouds","Reflection from Neptune"], a:1},
-    {q:"Uranus is classified as which type of planet?", opts:["Terrestrial","Gas giant","Ice giant","Dwarf planet"], a:2}]},
- { id:'neptune', name:'Neptune', color:'#6366f1', dist:7, size:25, blurb:'The windy blue giant at the edge.',
-   facts:[
-    "Neptune has the fastest winds in the solar system — over 2,000 km/h!",
-    "Neptune is the farthest planet from the Sun — about 4.5 billion km away.",
-    "Neptune's largest moon, Triton, orbits backwards and may be a captured dwarf planet.",
-    "Neptune was discovered by math before telescopes found it — its position was predicted!"],
-   quiz:[
-    {q:"Neptune holds the record for the fastest…", opts:["Winds","Rotation","Orbit","Storms on Earth"], a:0},
-    {q:"How was Neptune first discovered?", opts:["By accident","By math prediction","By a space probe photo","Through a Moon crater"], a:1},
-    {q:"What is special about Neptune's moon Triton?", opts:["It is the biggest moon","It orbits backwards","It has rings","It is made of diamond"], a:1}]}
-];
+            #dist small {
+                display: block;
+                font-size: 11px;
+                font-weight: 400;
+                opacity: .7;
+                letter-spacing: .1em;
+                text-transform: uppercase
+            }
 
-const FINAL_QUIZ = [
- {q:"Which planet has the Great Red Spot?", opts:["Saturn","Jupiter","Mars","Venus"], a:1},
- {q:"Which planet would float in a giant ocean?", opts:["Earth","Mercury","Saturn","Neptune"], a:2},
- {q:"Which planet is the hottest?", opts:["Mercury","Venus","Mars","Jupiter"], a:1},
- {q:"About how many moons does Jupiter have?", opts:["1","4","Over 90","2"], a:2},
- {q:"Which planet rotates on its side?", opts:["Uranus","Mars","Mercury","Earth"], a:0}
-];
+            #stats {
+                position: fixed;
+                left: 14px;
+                top: calc(82px + env(safe-area-inset-top,0px));
+                z-index: 3;
+                font-size: 11px;
+                width: 150px;
+                pointer-events: none;
+                letter-spacing: .08em;
+                text-transform: uppercase
+            }
 
-const TIPS = [
- "The Sun holds 99.8% of all the mass in our solar system!",
- "A day on Venus is longer than a year on Venus. Weird, right?",
- "NASA's Voyager 1 is the most distant human-made object — over 24 billion km away!",
- "There are more stars in the universe than grains of sand on all Earth's beaches.",
- "Jupiter's moon Europa may hide a giant ocean beneath its icy shell.",
- "Saturn's rings would look see-through up close — they're mostly empty space!",
- "Sound can't travel in space — space is a near-perfect vacuum.",
- "The footprints on the Moon could last millions of years — no wind to erase them!"
-];
+            .bar {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 5px 0
+            }
 
-/* ---------------- STATE ---------------- */
-const store = {
-  get(k, d){ try{ const v = localStorage.getItem(k); return v===null? d : JSON.parse(v);}catch(e){return d;} },
-  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
-  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
-};
+            .bar i {
+                flex: 1;
+                height: 5px;
+                background: rgba(255,255,255,.14);
+                border-radius: 4px;
+                overflow: hidden
+            }
 
-const state = {
-  user: null,               // signed-in username or null (guest)
-  view: 'landing',
-  planetTab: {},            // planetId -> 'learn' | 'challenge'
-  challenge: null,          // active challenge object
-  finalChallenge: null,
-  progress: null
-};
+            .bar b {
+                display: block;
+                height: 100%;
+                width: 5%;
+                background: linear-gradient(90deg,#4fd8ff,#b8f2ff);
+                box-shadow: 0 0 10px #7fe0ff;
+                transition: width .8s
+            }
 
-function freshProgress(){ return { facts:{}, badges:{}, finalDone:false }; }
-function loadProgress(){
-  const key = state.user ? 'nse_progress_'+state.user : 'nse_guest';
-  state.progress = store.get(key, null) || freshProgress();
-}
-function saveProgress(){
-  const key = state.user ? 'nse_progress_'+state.user : 'nse_guest';
-  store.set(key, state.progress);
-  updateNavCounts();
-}
+            #hint {
+                position: fixed;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: calc(20px + env(safe-area-inset-bottom,0px));
+                z-index: 3;
+                font-size: 13px;
+                font-weight: 300;
+                letter-spacing: .08em;
+                text-align: center;
+                pointer-events: none;
+                max-width: 90vw;
+                text-shadow: 0 2px 12px #000
+            }
 
-/* ---------------- AUTH (FIXED + AUTOSAVE) ---------------- */
-const users = () => store.get('nse_users', {});
-function saveUsers(u){ store.set('nse_users', u); }
+            #toast {
+                position: fixed;
+                left: 50%;
+                top: 38%;
+                transform: translateX(-50%);
+                z-index: 5;
+                opacity: 0;
+                transition: opacity .4s;
+                pointer-events: none;
+                font-size: 17px;
+                text-align: center
+            }
 
-function hashPw(pw){
-  let h = 5381;
-  for(let i=0;i<pw.length;i++){ h = ((h<<5)+h+pw.charCodeAt(i))>>>0; }
-  return 'h'+h.toString(36);
-}
+            #mute {
+                position: fixed;
+                right: 14px;
+                bottom: calc(14px + env(safe-area-inset-bottom,0px));
+                z-index: 6;
+                border: 1px solid rgba(255,255,255,.18);
+                border-radius: 50%;
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+                background: rgba(8,10,24,.5);
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+                color: #fff;
+                cursor: pointer
+            }
 
-function signUp(name, pw){
-  name = name.trim(); pw = pw.trim();
-  if(name.length < 3) return {ok:false, msg:'Username needs at least 3 characters.'};
-  if(pw.length < 4)   return {ok:false, msg:'Password needs at least 4 characters.'};
-  const u = users();
-  if(u[name.toLowerCase()]) return {ok:false, msg:'That username is already taken. Try signing in!'};
-  u[name.toLowerCase()] = { name: name, pw: hashPw(pw), created: Date.now() };
-  saveUsers(u);
-  // migrate guest progress into the new account
-  const guest = store.get('nse_guest', null);
-  if(guest) store.set('nse_progress_'+name.toLowerCase(), guest);
-  store.set('nse_session', name.toLowerCase());
-  state.user = name.toLowerCase();
-  loadProgress();
-  saveProgress();
-  afterAuthChange('Welcome aboard, '+name+'! Your progress is now auto-saving.');
-  return {ok:true};
-}
+            #drawer {
+                position: fixed;
+                left: 50%;
+                bottom: 0;
+                width: min(660px,100%);
+                max-height: 72vh;
+                overflow-y: auto;
+                transform: translate(-50%,105%);
+                transition: transform .55s cubic-bezier(.2,.9,.3,1);
+                background: color-mix(in srgb,var(--panel) 93%,transparent);
+                -webkit-backdrop-filter: blur(20px);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255,255,255,.12);
+                border-bottom: 0;
+                color: var(--ink);
+                border-radius: 28px 28px 0 0;
+                padding: 24px 26px calc(24px + env(safe-area-inset-bottom,0px));
+                z-index: 7;
+                box-sizing: border-box;
+                box-shadow: 0 -14px 50px rgba(0,0,0,.5)
+            }
 
-function signIn(name, pw){
-  name = name.trim(); pw = pw.trim();
-  const u = users();
-  const rec = u[name.toLowerCase()];
-  if(!rec) return {ok:false, msg:'No account found with that username.'};
-  if(rec.pw !== hashPw(pw)) return {ok:false, msg:'Incorrect password. Try again!'};
-  store.set('nse_session', name.toLowerCase());
-  state.user = name.toLowerCase();
-  loadProgress();
-  saveProgress();
-  afterAuthChange('Welcome back, '+rec.name+'! Your saved mission progress loaded.');
-  return {ok:true};
-}
+            #drawer.open {
+                transform: translate(-50%,0)
+            }
 
-function signOut(){
-  // progress is already autosaved on every change — just clear the session
-  store.del('nse_session');
-  state.user = null;
-  loadProgress();
-  afterAuthChange('Signed out. You are now exploring as a Guest.');
-}
+            #drawer h2 {
+                margin: 2px 0 8px;
+                font-size: 28px;
+                font-weight: 600;
+                letter-spacing: -.01em
+            }
 
-function afterAuthChange(msg){
-  renderAuthArea();
-  const gb = document.getElementById('guest-banner');
-  if(state.user) gb.classList.add('hidden'); else gb.classList.remove('hidden');
-  setRobot(msg, state.user ? 'HAPPY' : 'FRIEND');
-  app.navigate(state.view === 'planet' ? 'map' : state.view, true);
-}
+            #dTag {
+                font-size: 12px;
+                color: var(--accent);
+                font-weight: 600;
+                letter-spacing: .14em;
+                text-transform: uppercase
+            }
 
-function renderAuthArea(){
-  const el = document.getElementById('auth-header-area');
-  if(state.user){
-    const rec = users()[state.user];
-    el.innerHTML = `
-      <div class="flex items-center gap-2 pl-1">
-        <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 font-display font-bold shadow shadow-amber-500/30" title="Signed in">${(rec?rec.name:'?')[0].toUpperCase()}</span>
-        <div class="hidden sm:block leading-tight">
-          <div class="text-xs font-display font-bold text-white">${rec?rec.name:''}</div>
-          <div class="text-[10px] text-emerald-300 font-bold"><i class="fa-solid fa-cloud-arrow-up mr-0.5"></i>Auto-saving</div>
+            .mono p {
+                font-size: 19px;
+                line-height: 1.55;
+                font-style: italic;
+                font-weight: 300;
+                margin: 8px 0
+            }
+
+            #drawer h3 {
+                font-size: 12px;
+                margin: 20px 0 4px;
+                color: var(--accent);
+                letter-spacing: .14em;
+                text-transform: uppercase
+            }
+
+            #drawer li {
+                line-height: 1.55;
+                margin: 5px 0;
+                font-size: 16px;
+                font-weight: 300
+            }
+
+            .chips span {
+                display: inline-block;
+                background: var(--chip);
+                border-radius: 20px;
+                padding: 4px 13px;
+                margin: 4px 6px 0 0;
+                font-weight: 600;
+                font-size: 13px
+            }
+
+            .btns {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+                flex-wrap: wrap
+            }
+
+            button.b {
+                font: inherit;
+                font-size: 15px;
+                font-weight: 600;
+                letter-spacing: .04em;
+                border: 0;
+                border-radius: 26px;
+                padding: 12px 26px;
+                cursor: pointer;
+                background: linear-gradient(135deg,var(--accent),#ff9a5c);
+                color: #1d1226;
+                box-shadow: 0 6px 22px rgba(255,140,60,.35);
+                transition: transform .2s,box-shadow .2s
+            }
+
+            button.b:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 28px rgba(255,140,60,.5)
+            }
+
+            button.b.alt {
+                background: var(--chip);
+                color: var(--ink);
+                box-shadow: none
+            }
+
+            .ov {
+                position: fixed;
+                inset: 0;
+                z-index: 9;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 24px;
+                background: radial-gradient(circle at 50% 40%,rgba(30,28,70,.7),rgba(3,4,12,.94));
+                -webkit-backdrop-filter: blur(6px);
+                backdrop-filter: blur(6px);
+                box-sizing: border-box
+            }
+
+            .ov>div {
+                max-width: 560px
+            }
+
+            .ov h1 {
+                font-size: clamp(34px,8vw,60px);
+                font-weight: 300;
+                letter-spacing: .12em;
+                text-transform: uppercase;
+                margin: 0 0 14px;
+                line-height: 1.05;
+                background: linear-gradient(180deg,#fff,#9fb8ff);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent
+            }
+
+            .ov p {
+                font-size: 17px;
+                font-weight: 300;
+                line-height: 1.65;
+                opacity: .92
+            }
+
+            #end {
+                display: none
+            }
+
+            .ch {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+                text-align: left
+            }
+
+            @media (prefers-reduced-motion:reduce) {
+                #drawer {
+                    transition: none
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="hud">
+            <div class="box" id="act"></div>
+            <div class="box" id="dist"></div>
         </div>
-        <button onclick="app.signOut()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-500/20 hover:text-rose-300 border border-slate-700 text-xs font-display font-bold text-slate-300 transition" title="Sign out">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
-      </div>`;
-  } else {
-    el.innerHTML = `
-      <button onclick="app.openAuthModal('login')" class="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs sm:text-sm font-display font-bold text-slate-200 transition"><i class="fa-solid fa-user mr-1.5"></i>Sign In</button>
-      <button onclick="app.openAuthModal('register')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-300 text-slate-950 text-xs sm:text-sm font-display font-bold shadow shadow-sky-500/25 transition btn-tactile"><i class="fa-solid fa-user-plus mr-1.5"></i>Sign Up</button>`;
-  }
-}
-
-/* ---------------- HELPERS ---------------- */
-const $ = s => document.querySelector(s);
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function toast(msg, type){
-  const colors = {success:'border-emerald-400/50 text-emerald-200', info:'border-sky-400/50 text-sky-200', warn:'border-amber-400/50 text-amber-200', error:'border-rose-400/50 text-rose-200'};
-  const icons  = {success:'fa-circle-check text-emerald-300', info:'fa-circle-info text-sky-300', warn:'fa-triangle-exclamation text-amber-300', error:'fa-circle-xmark text-rose-300'};
-  const t = document.createElement('div');
-  t.className = 'toast-in glass-panel border '+colors[type]+' rounded-2xl px-4 py-3 text-sm shadow-xl pointer-events-auto';
-  t.innerHTML = '<i class="fa-solid '+icons[type]+' mr-2"></i>'+msg;
-  document.getElementById('toast-container').appendChild(t);
-  setTimeout(()=>{ t.style.transition='all .4s'; t.style.opacity='0'; t.style.transform='translateX(30px)'; setTimeout(()=>t.remove(),400); }, 3200);
-}
-function setRobot(text, mood){
-  $('#robot-dialogue-text').textContent = text;
-  const b = $('#robot-mood-badge');
-  b.textContent = mood || 'FRIEND';
-  const styles = { FRIEND:'bg-sky-400 text-slate-950', HAPPY:'bg-emerald-400 text-slate-950', EXCITED:'bg-amber-400 text-slate-950', THINKING:'bg-violet-400 text-slate-950' };
-  b.className = 'absolute -bottom-1 -right-1 px-2 py-0.5 text-[10px] font-display font-bold uppercase rounded-full shadow '+(styles[mood]||styles.FRIEND);
-}
-function openModal(html){ $('#modal-content').innerHTML = html; const m = $('#modal-backdrop'); m.classList.remove('hidden'); m.classList.add('flex'); }
-function closeModal(){ const m = $('#modal-backdrop'); m.classList.add('hidden'); m.classList.remove('flex'); }
-$('#modal-backdrop').addEventListener('click', e => { if(e.target.id === 'modal-backdrop') closeModal(); });
-
-function totalFacts(){ return Object.values(state.progress.facts).reduce((a,b)=>a+b.length,0); }
-function badgeCount(){ return Object.keys(state.progress.badges).length; }
-function isUnlocked(idx){ return idx === 0 || !!state.progress.badges[PLANETS[idx-1].id]; }
-function allBadges(){ return PLANETS.every(p => state.progress.badges[p.id]); }
-
-function updateNavCounts(){
-  $('#nav-facts-count').textContent = totalFacts();
-  $('#nav-badges-count').textContent = badgeCount();
-}
-
-/* ---------------- CONFETTI ---------------- */
-function confetti(){
-  const c = document.getElementById('confetti-canvas');
-  const ctx = c.getContext('2d');
-  c.width = innerWidth; c.height = innerHeight;
-  c.classList.remove('hidden');
-  const colors = ['#38BDF8','#FBBF24','#34d399','#f472b6','#a78bfa','#FC3D21'];
-  const parts = Array.from({length:140}, () => ({
-    x: Math.random()*c.width, y: -20 - Math.random()*c.height*0.4,
-    w: 6+Math.random()*6, h: 8+Math.random()*8,
-    vy: 2+Math.random()*3, vx: -1.5+Math.random()*3,
-    rot: Math.random()*Math.PI, vr: -0.1+Math.random()*0.2,
-    color: colors[Math.floor(Math.random()*colors.length)]
-  }));
-  let frames = 0;
-  (function tick(){
-    ctx.clearRect(0,0,c.width,c.height);
-    parts.forEach(p => { p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
-      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
-      ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore(); });
-    if(++frames < 220) requestAnimationFrame(tick); else { ctx.clearRect(0,0,c.width,c.height); c.classList.add('hidden'); }
-  })();
-}
-
-/* ---------------- ROBOT AVATAR SVG ---------------- */
-const ROBOT_SVG = `<svg viewBox="0 0 100 100" class="w-3/4 h-3/4">
-  <rect x="22" y="30" width="56" height="46" rx="12" fill="#1e293b" stroke="#38BDF8" stroke-width="2.5"/>
-  <circle cx="38" cy="48" r="7" fill="#38BDF8"><animate attributeName="r" values="7;7;1;7" dur="4s" repeatCount="indefinite"/></circle>
-  <circle cx="62" cy="48" r="7" fill="#38BDF8"><animate attributeName="r" values="7;7;1;7" dur="4s" repeatCount="indefinite"/></circle>
-  <path d="M 40 62 Q 50 70 60 62" stroke="#FBBF24" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <line x1="50" y1="30" x2="50" y2="18" stroke="#38BDF8" stroke-width="2.5"/>
-  <circle cx="50" cy="14" r="5" fill="#FBBF24"><animate attributeName="opacity" values="1;.4;1" dur="1.6s" repeatCount="indefinite"/></circle>
-  <rect x="12" y="42" width="8" height="18" rx="4" fill="#38BDF8"/>
-  <rect x="80" y="42" width="8" height="18" rx="4" fill="#38BDF8"/>
-</svg>`;
-
-/* ================= VIEWS ================= */
-const viewport = () => document.getElementById('app-viewport');
-
-function setActiveNav(view){
-  ['landing','map','archive','badges'].forEach(v => {
-    const d = document.getElementById('nav-'+v); if(d) d.classList.toggle('active', v === view);
-    const m = document.getElementById('mob-nav-'+v); if(m) m.classList.toggle('text-sky-300', v === view);
-  });
-}
-
-function navigate(view, skipGuard){
-  // Leaving mid-challenge abandons it (no review, no reward)
-  if(!skipGuard && (state.challenge || state.finalChallenge) && view !== 'planet'){
-    if(confirm('Leaving now will abort the current challenge. No badge will be earned. Continue?')){
-      state.challenge = null; state.finalChallenge = null;
-    } else return;
-  }
-  state.view = view;
-  setActiveNav(view);
-  ({landing:renderLanding, map:renderMap, archive:renderArchive, badges:renderBadges})[view]();
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-/* -------- LANDING (improved background) -------- */
-let starTimer = null, shootTimer = null;
-function renderLanding(){
-  clearInterval(starTimer); clearInterval(shootTimer);
-  const nextLocked = PLANETS.find((p,i) => !state.progress.badges[p.id] && isUnlocked(i));
-  viewport().innerHTML = `
-  <section class="relative overflow-hidden rounded-3xl border border-slate-800 min-h-[520px] flex items-center mb-8">
-    <canvas id="star-canvas"></canvas>
-    <div class="nebula w-[500px] h-[500px] bg-nasa-blue/25 -top-40 -left-32"></div>
-    <div class="nebula w-[420px] h-[420px] bg-purple-600/20 -bottom-48 right-0"></div>
-    <div class="nebula w-[300px] h-[300px] bg-sky-500/15 top-10 right-1/4"></div>
-    <div class="absolute inset-0 hero-grid"></div>
-    <div id="shoot-layer" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
-
-    <div class="relative z-10 w-full px-6 sm:px-12 py-14 grid lg:grid-cols-2 gap-10 items-center">
-      <div>
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-bold tracking-wide uppercase mb-5">
-          <i class="fa-solid fa-satellite text-amber-300"></i> Official Explorer Mission
+        <div id="stats" class="box">
+            <div class="bar">
+                Move
+                <i>
+                    <b id="s0"></b>
+                </i>
+            </div>
+            <div class="bar">
+                Power
+                <i>
+                    <b id="s1"></b>
+                </i>
+            </div>
+            <div class="bar">
+                Vision
+                <i>
+                    <b id="s2"></b>
+                </i>
+            </div>
+            <div id="cnt" style="opacity:.8;margin-top:4px"></div>
         </div>
-        <h1 class="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-4">
-          Lost in the<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-cyan-300 to-amber-300">Solar System</span>
-        </h1>
-        <p class="text-slate-300 text-base sm:text-lg max-w-md mb-8">Travel planet by planet with A.R.I., collect real NASA facts, pass each planet's challenge to earn badges — then complete the <strong class="text-amber-300">Final Mission</strong> to fly back home to Earth.</p>
-        <div class="flex flex-wrap gap-3">
-          <button onclick="app.navigate('map')" class="btn-tactile px-7 py-3.5 rounded-2xl bg-gradient-to-r from-nasa-blue to-sky-500 text-white font-display font-bold shadow-xl shadow-sky-500/30 hover:brightness-110 transition">
-            <i class="fa-solid fa-earth-americas mr-2"></i>Launch Space Map
-          </button>
-          <button onclick="app.openHowToPlayModal()" class="btn-tactile px-6 py-3.5 rounded-2xl bg-slate-800/80 border border-slate-600 text-slate-200 font-display font-bold hover:border-sky-400 transition">
-            <i class="fa-regular fa-circle-question mr-2"></i>How to Play
-          </button>
+        <div id="hint"></div>
+        <div id="toast" class="box"></div>
+        <button id="mute" aria-label="Toggle sound">🔊</button>
+        <div id="drawer" role="dialog" aria-live="polite">
+            <div id="dTag"></div>
+            <h2 id="dName"></h2>
+            <div class="mono" id="dMono"></div>
+            <h3>Real NASA history</h3>
+            <ul id="dFacts"></ul>
+            <h3>Kite’s upgrades</h3>
+            <div class="chips" id="dChips"></div>
+            <div class="btns">
+                <button class="b alt" id="listen">🔈 Listen to Kite</button>
+                <button class="b" id="cont">Keep rolling</button>
+            </div>
         </div>
-        <div class="flex gap-6 mt-10">
-          <div><div class="font-display font-bold text-2xl text-sky-300">${badgeCount()}<span class="text-slate-500 text-lg">/8</span></div><div class="text-xs text-slate-400 uppercase tracking-wide">Badges</div></div>
-          <div><div class="font-display font-bold text-2xl text-amber-300">${totalFacts()}</div><div class="text-xs text-slate-400 uppercase tracking-wide">Fact Cards</div></div>
-          <div><div class="font-display font-bold text-2xl ${allBadges()?'text-emerald-300':'text-slate-400'}">${state.progress.finalDone?'<i class="fa-solid fa-circle-check"></i>':'—'}</div><div class="text-xs text-slate-400 uppercase tracking-wide">Final Mission</div></div>
+        <div class="ov" id="intro">
+            <div>
+                <h1>The Incomplete One</h1>
+                <p>Kite is a prototype robot that was left behind. It believes it is missing something. Scroll your mouse wheel up to roll forward, down to roll back, and click the glowing parts to take them with you.</p>
+                <p style="font-size:14px;opacity:.65">Sound on for the full story. Touch: drag up and down.</p>
+                <button class="b" id="go">Wake Kite</button>
+            </div>
         </div>
-      </div>
-
-      <div class="relative hidden lg:flex items-center justify-center">
-        <div class="absolute w-80 h-80 rounded-full bg-sky-500/10 blur-2xl"></div>
-        <div class="rocket-bob relative">
-          <svg viewBox="0 0 200 260" class="w-64 drop-shadow-2xl">
-            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2e8f0"/><stop offset="1" stop-color="#94a3b8"/></linearGradient></defs>
-            <path d="M100 12 C 138 48 142 120 128 168 L 72 168 C 58 120 62 48 100 12 Z" fill="url(#rg)" stroke="#38BDF8" stroke-width="2"/>
-            <circle cx="100" cy="82" r="20" fill="#0B3D91" stroke="#38BDF8" stroke-width="3"/>
-            <circle cx="93" cy="76" r="5" fill="#7dd3fc" opacity=".8"/>
-            <path d="M72 150 L 40 208 L 74 190 Z" fill="#FC3D21"/>
-            <path d="M128 150 L 160 208 L 126 190 Z" fill="#FC3D21"/>
-            <path d="M84 172 L 100 236 L 116 172 Z" fill="#FBBF24"><animate attributeName="opacity" values="1;.6;1" dur=".5s" repeatCount="indefinite"/></path>
-          </svg>
-          <div class="absolute -right-16 top-6 glass-panel rounded-2xl px-4 py-3 border-sky-400/40 text-xs">
-            <div class="text-sky-300 font-display font-bold mb-1"><i class="fa-solid fa-location-dot mr-1"></i>Next Stop</div>
-            <div class="text-white font-bold">${nextLocked ? nextLocked.name : (allBadges() ? 'FINAL MISSION!' : 'Map')}</div>
-          </div>
+        <div class="ov" id="end">
+            <div id="endBox">
+                <h1>The Choice ✨</h1>
+                <p>Kite is whole now, or close to it. A robot can carry a lot of parts. What makes it complete?</p>
+                <button class="b ch" data-c="0">🌍 Return to Earth</button>
+                <button class="b ch" data-c="1">🔴 Stay as Caretaker of the Silent Rovers</button>
+                <button class="b ch" data-c="2">🚀 Journey outward as a moving monument</button>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="grid sm:grid-cols-3 gap-4 mb-8">
-    ${[
-      ['fa-book-open-reader','text-sky-300','Learn','Read real space facts on each planet page and log them to your Fact Card collection.'],
-      ['fa-bolt','text-amber-300','Challenge','Take each planet\'s 3-question challenge. No peeking at notes during the quiz!'],
-      ['fa-flag-checkered','text-emerald-300','Final Mission','Earn all 8 badges to unlock the grand 5-question flight home!']
-    ].map(c=>`
-    <div class="glass-panel rounded-3xl p-5 border border-slate-700/70 hover:border-sky-400/40 transition">
-      <i class="fa-solid ${c[0]} ${c[1]} text-2xl mb-3"></i>
-      <h3 class="font-display font-bold text-white text-lg mb-1">${c[2]}</h3>
-      <p class="text-sm text-slate-400">${c[3]}</p>
-    </div>`).join('')}
-  </section>
-
-  <section class="glass-panel rounded-3xl p-6 border border-slate-700/70">
-    <h3 class="font-display font-bold text-white text-lg mb-4"><i class="fa-solid fa-route text-sky-300 mr-2"></i>Your Mission Route</h3>
-    <div class="flex flex-wrap items-center gap-2">
-      ${PLANETS.map((p,i)=>{
-        const done = state.progress.badges[p.id];
-        const unlocked = isUnlocked(i);
-        return `<button onclick="app.openPlanet('${p.id}')" ${unlocked?'':'disabled'} class="px-3.5 py-2 rounded-xl text-xs font-display font-bold border transition ${done?'bg-emerald-500/15 border-emerald-400/40 text-emerald-300':unlocked?'bg-sky-500/10 border-sky-400/40 text-sky-200 hover:bg-sky-500/20':'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'}">
-          ${done?'<i class="fa-solid fa-check mr-1"></i>':unlocked?'<i class="fa-solid fa-lock-open mr-1"></i>':'<i class="fa-solid fa-lock mr-1"></i>'}${p.name}
-        </button>${i<PLANETS.length-1?'<i class="fa-solid fa-chevron-right text-slate-600 text-xs"></i>':''}`;
-      }).join('')}
-      <button onclick="app.openFinalMission()" class="px-4 py-2 rounded-xl text-xs font-display font-bold border transition ${state.progress.finalDone?'bg-emerald-500/15 border-emerald-400/40 text-emerald-300':allBadges()?'bg-amber-400/20 border-amber-300/60 text-amber-200 animate-pulse hover:bg-amber-400/30':'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'}" ${allBadges()||state.progress.finalDone?'':'disabled'}>
-        <i class="fa-solid fa-rocket mr-1"></i>FINAL MISSION
-      </button>
-    </div>
-  </section>`;
-  startStarfield();
-  if(nextLocked) setRobot(`Your next destination is ${nextLocked.name}, Explorer! Head to the Space Map when you're ready.`, 'FRIEND');
-  else if(allBadges() && !state.progress.finalDone) setRobot('You earned every planet badge! The FINAL MISSION is ready — let\'s fly home!', 'EXCITED');
-}
-
-function startStarfield(){
-  const c = document.getElementById('star-canvas');
-  if(!c) return;
-  const ctx = c.getContext('2d');
-  function size(){ c.width = c.offsetWidth; c.height = c.offsetHeight; }
-  size();
-  const stars = Array.from({length:150}, () => ({
-    x: Math.random(), y: Math.random(),
-    r: 0.4 + Math.random()*1.6,
-    phase: Math.random()*Math.PI*2,
-    speed: 0.5 + Math.random()*1.5,
-    hue: Math.random() < .15 ? 45 : (Math.random() < .3 ? 200 : 220)
-  }));
-  let raf;
-  (function draw(t){
-    if(!document.body.contains(c)){ cancelAnimationFrame(raf); return; }
-    if(c.width !== c.offsetWidth) size();
-    ctx.clearRect(0,0,c.width,c.height);
-    stars.forEach(s => {
-      const tw = 0.35 + 0.65*Math.abs(Math.sin(t/1000*s.speed + s.phase));
-      ctx.beginPath();
-      ctx.arc(s.x*c.width, s.y*c.height, s.r, 0, Math.PI*2);
-      ctx.fillStyle = `hsla(${s.hue},90%,${70+tw*20}%,${tw})`;
-      ctx.fill();
-    });
-    raf = requestAnimationFrame(draw);
-  })(0);
-  starTimer = setInterval(() => {
-    const layer = document.getElementById('shoot-layer');
-    if(!layer) return clearInterval(shootTimer);
-    const s = document.createElement('div');
-    s.className = 'shooting-star';
-    s.style.left = (60 + Math.random()*35) + '%';
-    s.style.top  = (5 + Math.random()*30) + '%';
-    layer.appendChild(s);
-    setTimeout(()=>s.remove(), 1500);
-  }, 3800);
-}
-
-/* -------- MAP (improved design) -------- */
-function renderMap(){
-  clearInterval(starTimer); clearInterval(shootTimer);
-  const W = 1000, H = 620, cx = W/2, cy = H/2 + 20;
-  const orbits = PLANETS.map((p,i) => 90 + i*40);
-  let nodes = '';
-  PLANETS.forEach((p,i) => {
-    const unlocked = isUnlocked(i);
-    const done = !!state.progress.badges[p.id];
-    const angle = (-90 + i*28) * Math.PI/180;
-    const x = cx + Math.cos(angle)*orbits[i];
-    const y = cy + Math.sin(angle)*orbits[i]*0.86;
-    nodes += `
-    <g class="map-node ${unlocked?'':'locked'}" onclick="app.openPlanet('${p.id}')">
-      ${unlocked && !done ? `<circle cx="${x}" cy="${y}" r="8" class="pulse-ring"/>` : ''}
-      <circle cx="${x}" cy="${y}" r="${p.size}" fill="${p.color}" class="planet-body" opacity="${unlocked?1:.35}"/>
-      ${p.id==='saturn' ? `<ellipse cx="${x}" cy="${y}" rx="${p.size+13}" ry="5" transform="rotate(-18 ${x} ${y})" fill="none" stroke="rgba(227,207,142,.7)" stroke-width="2.5"/>`:''}
-      ${p.id==='jupiter' ? `<ellipse cx="${x-p.size*0.35}" cy="${y-p.size*0.3}" rx="${p.size*0.28}" ry="${p.size*0.18}" fill="rgba(120,60,20,.35)"/>`:''}
-      ${done ? `<g transform="translate(${x+p.size-2},${y-p.size+2})"><circle r="8" fill="#10b981"/><path d="M -3.5 0 L -1 2.5 L 4 -3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></g>`:''}
-      ${!unlocked ? `<g transform="translate(${x},${y})" opacity=".9"><rect x="-6" y="-2" width="12" height="9" rx="2" fill="#94a3b8"/><path d="M -4 -2 L -4 -5 A 4 4 0 0 1 4 -5 L 4 -2" fill="none" stroke="#94a3b8" stroke-width="2.2"/></g>`:''}
-      <text x="${x}" y="${y + p.size + 18}" class="node-label">${p.name}</text>
-      <text x="${x}" y="${y + p.size + 31}" class="node-sub">${done?'Badge earned!':unlocked?'Click to explore':'Locked'}</text>
-    </g>`;
-  });
-
-  const fx = cx + 335, fy = cy - 235;
-  const finalReady = allBadges() && !state.progress.finalDone;
-  const finalDone = state.progress.finalDone;
-
-  viewport().innerHTML = `
-  <div class="glass-panel rounded-3xl border border-slate-700/70 overflow-hidden">
-    <div class="px-6 pt-6 flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <h2 class="font-display font-bold text-2xl text-white"><i class="fa-solid fa-earth-americas text-sky-300 mr-2"></i>Solar System Map</h2>
-        <p class="text-sm text-slate-400 mt-1">Follow the path from Mercury to Neptune. Earn each badge to unlock the next world.</p>
-      </div>
-      <div class="flex items-center gap-4 text-xs text-slate-400">
-        <span><span class="inline-block w-3 h-3 rounded-full bg-emerald-400 mr-1"></span>Earned</span>
-        <span><span class="inline-block w-3 h-3 rounded-full bg-sky-400 mr-1"></span>Open</span>
-        <span><span class="inline-block w-3 h-3 rounded-full bg-slate-600 mr-1"></span>Locked</span>
-      </div>
-    </div>
-    <div class="relative">
-      <div class="nebula w-[420px] h-[420px] bg-nasa-blue/20 -top-24 -left-24"></div>
-      <div class="nebula w-[360px] h-[360px] bg-purple-600/15 bottom-0 right-0"></div>
-      <svg viewBox="0 0 ${W} ${H}" class="w-full h-auto relative z-10">
-        <defs>
-          <radialGradient id="sunG"><stop offset="0%" stop-color="#FDE68A"/><stop offset="55%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#B45309"/></radialGradient>
-          <filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        ${orbits.map(r=>`<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*0.86}" class="orbit-ring"/>`).join('')}
-        <path d="M ${cx} ${cy-orbits[0]*0.86}" ${PLANETS.map((p,i)=>{const a=(-90+i*28)*Math.PI/180;return `Q ${cx+Math.cos(a+.35)*(orbits[i]+26)} ${cy+Math.sin(a+.35)*(orbits[i]+26)*.86} ${cx+Math.cos(a)*orbits[i]} ${cy+Math.sin(a)*orbits[i]*.86}`;}).join(' ')}"
-          fill="none" stroke="rgba(56,189,248,.35)" stroke-width="2" stroke-dasharray="6 8" class="rocket-bob" style="animation:none"/>
-        <!-- Sun -->
-        <g filter="url(#glow)">
-          <circle cx="${cx}" cy="${cy}" r="34" fill="url(#sunG)"/>
-          <circle cx="${cx}" cy="${cy}" r="46" fill="none" stroke="rgba(251,191,36,.35)" stroke-width="1.5"><animate attributeName="r" values="42;52;42" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;.15;.6" dur="4s" repeatCount="indefinite"/></circle>
-        </g>
-        <text x="${cx}" y="${cy+58}" class="node-label" style="font-size:13px;fill:#FDE68A;">The Sun</text>
-        ${nodes}
-        <!-- FINAL MISSION NODE (always clickable) -->
-        <g class="map-node" onclick="app.openFinalMission()">
-          ${finalReady ? `<circle cx="${fx}" cy="${fy}" r="10" class="pulse-ring"/>`:''}
-          <rect x="${fx-46}" y="${fy-40}" rx="18" width="92" height="80" fill="${finalDone?'rgba(16,185,129,.12)':finalReady?'rgba(251,191,36,.12)':'rgba(30,41,59,.6)'}" stroke="${finalDone?'#34d399':finalReady?'#FBBF24':'#475569'}" stroke-width="2"/>
-          <text x="${fx}" y="${fy-18}" text-anchor="middle" style="font-family:Fredoka;font-size:10px;font-weight:700;letter-spacing:1px" fill="${finalDone?'#34d399':finalReady?'#FDE68A':'#64748b'}">FINAL</text>
-          <g class="${finalReady||finalDone?'rocket-bob':''}" opacity="${finalReady||finalDone?1:.5}">
-            <path transform="translate(${fx-10},${fy-12}) scale(.22)" d="M100 12 C 138 48 142 120 128 168 L 72 168 C 58 120 62 48 100 12 Z" fill="${finalDone?'#34d399':'#e2e8f0'}"/>
-          </g>
-          <text x="${fx}" y="${fy+30}" text-anchor="middle" style="font-family:Fredoka;font-size:11px;font-weight:700" fill="${finalDone?'#34d399':finalReady?'#fff':'#64748b'}">${finalDone?'COMPLETE!':finalReady?'READY!':badgeCount()+'/8 badges'}</text>
-        </g>
-      </svg>
-    </div>
-    <div class="px-6 pb-6 flex flex-wrap gap-2">
-      ${PLANETS.map((p,i)=>`
-      <button onclick="app.openPlanet('${p.id}')" ${isUnlocked(i)?'':'disabled'} class="px-3 py-1.5 rounded-xl text-[11px] font-display font-bold border transition ${state.progress.badges[p.id]?'bg-emerald-500/10 border-emerald-400/30 text-emerald-300':isUnlocked(i)?'bg-slate-800/80 border-slate-600 text-slate-300 hover:border-sky-400':'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'}">
-        ${state.progress.badges[p.id]?'<i class="fa-solid fa-check mr-1"></i>':isUnlocked(i)?'':'<i class="fa-solid fa-lock mr-1"></i>'}${p.name}
-      </button>`).join('')}
-    </div>
-  </div>`;
-  setRobot(finalReady ? 'All badges earned! Tap the FINAL MISSION node in the corner — let\'s go home!' : 'Tap any glowing planet to travel there. Locked planets open after you earn the previous badge.', finalReady?'EXCITED':'FRIEND');
-}
-
-/* -------- PLANET VIEW: LEARN + CHALLENGE -------- */
-function openPlanet(id){
-  const idx = PLANETS.findIndex(p=>p.id===id);
-  if(idx === -1) return;
-  if(!isUnlocked(idx)){
-    toast('That planet is still locked — earn the previous badge first!', 'warn');
-    setRobot('Hold on, Explorer! Finish the planet before it to unlock this destination.', 'THINKING');
-    return;
-  }
-  state.view = 'planet';
-  renderPlanet(id);
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function renderPlanet(id){
-  const p = PLANETS.find(x=>x.id===id);
-  const idx = PLANETS.indexOf(p);
-  const earned = !!state.progress.badges[p.id];
-  const myFacts = state.progress.facts[p.id] || [];
-  const tab = state.challenge && state.challenge.planetId === id ? 'challenge' : (state.planetTab[id] || 'learn');
-  const ch = state.challenge;
-  const isFinal = false;
-
-  let body = '';
-  if(tab === 'learn'){
-    body = `
-    <div class="grid sm:grid-cols-2 gap-4">
-      ${p.facts.map((f,i)=>{
-        const logged = myFacts.includes(i);
-        return `<div class="fact-card relative glass-panel rounded-2xl p-4 border ${logged?'border-emerald-400/40':'border-slate-700/70'}">
-          <div class="flex items-start gap-3">
-            <span class="w-8 h-8 rounded-xl flex-shrink-0 flex items-center justify-center font-display font-bold text-sm ${logged?'bg-emerald-500/20 text-emerald-300':'bg-sky-500/15 text-sky-300'}">${logged?'<i class="fa-solid fa-check"></i>':'#'+(i+1)}</span>
-            <p class="text-sm text-slate-200 leading-relaxed">${esc(f)}</p>
-          </div>
-          ${logged
-            ? `<div class="mt-3 text-[11px] font-bold text-emerald-300"><i class="fa-solid fa-layer-group mr-1"></i>In your Fact Cards</div>`
-            : `<button onclick="app.logFact('${p.id}',${i})" class="btn-tactile mt-3 px-3 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-200 text-xs font-display font-bold transition"><i class="fa-solid fa-plus mr-1"></i>Log Fact Card</button>`}
-        </div>`;
-      }).join('')}
-    </div>
-    <div class="mt-6 glass-panel rounded-2xl p-4 border border-amber-400/30 flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <div class="font-display font-bold text-white"><i class="fa-solid fa-bolt text-amber-300 mr-1.5"></i>${p.name} Challenge</div>
-        <p class="text-xs text-slate-400 mt-0.5">3 questions · 15 seconds each · answer at least 2 correctly to earn the badge. <strong class="text-amber-300">No reviewing facts during the challenge!</strong></p>
-      </div>
-      ${earned
-        ? `<span class="px-4 py-2 rounded-xl bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 font-display font-bold text-sm"><i class="fa-solid fa-medal mr-1.5"></i>Badge Earned</span>`
-        : `<button onclick="app.startChallenge('${p.id}')" class="btn-tactile px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 font-display font-bold text-sm shadow shadow-amber-500/30"><i class="fa-solid fa-play mr-1.5"></i>Start Challenge</button>`}
-    </div>`;
-  } else if(ch && ch.planetId === id){
-    // CHALLENGE MODE — facts hidden, review blocked
-    const q = p.quiz[ch.idx];
-    const answered = ch.answered;
-    body = `
-    <div class="max-w-xl mx-auto">
-      <div class="glass-panel rounded-3xl p-6 border-2 border-amber-400/50">
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center gap-1.5">
-            ${p.quiz.map((_,i)=>`<span class="w-3 h-3 rounded-full ${i<ch.idx?'bg-emerald-400':i===ch.idx?'bg-amber-400 animate-pulse':'bg-slate-700'}"></span>`).join('')}
-          </div>
-          <span class="text-xs font-display font-bold text-amber-300"><i class="fa-solid fa-stopwatch mr-1"></i><span id="ch-timer-text">${ch.timeLeft}s</span></span>
-        </div>
-        <div class="w-full h-2 bg-slate-800 rounded-full mb-5 overflow-hidden"><div id="ch-timer-bar" class="timer-bar h-full bg-gradient-to-r from-amber-400 to-orange-400 rounded-full" style="width:${(ch.timeLeft/15)*100}%"></div></div>
-        <div class="mb-2 text-[11px] font-bold uppercase tracking-widest text-amber-300"><i class="fa-solid fa-eye-slash mr-1"></i>Review mode disabled during challenge</div>
-        <h3 class="font-display font-bold text-white text-lg mb-5">${esc(q.q)}</h3>
-        <div class="space-y-2.5">
-          ${q.opts.map((o,i)=>`
-          <button onclick="app.answerChallenge(${i})" ${answered!==null?'disabled':''}
-            class="quiz-opt w-full text-left px-4 py-3 rounded-2xl border border-slate-600 bg-slate-900/70 text-sm text-slate-100 font-semibold ${answered!==null ? (i===q.a?'correct':(i===answered?'wrong':'')) : ''}">
-            <span class="inline-flex w-6 h-6 rounded-lg bg-slate-700 text-xs items-center justify-center mr-2 font-display font-bold">${'ABCD'[i]}</span>${esc(o)}
-            ${answered!==null && i===q.a?'<i class="fa-solid fa-check ml-2 text-emerald-300"></i>':''}
-            ${answered!==null && i===answered && i!==q.a?'<i class="fa-solid fa-xmark ml-2 text-rose-300"></i>':''}
-          </button>`).join('')}
-        </div>
-      </div>
-    </div>`;
-  }
-
-  viewport().innerHTML = `
-  <div class="relative overflow-hidden rounded-3xl border border-slate-800 mb-6">
-    <div class="nebula w-[380px] h-[380px] -top-32 -right-24" style="background:${p.color}33"></div>
-    <div class="nebula w-[280px] h-[280px] -bottom-28 -left-16 bg-nasa-blue/25"></div>
-    <div class="absolute inset-0 hero-grid"></div>
-    <div class="relative z-10 px-6 sm:px-10 py-8 flex flex-wrap items-center gap-6">
-      <div class="planet-hero-glow relative w-24 h-24 sm:w-28 sm:h-28 rounded-full flex-shrink-0" style="--glow:${p.color}55;background:radial-gradient(circle at 35% 35%, ${p.color}, #0f172a 85%);">
-        ${p.id==='saturn'?`<div class="absolute inset-x-[-22px] top-1/2 -translate-y-1/2 h-4 rounded-[50%] border-2" style="border-color:${p.color}aa;transform:translateY(-50%) rotate(-16deg)"></div>`:''}
-      </div>
-      <div class="flex-1 min-w-[220px]">
-        <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
-          <button onclick="app.navigate('map')" class="hover:text-sky-300 transition font-bold"><i class="fa-solid fa-arrow-left mr-1"></i>Map</button>
-          <span>·</span><span>Planet ${idx+1} of 8</span>
-          ${earned?'<span class="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 font-bold text-[10px] uppercase tracking-wide">Badge Earned</span>':''}
-        </div>
-        <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">${p.name}</h2>
-        <p class="text-slate-300 text-sm mt-1">${p.blurb}</p>
-      </div>
-      <div class="flex gap-2">
-        <button id="tab-learn-btn" onclick="app.setPlanetTab('${p.id}','learn')"
-          class="btn-tactile px-5 py-2.5 rounded-2xl font-display font-bold text-sm border transition ${tab==='learn' ? 'bg-sky-500 text-white border-sky-400 shadow shadow-sky-500/30' : (ch && ch.planetId===id) ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed' : 'bg-slate-800/80 border-slate-600 text-slate-300 hover:border-sky-400'}"
-          ${(ch && ch.planetId===id) ? 'disabled title="Finish or quit the challenge first"' : ''}>
-          <i class="fa-solid fa-book-open mr-1.5"></i>Learn
-        </button>
-        <button id="tab-challenge-btn" onclick="app.setPlanetTab('${p.id}','challenge')"
-          class="btn-tactile px-5 py-2.5 rounded-2xl font-display font-bold text-sm border transition ${tab==='challenge' ? 'bg-amber-400 text-slate-950 border-amber-300 shadow shadow-amber-500/30' : 'bg-slate-800/80 border-slate-600 text-slate-300 hover:border-amber-400'}">
-          <i class="fa-solid fa-bolt mr-1.5"></i>Challenge
-        </button>
-      </div>
-    </div>
-  </div>
-  ${body}`;
-
-  if(ch && ch.planetId === id) startChallengeTimer();
-  else setRobot(earned ? `You've mastered ${p.name}! Feel free to re-read facts or review your badge collection.` : `Welcome to ${p.name}! Read the facts in Learn mode, then jump into the Challenge. But remember — no reviewing during the quiz!`, earned?'HAPPY':'FRIEND');
-}
-
-function setPlanetTab(id, tab){
-  if(state.challenge && state.challenge.planetId === id){
-    toast('You cannot review during a challenge! Finish it or refresh the page to quit.', 'warn');
-    setRobot('No peeking at notes during the challenge, Explorer! Answer from memory.', 'THINKING');
-    return;
-  }
-  state.planetTab[id] = tab;
-  renderPlanet(id);
-}
-
-function logFact(pid, i){
-  if(!state.progress.facts[pid]) state.progress.facts[pid] = [];
-  if(!state.progress.facts[pid].includes(i)){
-    state.progress.facts[pid].push(i);
-    saveProgress();   // autosave
-    toast('Fact card saved to your collection!', 'success');
-    setRobot('Great logging! Every fact you save is stored in your Fact Cards archive automatically.', 'HAPPY');
-  }
-  renderPlanet(pid);
-}
-
-/* -------- CHALLENGE ENGINE -------- */
-let chInterval = null;
-function startChallenge(pid){
-  state.challenge = { planetId: pid, idx: 0, correct: 0, answered: null, timeLeft: 15 };
-  state.planetTab[pid] = 'challenge';
-  renderPlanet(pid);
-  setRobot('Challenge started! No fact-reviewing allowed — trust your brain. Good luck!', 'EXCITED');
-}
-function startChallengeTimer(){
-  clearInterval(chInterval);
-  chInterval = setInterval(() => {
-    const ch = state.challenge;
-    if(!ch){ clearInterval(chInterval); return; }
-    ch.timeLeft--;
-    const bar = document.getElementById('ch-timer-bar');
-    const txt = document.getElementById('ch-timer-text');
-    if(bar) bar.style.width = Math.max(0,(ch.timeLeft/15)*100)+'%';
-    if(txt) txt.textContent = Math.max(0,ch.timeLeft)+'s';
-    if(ch.timeLeft <= 0){
-      clearInterval(chInterval);
-      answerChallenge(null); // time out = wrong
-    }
-  }, 1000);
-}
-function answerChallenge(i){
-  const ch = state.challenge;
-  if(!ch || ch.answered !== null) return;
-  const p = PLANETS.find(x=>x.id===ch.planetId);
-  const q = p.quiz[ch.idx];
-  ch.answered = i;
-  if(i === q.a){
-    ch.correct++;
-    toast('Correct!', 'success');
-  } else {
-    toast(i===null ? "Time's up! The answer was: "+q.opts[q.a] : 'Not quite! Answer: '+q.opts[q.a], 'error');
-  }
-  renderPlanet(ch.planetId);
-  setTimeout(() => {
-    if(!state.challenge) return;
-    if(ch.idx + 1 < p.quiz.length){
-      state.challenge = { planetId: ch.planetId, idx: ch.idx+1, correct: ch.correct, answered: null, timeLeft: 15 };
-      renderPlanet(ch.planetId);
-    } else {
-      finishChallenge(ch.planetId, ch.correct, p.quiz.length);
-    }
-  }, 1400);
-}
-function finishChallenge(pid, correct, total){
-  clearInterval(chInterval);
-  const p = PLANETS.find(x=>x.id===pid);
-  const passed = correct >= 2;
-  state.challenge = null;
-  if(passed && !state.progress.badges[pid]){
-    state.progress.badges[pid] = { at: Date.now() };
-    saveProgress();  // autosave
-    confetti();
-    toast(p.name+' Badge earned!', 'success');
-    const next = PLANETS.find((x,i)=>!state.progress.badges[x.id] && isUnlocked(i));
-    setRobot(`MISSION COMPLETE! You earned the ${p.name} badge! ${next ? next.name+' is now unlocked!' : 'That was the last planet badge!'}`, 'EXCITED');
-  } else if(passed){
-    setRobot(`You passed the ${p.name} challenge again — nice!`, 'HAPPY');
-  } else {
-    setRobot(`You got ${correct}/${total}. You need 2 correct answers. Study the facts in Learn mode and try again!`, 'FRIEND');
-  }
-  openModal(`
-    <div class="text-center py-4">
-      <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 ${passed?'bg-emerald-500/15 border-2 border-emerald-400/50':'bg-rose-500/15 border-2 border-rose-400/50'}">
-        <i class="fa-solid ${passed?'fa-medal text-emerald-300':'fa-rotate-left text-rose-300'} text-3xl"></i>
-      </div>
-      <h3 class="font-display font-bold text-2xl text-white mb-1">${passed ? (state.progress.badges[pid] ? 'Challenge Passed!' : 'Badge Earned!') : 'Challenge Failed'}</h3>
-      <p class="text-slate-300 text-sm mb-1">You answered <strong class="${passed?'text-emerald-300':'text-rose-300'}">${correct} of ${total}</strong> correctly.</p>
-      <p class="text-slate-400 text-sm mb-6">${passed ? (allBadges() ? 'Every planet badge earned — the FINAL MISSION awaits on the map!' : 'Next planet unlocked on the Space Map!') : 'Review the facts in Learn mode, then try the challenge again.'}</p>
-      <div class="flex justify-center gap-3">
-        <button onclick="app.closeModal()" class="btn-tactile px-6 py-2.5 rounded-xl bg-slate-800 border border-slate-600 text-white font-display font-bold text-sm">Stay Here</button>
-        <button onclick="app.closeModal(); app.navigate('map')" class="btn-tactile px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-300 text-slate-950 font-display font-bold text-sm"><i class="fa-solid fa-earth-americas mr-1.5"></i>Space Map</button>
-      </div>
-    </div>`);
-  state.planetTab[pid] = 'learn';
-  renderPlanet(pid);
-}
-
-/* -------- FINAL MISSION (FIXED — always responds) -------- */
-function openFinalMission(){
-  if(state.progress.finalDone){
-    openModal(`
-      <div class="text-center py-4">
-        <div class="w-20 h-20 mx-auto rounded-full bg-emerald-500/15 border-2 border-emerald-400/50 flex items-center justify-center mb-4"><i class="fa-solid fa-trophy text-emerald-300 text-3xl"></i></div>
-        <h3 class="font-display font-bold text-2xl text-white mb-2">Mission Complete!</h3>
-        <p class="text-slate-300 text-sm mb-6">You already completed the Final Mission, Explorer. Earth is glad to have you back — but the solar system is always open for another tour!</p>
-        <button onclick="app.closeModal()" class="btn-tactile px-6 py-2.5 rounded-xl bg-slate-800 border border-slate-600 text-white font-display font-bold text-sm">Close</button>
-      </div>`);
-    return;
-  }
-  if(!allBadges()){
-    const remaining = PLANETS.filter(p=>!state.progress.badges[p.id]).map(p=>p.name).join(', ');
-    openModal(`
-      <div class="text-center py-4">
-        <div class="w-20 h-20 mx-auto rounded-full bg-slate-800 border-2 border-slate-600 flex items-center justify-center mb-4"><i class="fa-solid fa-lock text-slate-400 text-2xl"></i></div>
-        <h3 class="font-display font-bold text-2xl text-white mb-2">Final Mission Locked</h3>
-        <p class="text-slate-300 text-sm mb-2">Mission Control needs you to earn all 8 planet badges before the flight home.</p>
-        <p class="text-amber-300 text-sm font-bold mb-6">Badges: ${badgeCount()}/8 · Still needed: ${remaining}</p>
-        <div class="flex justify-center gap-3">
-          <button onclick="app.closeModal()" class="btn-tactile px-6 py-2.5 rounded-xl bg-slate-800 border border-slate-600 text-white font-display font-bold text-sm">Close</button>
-          <button onclick="app.closeModal(); app.navigate('map')" class="btn-tactile px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-300 text-slate-950 font-display font-bold text-sm"><i class="fa-solid fa-earth-americas mr-1.5"></i>Back to Map</button>
-        </div>
-      </div>`);
-    setRobot(`The Final Mission unlocks after all 8 badges — you're at ${badgeCount()}. Keep exploring!`, 'THINKING');
-    return;
-  }
-  // Ready — start the grand quiz
-  openModal(`
-    <div class="text-center py-4">
-      <div class="w-20 h-20 mx-auto rounded-full bg-amber-400/15 border-2 border-amber-300/60 flex items-center justify-center mb-4 rocket-bob"><i class="fa-solid fa-rocket text-amber-300 text-3xl"></i></div>
-      <h3 class="font-display font-bold text-2xl text-white mb-2">FINAL MISSION: Fly Home</h3>
-      <p class="text-slate-300 text-sm mb-6">All 8 badges confirmed! Answer <strong class="text-amber-300">at least 4 of 5</strong> questions to pilot your ship back to Earth. No fact reviewing — this is the real test!</p>
-      <div class="flex justify-center gap-3">
-        <button onclick="app.closeModal()" class="btn-tactile px-6 py-2.5 rounded-xl bg-slate-800 border border-slate-600 text-white font-display font-bold text-sm">Not Yet</button>
-        <button onclick="app.closeModal(); app.startFinalChallenge()" class="btn-tactile px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 font-display font-bold text-sm shadow shadow-amber-500/30"><i class="fa-solid fa-play mr-1.5"></i>Launch Final Mission</button>
-      </div>
-    </div>`);
-  setRobot('This is it, Explorer — the Final Mission! All your training comes down to this. You can do it!', 'EXCITED');
-}
-
-let finalInterval = null;
-function startFinalChallenge(){
-  state.finalChallenge = { idx: 0, correct: 0, answered: null, timeLeft: 20 };
-  state.view = 'final';
-  renderFinalChallenge();
-}
-function renderFinalChallenge(){
-  const fc = state.finalChallenge;
-  const q = FINAL_QUIZ[fc.idx];
-  const answered = fc.answered;
-  viewport().innerHTML = `
-  <div class="max-w-xl mx-auto">
-    <div class="glass-panel rounded-3xl p-6 border-2 border-amber-400/60 relative overflow-hidden">
-      <div class="nebula w-72 h-72 bg-amber-500/10 -top-20 -right-20"></div>
-      <div class="relative z-10">
-        <div class="text-center mb-5">
-          <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/15 border border-amber-300/40 text-amber-300 text-xs font-bold uppercase tracking-wide mb-2"><i class="fa-solid fa-rocket"></i>Final Mission</span>
-          <h2 class="font-display font-bold text-2xl text-white">Flight Home — Question ${fc.idx+1} of ${FINAL_QUIZ.length}</h2>
-        </div>
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-1.5">
-            ${FINAL_QUIZ.map((_,i)=>`<span class="w-3 h-3 rounded-full ${i<fc.idx?'bg-emerald-400':i===fc.idx?'bg-amber-400 animate-pulse':'bg-slate-700'}"></span>`).join('')}
-          </div>
-          <span class="text-xs font-display font-bold text-amber-300"><i class="fa-solid fa-stopwatch mr-1"></i><span id="ch-timer-text">${fc.timeLeft}s</span></span>
-        </div>
-        <div class="w-full h-2 bg-slate-800 rounded-full mb-5 overflow-hidden"><div id="ch-timer-bar" class="timer-bar h-full bg-gradient-to-r from-amber-400 to-orange-400 rounded-full" style="width:${(fc.timeLeft/20)*100}%"></div></div>
-        <h3 class="font-display font-bold text-white text-lg mb-5">${esc(q.q)}</h3>
-        <div class="space-y-2.5">
-          ${q.opts.map((o,i)=>`
-          <button onclick="app.answerFinal(${i})" ${answered!==null?'disabled':''}
-            class="quiz-opt w-full text-left px-4 py-3 rounded-2xl border border-slate-600 bg-slate-900/70 text-sm text-slate-100 font-semibold ${answered!==null ? (i===q.a?'correct':(i===answered?'wrong':'')) : ''}">
-            <span class="inline-flex w-6 h-6 rounded-lg bg-slate-700 text-xs items-center justify-center mr-2 font-display font-bold">${'ABCD'[i]}</span>${esc(o)}
-          </button>`).join('')}
-        </div>
-      </div>
-    </div>
-  </div>`;
-  clearInterval(finalInterval);
-  finalInterval = setInterval(() => {
-    const f = state.finalChallenge;
-    if(!f){ clearInterval(finalInterval); return; }
-    f.timeLeft--;
-    const bar = document.getElementById('ch-timer-bar');
-    const txt = document.getElementById('ch-timer-text');
-    if(bar) bar.style.width = Math.max(0,(f.timeLeft/20)*100)+'%';
-    if(txt) txt.textContent = Math.max(0,f.timeLeft)+'s';
-    if(f.timeLeft <= 0){ clearInterval(finalInterval); answerFinal(null); }
-  }, 1000);
-}
-function answerFinal(i){
-  const fc = state.finalChallenge;
-  if(!fc || fc.answered !== null) return;
-  const q = FINAL_QUIZ[fc.idx];
-  fc.answered = i;
-  if(i === q.a){ fc.correct++; toast('Correct!', 'success'); }
-  else toast(i===null ? "Time's up! Answer: "+q.opts[q.a] : 'Not quite! Answer: '+q.opts[q.a], 'error');
-  renderFinalChallenge();
-  setTimeout(() => {
-    if(!state.finalChallenge) return;
-    if(fc.idx + 1 < FINAL_QUIZ.length){
-      state.finalChallenge = { idx: fc.idx+1, correct: fc.correct, answered: null, timeLeft: 20 };
-      renderFinalChallenge();
-    } else finishFinal(fc.correct);
-  }, 1400);
-}
-function finishFinal(correct){
-  clearInterval(finalInterval);
-  state.finalChallenge = null;
-  const passed = correct >= 4;
-  if(passed){
-    state.progress.finalDone = true;
-    saveProgress();
-    confetti(); setTimeout(confetti, 600);
-    setRobot('WE\'RE HOME! Mission accomplished, Explorer! You are officially a Master of the Solar System!', 'EXCITED');
-  } else {
-    setRobot(`${correct}/5 — so close! Study your fact cards and come back. Earth isn't going anywhere!`, 'FRIEND');
-  }
-  openModal(`
-    <div class="text-center py-4">
-      <div class="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-4 ${passed?'bg-amber-400/15 border-2 border-amber-300/60':'bg-rose-500/15 border-2 border-rose-400/50'}">
-        <i class="fa-solid ${passed?'fa-trophy text-amber-300':'fa-rotate-left text-rose-300'} text-4xl"></i>
-      </div>
-      <h3 class="font-display font-bold text-3xl text-white mb-1">${passed ? 'YOU MADE IT HOME!' : 'Mission Failed'}</h3>
-      <p class="text-slate-300 text-sm mb-2">Final Mission score: <strong class="${passed?'text-emerald-300':'text-rose-300'}">${correct} / ${FINAL_QUIZ.length}</strong></p>
-      ${passed
-        ? `<p class="text-amber-300 font-display font-bold mb-1"><i class="fa-solid fa-medal mr-1"></i>UNLOCKED: Solar System Master</p>
-           <p class="text-slate-400 text-sm mb-6">Mission Control confirms a perfect flight. Welcome back to Earth, Explorer!</p>
-           <button onclick="app.closeModal(); app.navigate('badges')" class="btn-tactile px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 font-display font-bold"><i class="fa-solid fa-medal mr-1.5"></i>View My Badges</button>`
-        : `<p class="text-slate-400 text-sm mb-6">You need at least 4 correct answers to fly home. Review the Fact Cards and try the Final Mission again!</p>
-           <div class="flex justify-center gap-3">
-             <button onclick="app.closeModal(); app.navigate('archive')" class="btn-tactile px-6 py-2.5 rounded-xl bg-slate-800 border border-slate-600 text-white font-display font-bold text-sm"><i class="fa-solid fa-layer-group mr-1.5"></i>Study Fact Cards</button>
-             <button onclick="app.closeModal(); app.navigate('map')" class="btn-tactile px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-300 text-slate-950 font-display font-bold text-sm">Back to Map</button>
-           </div>`}
-    </div>`);
-}
-
-/* -------- ARCHIVE -------- */
-function renderArchive(){
-  clearInterval(starTimer); clearInterval(shootTimer);
-  const entries = [];
-  PLANETS.forEach(p => (state.progress.facts[p.id]||[]).forEach(i => entries.push({p, i, text:p.facts[i]})));
-  viewport().innerHTML = `
-  <div class="glass-panel rounded-3xl border border-slate-700/70 p-6 sm:p-8">
-    <h2 class="font-display font-bold text-2xl text-white mb-1"><i class="fa-solid fa-layer-group text-sky-300 mr-2"></i>Fact Card Archive</h2>
-    <p class="text-sm text-slate-400 mb-6">Every fact you log on a planet's Learn page lands here automatically. ${entries.length === 0 ? 'Go explore a planet and log your first fact!' : ''}</p>
-    ${entries.length === 0 ? `
-    <div class="text-center py-14">
-      <i class="fa-solid fa-box-open text-slate-600 text-5xl mb-4"></i>
-      <p class="text-slate-400 font-display font-bold mb-4">No fact cards yet</p>
-      <button onclick="app.navigate('map')" class="btn-tactile px-6 py-3 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-300 text-slate-950 font-display font-bold"><i class="fa-solid fa-earth-americas mr-2"></i>Open Space Map</button>
-    </div>` : `
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      ${entries.map(e=>`
-      <div class="fact-card glass-panel rounded-2xl p-4 border border-slate-700/70">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="w-5 h-5 rounded-full" style="background:${e.p.color}"></span>
-          <span class="font-display font-bold text-sm text-white">${e.p.name}</span>
-          <span class="ml-auto text-[10px] text-sky-300 font-bold uppercase tracking-wide">Fact #${e.i+1}</span>
-        </div>
-        <p class="text-sm text-slate-300 leading-relaxed">${esc(e.text)}</p>
-      </div>`).join('')}
-    </div>`}
-  </div>`;
-  setRobot(entries.length ? `Your archive holds ${entries.length} fact cards. Great collection, Explorer!` : 'Your fact archive is empty — visit a planet in Learn mode and log some facts!', 'FRIEND');
-}
-
-/* -------- BADGES -------- */
-function renderBadges(){
-  clearInterval(starTimer); clearInterval(shootTimer);
-  viewport().innerHTML = `
-  <div class="glass-panel rounded-3xl border border-slate-700/70 p-6 sm:p-8">
-    <h2 class="font-display font-bold text-2xl text-white mb-1"><i class="fa-solid fa-medal text-amber-300 mr-2"></i>My Badges</h2>
-    <p class="text-sm text-slate-400 mb-6">Earn a planet's badge by passing its challenge. Collect all 8 to unlock the Final Mission.</p>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-      ${PLANETS.map((p,i)=>{
-        const earned = !!state.progress.badges[p.id];
-        const unlocked = isUnlocked(i);
-        return `<button onclick="app.openPlanet('${p.id}')" ${unlocked?'':'disabled'} class="fact-card relative glass-panel rounded-3xl p-5 border text-center ${earned?'border-amber-400/50':'border-slate-700/70'} ${unlocked?'':'cursor-not-allowed'}">
-          ${!unlocked?`<div class="locked-overlay rounded-3xl"><i class="fa-solid fa-lock text-slate-400 text-xl"></i></div>`:''}
-          <div class="w-16 h-16 mx-auto rounded-full mb-3 ${earned?'planet-hero-glow':''}" style="${earned?`--glow:${p.color}66;`:'filter:grayscale(1);opacity:.4;'}background:radial-gradient(circle at 35% 35%, ${p.color}, #0f172a 85%);"></div>
-          <div class="font-display font-bold text-sm ${earned?'text-white':'text-slate-400'}">${p.name}</div>
-          <div class="text-[11px] mt-1 font-bold ${earned?'text-amber-300':'text-slate-500'}">${earned?'<i class="fa-solid fa-medal mr-1"></i>Earned':'Not yet'}</div>
-        </button>`;
-      }).join('')}
-      <button onclick="app.openFinalMission()" class="fact-card relative glass-panel rounded-3xl p-5 border text-center ${state.progress.finalDone?'border-amber-300/70 bg-amber-400/10':allBadges()?'border-amber-400/40':'border-slate-700/70'}">
-        <div class="w-16 h-16 mx-auto rounded-full mb-3 flex items-center justify-center ${state.progress.finalDone?'bg-amber-400/20':'bg-slate-800'}" style="${state.progress.finalDone?'--glow:rgba(251,191,36,.5)':''}">
-          <i class="fa-solid ${state.progress.finalDone?'fa-trophy text-amber-300':'fa-rocket text-slate-400'} text-2xl"></i>
-        </div>
-        <div class="font-display font-bold text-sm ${state.progress.finalDone?'text-amber-300':'text-slate-400'}">Solar System Master</div>
-        <div class="text-[11px] mt-1 font-bold ${state.progress.finalDone?'text-amber-300':'text-slate-500'}">${state.progress.finalDone?'<i class="fa-solid fa-check mr-1"></i>Complete':badgeCount()+'/8 badges needed'}</div>
-      </button>
-    </div>
-  </div>`;
-  setRobot(badgeCount()===8 ? (state.progress.finalDone ? 'Look at all those badges — including the FINAL trophy. You\'re a legend, Explorer!' : 'Every planet badge is yours! The Final Mission awaits on the map!') : `You have ${badgeCount()} of 8 planet badges. The next planet is waiting on the map!`, badgeCount()>=4?'EXCITED':'FRIEND');
-}
-
-/* -------- MODALS: AUTH / HOW TO PLAY -------- */
-function openAuthModal(mode){
-  const isReg = mode === 'register';
-  openModal(`
-  <div class="max-w-md mx-auto">
-    <div class="text-center mb-5">
-      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-nasa-blue to-sky-500 border-2 border-sky-300/40 flex items-center justify-center mb-3"><i class="fa-solid fa-user-astronaut text-white text-2xl"></i></div>
-      <h3 class="font-display font-bold text-2xl text-white">${isReg?'Create Explorer Account':'Welcome Back, Explorer'}</h3>
-      <p class="text-sm text-slate-400 mt-1">${isReg?'Sign up and your progress auto-saves to your account.':'Sign in to load your saved mission progress.'}</p>
-    </div>
-    <div class="flex bg-slate-900 rounded-2xl p-1 mb-5 border border-slate-700">
-      <button onclick="app.openAuthModal('login')" class="flex-1 py-2 rounded-xl text-sm font-display font-bold transition ${!isReg?'bg-sky-500 text-white':'text-slate-400 hover:text-white'}">Sign In</button>
-      <button onclick="app.openAuthModal('register')" class="flex-1 py-2 rounded-xl text-sm font-display font-bold transition ${isReg?'bg-sky-500 text-white':'text-slate-400 hover:text-white'}">Sign Up</button>
-    </div>
-    <div id="auth-error" class="hidden mb-3 px-4 py-2.5 rounded-xl bg-rose-500/15 border border-rose-400/40 text-rose-200 text-sm"></div>
-    <div class="space-y-3">
-      <div>
-        <label class="text-xs font-display font-bold text-slate-300 uppercase tracking-wide">Username</label>
-        <input id="auth-name" type="text" maxlength="20" placeholder="e.g. StarRider" class="mt-1 w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-600 text-white text-sm focus:outline-none focus:border-sky-400 placeholder:text-slate-600">
-      </div>
-      <div>
-        <label class="text-xs font-display font-bold text-slate-300 uppercase tracking-wide">Password</label>
-        <input id="auth-pw" type="password" maxlength="40" placeholder="••••••••" class="mt-1 w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-600 text-white text-sm focus:outline-none focus:border-sky-400 placeholder:text-slate-600">
-      </div>
-      <button onclick="app.submitAuth('${mode}')" class="btn-tactile w-full py-3 rounded-xl bg-gradient-to-r ${isReg?'from-emerald-400 to-teal-300':'from-sky-400 to-cyan-300'} text-slate-950 font-display font-bold shadow-lg">
-        <i class="fa-solid ${isReg?'fa-user-plus':'fa-right-to-bracket'} mr-2"></i>${isReg?'Create Account & Start':'Sign In to My Mission'}
-      </button>
-    </div>
-    <p class="text-[11px] text-slate-500 text-center mt-4"><i class="fa-solid fa-shield-halved mr-1"></i>Progress is stored locally in your browser and auto-saves after every action.</p>
-  </div>`);
-  setTimeout(()=>{ const n = document.getElementById('auth-name'); if(n) n.focus(); }, 50);
-}
-function submitAuth(mode){
-  const name = document.getElementById('auth-name').value;
-  const pw = document.getElementById('auth-pw').value;
-  const res = mode === 'register' ? signUp(name, pw) : signIn(name, pw);
-  const err = document.getElementById('auth-error');
-  if(!res.ok){
-    err.textContent = res.msg;
-    err.classList.remove('hidden');
-  } else {
-    closeModal();
-    toast(mode === 'register' ? 'Account created — autosave is ON!' : 'Signed in — progress loaded!', 'success');
-    app.navigate('landing');
-  }
-}
-
-function openHowToPlayModal(){
-  openModal(`
-  <div>
-    <div class="text-center mb-5">
-      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center mb-3"><i class="fa-solid fa-circle-question text-slate-950 text-2xl"></i></div>
-      <h3 class="font-display font-bold text-2xl text-white">How to Play</h3>
-    </div>
-    <ol class="space-y-3 text-sm text-slate-200">
-      <li class="flex gap-3"><span class="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-300 flex items-center justify-center font-display font-bold flex-shrink-0">1</span><span>Open the <strong>Space Map</strong> and click Mercury (the first planet) to travel there.</span></li>
-      <li class="flex gap-3"><span class="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-300 flex items-center justify-center font-display font-bold flex-shrink-0">2</span><span>In <strong>Learn mode</strong>, read the facts and press <em>Log Fact Card</em> to save them to your archive.</span></li>
-      <li class="flex gap-3"><span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center font-display font-bold flex-shrink-0">3</span><span>Switch to <strong>Challenge mode</strong> and answer 3 questions. Facts are hidden during the quiz — no reviewing! Get 2+ right to earn the planet badge.</span></li>
-      <li class="flex gap-3"><span class="w-7 h-7 rounded-lg bg-emerald-400/20 text-emerald-300 flex items-center justify-center font-display font-bold flex-shrink-0">4</span><span>Each badge unlocks the next planet along the route, from Mercury all the way to Neptune.</span></li>
-      <li class="flex gap-3"><span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center font-display font-bold flex-shrink-0">5</span><span>Earn all <strong>8 badges</strong> to unlock the <strong>Final Mission</strong> — answer 4 of 5 questions to fly home and become a Solar System Master!</span></li>
-    </ol>
-    <button onclick="app.closeModal()" class="btn-tactile w-full mt-6 py-3 rounded-xl bg-slate-800 border border-slate-600 text-white font-display font-bold">Got It!</button>
-  </div>`);
-}
-
-function resetCurrentProgressPrompt(){
-  if(confirm('This will erase ALL badges and fact cards for the current profile. Are you sure?')){
-    state.progress = freshProgress();
-    saveProgress();
-    state.challenge = null; state.finalChallenge = null;
-    navigate('landing', true);
-    toast('Mission progress reset. A fresh journey begins!', 'info');
-    setRobot('Clean slate! The whole solar system is waiting for you again.', 'FRIEND');
-  }
-}
-
-function triggerRobotTip(){
-  const t = TIPS[Math.floor(Math.random()*TIPS.length)];
-  setRobot(t, 'HAPPY');
-}
-
-/* ---------------- PUBLIC APP API ---------------- */
-const app = {
-  navigate, openPlanet, setPlanetTab, logFact,
-  startChallenge, answerChallenge,
-  openFinalMission, startFinalChallenge, answerFinal,
-  openAuthModal, submitAuth, signOut,
-  openHowToPlayModal, resetCurrentProgressPrompt, triggerRobotTip,
-  closeModal
-};
-window.app = app;
-
-/* ---------------- INIT ---------------- */
-(function init(){
-  document.getElementById('robot-avatar-box').innerHTML = ROBOT_SVG;
-  // restore session
-  const sess = store.get('nse_session', null);
-  if(sess && users()[sess]){ state.user = sess; }
-  loadProgress();
-  renderAuthArea();
-  const gb = document.getElementById('guest-banner');
-  if(state.user) gb.classList.add('hidden'); else gb.classList.remove('hidden');
-  updateNavCounts();
-
-  // splash
-  const bar = document.getElementById('splash-progress-bar');
-  const st  = document.getElementById('splash-status-text');
-  const msgs = ['Loading Solar System Map...','Waking up A.R.I....','Calibrating thrusters...','Ready for launch!'];
-  let pct = 5, mi = 0;
-  const iv = setInterval(() => {
-    pct = Math.min(100, pct + 9 + Math.random()*10);
-    bar.style.width = pct + '%';
-    if(pct > (mi+1)*25 && mi < msgs.length-1){ mi++; st.textContent = msgs[mi]; }
-    if(pct >= 100){
-      clearInterval(iv);
-      st.textContent = 'Ready for launch!';
-      setTimeout(() => {
-        const sp = document.getElementById('nasa-splash-screen');
-        sp.style.transition = 'opacity .6s'; sp.style.opacity = '0';
-        setTimeout(() => sp.remove(), 650);
-        navigate('landing', true);
-        setRobot(state.user
-          ? `Welcome back, ${users()[state.user].name}! You have ${badgeCount()} badges and ${totalFacts()} fact cards saved. Autosave is ON!`
-          : 'Hi Explorer! I\'m A.R.I.! Create an account anytime and I\'ll auto-save all your badges and fact cards!', 'FRIEND');
-      }, 450);
-    }
-  }, 160);
-})();
-</script>
-</body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+        <script>
+            const $ = id => document.getElementById(id)
+              , N_STAT = ['Mobility', 'Power', 'Vision'];
+            const ITEMS = [{
+                id: 'wheels',
+                s: 30,
+                name: 'Apollo 15 Rover Wheels',
+                st: [20, 0, 0],
+                mono: ['I have stood still for so long that I forgot I had a direction.', 'These wheels are woven from wire. They remember rolling, and when I touch them, so do I.'],
+                facts: ['In 1971, Apollo 15 was the first mission to carry a Lunar Roving Vehicle to the Moon.', 'Its wheels were woven from zinc-coated steel wire, because rubber tires would not survive the cold and dust.', 'The Apollo 15 astronauts drove about 28 kilometers across the Moon.']
+            }, {
+                id: 'antenna',
+                s: 60,
+                name: 'Rover High-Gain Antenna',
+                st: [0, 5, 10],
+                mono: ['It looks like an umbrella for listening. When I point it at the sky I feel a hum.', 'Maybe someone is still out there to hear me. I will aim it at Earth anyway.'],
+                facts: ['The Apollo rover carried a fold-out mesh dish that pointed at Earth.', 'It helped send television pictures of the Moon to people back home.', 'From the Moon’s near side, Earth hangs in nearly the same patch of sky, which makes aiming easier.']
+            }, {
+                id: 'foil',
+                s: 90,
+                name: 'Gold Thermal Blanket',
+                st: [4, 14, 0],
+                mono: ['It is warm. I did not know I was cold until I was not.', 'It crinkles like the wrapping on a present nobody ever opened.'],
+                facts: ['Apollo spacecraft were wrapped in thin layered films called multilayer insulation.', 'The shiny gold color often came from a thin plastic film called Kapton.', 'On the Moon, sunlight can heat the ground past 100 °C while shadows fall far below freezing.']
+            }, {
+                id: 'mariner',
+                s: 150,
+                name: 'Mariner 10 Solar Arrays',
+                st: [0, 22, 0],
+                mono: ['Wings! They are not for flying. They are for drinking sunlight, but I feel lighter anyway.', 'The dark out here is very wide. I will carry a little light with me.'],
+                facts: ['Mariner 10 launched in 1973 and flew past Venus, then Mercury.', 'It was the first spacecraft to use a gravity assist, borrowing a planet’s pull to change course.', 'Two solar panels turned sunlight into electricity for the whole trip.']
+            }, {
+                id: 'boom',
+                s: 180,
+                name: 'Voyager Magnetometer Boom',
+                st: [0, 0, 14],
+                mono: ['A long thin arm that feels the invisible. I never knew empty space was so full of feelings.', 'I reach out ahead of myself now. It is a brave way to be.'],
+                facts: ['Voyager 1 and 2 launched in 1977.', 'Their magnetometers sat on a boom about 13 meters long, away from the spacecraft’s own magnetic noise.', 'Voyager 1 entered interstellar space in 2012, the first human-made object to get there.']
+            }, {
+                id: 'viking',
+                s: 240,
+                name: 'Viking 1 Lander Electronics',
+                st: [10, 10, 0],
+                mono: ['There is a brain in this box that thought very carefully, a very long time ago.', 'I will think carefully too. I am still learning how.'],
+                facts: ['Viking 1 landed on Mars on July 20, 1976.', 'It kept working on the surface for more than six years, until 1982.', 'The Viking landers sent back some of the first clear pictures from the surface of Mars.']
+            }, {
+                id: 'pancam',
+                s: 270,
+                name: 'Rover Pancam Eyes',
+                st: [0, 0, 20],
+                mono: ['Two eyes. At last I can see the whole sky, and it is rust and gold.', 'The rovers looked at everything with such patience. I want to learn that.'],
+                facts: ['Spirit and Opportunity landed in January 2004 carrying panoramic cameras called Pancams.', 'They were built to last 90 Martian days, but Opportunity kept going for about 14 years, until 2018.', 'Pancams took pictures through color filters to help scientists study rocks and soil.']
+            }, {
+                id: 'seismo',
+                s: 300,
+                name: 'InSight Seismometer',
+                st: [6, 4, 6],
+                mono: ['It listens to the planet’s heartbeat. Mars is not silent after all. It only whispers from deep below.', 'Now I can feel the quiet. I think quiet is a way of being close.'],
+                facts: ['NASA’s InSight lander touched down on Mars in 2018.', 'Its seismometer, called SEIS, detected hundreds of marsquakes.', 'The mission ended in December 2022, when dust covered its solar panels.']
+            }];
+            const N = ITEMS.length
+              , END = 335
+              , RANGE = 6.5;
+            const ACTS = [['🌕 Act 1 · The Moon', 'First parts, first memories'], ['🌌 Act 2 · Crossing the Dark', 'Deep space vacuum'], ['🔴 Act 3 · Mars Scrapyard', 'The graveyard of rovers'], ['✨ Act 4 · The Choice', 'Defining completeness']];
+            const ENDS = [['Earth', 'Kite rolls home with its scavenged parts, each one a borrowed memory. It is never again the lonely prototype. It becomes the first robot to carry the whole story back.'], ['The Scrapyard', 'Kite stays on Mars and visits each silent rover in turn, dusting off panels and telling them how far they went. Someone has to remember them. Kite is exactly the right size for it.'], ['The Dark', 'Kite sets out toward the stars, a monument that moves, wearing the shapes of those who came before. It was never missing a part. It was missing a purpose, and now it has one.']];
+            const stats = [5, 5, 5];
+            let got = 0
+              , s = 0
+              , vel = 0
+              , dv = 0
+              , started = false
+              , open = false
+              , ended = false
+              , muted = false
+              , mood = 0;
+            /* ---------- three setup ---------- */
+            const R = new THREE.WebGLRenderer({
+                antialias: true,
+                powerPreference: 'high-performance'
+            });
+            R.setPixelRatio(Math.min(devicePixelRatio, 2));
+            R.setSize(innerWidth, innerHeight);
+            R.shadowMap.enabled = true;
+            R.shadowMap.type = THREE.PCFSoftShadowMap;
+            document.body.prepend(R.domElement);
+            const scene = new THREE.Scene()
+              , cam = new THREE.PerspectiveCamera(58,innerWidth / innerHeight,.1,600);
+            scene.fog = new THREE.Fog(0,22,150);
+            scene.background = new THREE.Color();
+            const hemi = new THREE.HemisphereLight(0xffffff,0x444455,.6)
+              , sun = new THREE.DirectionalLight(0xffffff,1);
+            sun.position.set(-9, 8, 5);
+            scene.add(hemi, sun, sun.target);
+            const E = [{
+                bg: 0x05060c,
+                g: 0x9a9aa2,
+                l: 1.25,
+                p: 0xd0d0d8,
+                r: 0x7a7a82
+            }, {
+                bg: 0x0a0424,
+                g: 0x140c38,
+                l: .7,
+                p: 0xa8b0ff,
+                r: 0x2c2060
+            }, {
+                bg: 0xc98a60,
+                g: 0xb85a34,
+                l: 1.35,
+                p: 0xe8a878,
+                r: 0x84402a
+            }];
+            E.forEach(e => ['bg', 'g', 'p', 'r'].forEach(k => e[k] = new THREE.Color(e[k])));
+            const tc = new THREE.Color();
+            let w = [1, 0, 0];
+            const mix = k => {
+                tc.setRGB(0, 0, 0);
+                E.forEach( (e, i) => {
+                    tc.r += e[k].r * w[i];
+                    tc.g += e[k].g * w[i];
+                    tc.b += e[k].b * w[i]
+                }
+                );
+                return tc
+            }
+            ;
+            const sm = x => {
+                x = Math.max(0, Math.min(1, x));
+                return x * x * (3 - 2 * x)
+            }
+            ;
+            const M = (c, o={}) => new THREE.MeshStandardMaterial(Object.assign({
+                color: c,
+                roughness: .55,
+                metalness: .35
+            }, o));
+            const mesh = (g, m, x=0, y=0, z=0) => {
+                const o = new THREE.Mesh(g,m);
+                o.position.set(x, y, z);
+                return o
+            }
+            ;
+            /* procedural textures */
+            const tex = (W, H, f) => {
+                const c = document.createElement('canvas');
+                c.width = W;
+                c.height = H;
+                f(c.getContext('2d'), W, H);
+                const t = new THREE.CanvasTexture(c);
+                t.anisotropy = 8;
+                return t
+            }
+            ;
+            const radial = (x, W, st) => {
+                const g = x.createRadialGradient(W / 2, W / 2, 0, W / 2, W / 2, W / 2);
+                st.forEach(a => g.addColorStop(a[0], a[1]));
+                x.fillStyle = g;
+                x.fillRect(0, 0, W, W)
+            }
+            ;
+            const glowT = tex(128, 128, (x) => radial(x, 128, [[0, 'rgba(255,255,255,1)'], [.2, 'rgba(255,255,255,.4)'], [1, 'rgba(255,255,255,0)']]));
+            const dotT = tex(64, 64, (x) => radial(x, 64, [[0, 'rgba(255,255,255,1)'], [.5, 'rgba(255,255,255,.7)'], [1, 'rgba(255,255,255,0)']]));
+            const reg = tex(512, 512, (x, W, H) => {
+                x.fillStyle = '#e8e8e8';
+                x.fillRect(0, 0, W, H);
+                for (let i = 0; i < 16000; i++) {
+                    const v = 110 + Math.random() * 145 | 0;
+                    x.fillStyle = `rgba(${v},${v},${v},${.12 + Math.random() * .3})`;
+                    x.beginPath();
+                    x.arc(Math.random() * W, Math.random() * H, Math.random() * 2.2, 0, 6.283);
+                    x.fill()
+                }
+                for (let i = 0; i < 45; i++) {
+                    const a = Math.random() * W
+                      , b = Math.random() * H
+                      , r = 18 + Math.random() * 50;
+                    const g = x.createRadialGradient(a, b, 0, a, b, r);
+                    g.addColorStop(0, 'rgba(80,80,80,.22)');
+                    g.addColorStop(1, 'rgba(80,80,80,0)');
+                    x.fillStyle = g;
+                    x.fillRect(a - r, b - r, r * 2, r * 2)
+                }
+            }
+            );
+            reg.wrapS = reg.wrapT = THREE.RepeatWrapping;
+            reg.repeat.set(50, 130);
+            /* terrain: flat driving corridor, rolling dunes and craters outside */
+            const CR = [[-18, -40, 7], [22, -120, 9], [-26, -200, 8], [19, -290, 10], [-14, -330, 6], [28, -30, 5]];
+            const H = (x, z) => {
+                const k = sm((Math.abs(x) - 5) / 16)
+                  , n = Math.sin(x * .21 + z * .13) * Math.cos(z * .17 - x * .09) + .5 * Math.sin(x * .47 + z * .51) + .25 * Math.sin(x * 1.1 - z * .9);
+                let h = k * (2.2 + n * 1.7) + (1 - k) * n * .04;
+                for (const c of CR) {
+                    const d = Math.hypot(x - c[0], z - c[1]) / c[2];
+                    h += d < 1 ? -(1 - d * d) * 2.2 : d < 2.4 ? Math.exp(-(d - 1) * (d - 1) * 14) * 1 : 0
+                }
+                return h
+            }
+            ;
+            const groundM = M(0x888888, {
+                roughness: 1,
+                metalness: 0,
+                map: reg,
+                bumpMap: reg,
+                bumpScale: 2.2,
+                vertexColors: true
+            });
+            const tg = new THREE.PlaneGeometry(200,420,160,336);
+            tg.rotateX(-Math.PI / 2);
+            tg.translate(0, 0, -170);
+            {
+                const p = tg.attributes.position
+                  , c = new Float32Array(p.count * 3);
+                for (let i = 0; i < p.count; i++) {
+                    const x = p.getX(i)
+                      , z = p.getZ(i)
+                      , h = H(x, z)
+                      , v = Math.max(.55, Math.min(1, .82 + h * .07 + Math.sin(x * .3 + z * .2) * .08));
+                    p.setY(i, h);
+                    c[i * 3] = c[i * 3 + 1] = c[i * 3 + 2] = v
+                }
+                tg.setAttribute('color', new THREE.BufferAttribute(c,3));
+                tg.computeVertexNormals()
+            }
+            const terrain = mesh(tg, groundM);
+            terrain.receiveShadow = true;
+            scene.add(terrain);
+            const rockM = M(0x666666, {
+                roughness: 1,
+                metalness: 0,
+                flatShading: true
+            });
+            const rg = [0, 1, 2, 3].map( () => {
+                const g = new THREE.IcosahedronGeometry(1,2)
+                  , p = g.attributes.position
+                  , a = Math.random() * 9;
+                for (let i = 0; i < p.count; i++) {
+                    const x = p.getX(i)
+                      , y = p.getY(i)
+                      , z = p.getZ(i)
+                      , n = 1 + .22 * Math.sin(x * 3 + a) * Math.cos(z * 3.3 + a) + .1 * Math.sin(y * 7 + x * 5);
+                    p.setXYZ(i, x * n, y * n, z * n)
+                }
+                g.computeVertexNormals();
+                return g
+            }
+            );
+            for (let i = 0; i < 190; i++) {
+                const x = (Math.random() < .5 ? -1 : 1) * (4 + Math.random() * 34)
+                  , z = -Math.random() * 380 + 20
+                  , r = mesh(rg[i % 4], rockM, x, H(x, z) + .1, z);
+                r.scale.set(.4 + Math.random() * 1.7, .3 + Math.random() * 1.1, .4 + Math.random() * 1.7);
+                r.rotation.y = Math.random() * 6;
+                r.castShadow = r.receiveShadow = true;
+                scene.add(r)
+            }
+            for (let i = 0; i < 64; i++) {
+                const x = (i % 2 ? 1 : -1) * (48 + Math.random() * 48)
+                  , z = 20 - Math.random() * 400
+                  , r = 8 + Math.random() * 14
+                  , hh = r * (.8 + Math.random() * .9)
+                  , m = mesh(new THREE.ConeGeometry(r,hh,6), rockM, x, H(x, z) + hh * .4, z);
+                m.rotation.y = Math.random() * 6;
+                scene.add(m)
+            }
+            const starG = new THREE.BufferGeometry()
+              , sp = [];
+            for (let i = 0; i < 1800; i++) {
+                const a = Math.random() * 6.283
+                  , b = Math.acos(Math.random() * .95)
+                  , r = 400;
+                sp.push(r * Math.sin(b) * Math.cos(a), r * Math.cos(b), r * Math.sin(b) * Math.sin(a))
+            }
+            starG.setAttribute('position', new THREE.Float32BufferAttribute(sp,3));
+            const starM = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 1.5,
+                sizeAttenuation: false,
+                transparent: true,
+                fog: false
+            })
+              , stars = new THREE.Points(starG,starM);
+            scene.add(stars);
+            /* particles */
+            const PN = 520
+              , pg = new THREE.BufferGeometry()
+              , pa = new Float32Array(PN * 3);
+            for (let i = 0; i < PN * 3; i += 3) {
+                pa[i] = (Math.random() - .5) * 40;
+                pa[i + 1] = Math.random() * 12;
+                pa[i + 2] = (Math.random() - .5) * 40
+            }
+            pg.setAttribute('position', new THREE.BufferAttribute(pa,3));
+            const pm = new THREE.PointsMaterial({
+                size: .12,
+                map: dotT,
+                transparent: true,
+                opacity: .8,
+                depthWrite: false
+            })
+              , parts = new THREE.Points(pg,pm);
+            parts.frustumCulled = false;
+            scene.add(parts);
+            /* sky objects: Earth, Sun, nebula */
+            const spr = (c, sc, op) => {
+                const q = new THREE.Sprite(new THREE.SpriteMaterial({
+                    map: glowT,
+                    color: c,
+                    transparent: true,
+                    opacity: op,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false,
+                    fog: false
+                }));
+                q.scale.set(sc, sc, 1);
+                scene.add(q);
+                return q
+            }
+            ;
+            const earthT = tex(512, 256, (x, W, H) => {
+                const g = x.createLinearGradient(0, 0, 0, H);
+                g.addColorStop(0, '#1a4f9e');
+                g.addColorStop(.5, '#1d63b8');
+                g.addColorStop(1, '#16468f');
+                x.fillStyle = g;
+                x.fillRect(0, 0, W, H);
+                for (let i = 0; i < 34; i++) {
+                    const a = Math.random() * W
+                      , b = H * (.2 + Math.random() * .6);
+                    for (let j = 0; j < 14; j++) {
+                        x.fillStyle = Math.random() < .35 ? '#b09a62' : '#3f8a4a';
+                        x.beginPath();
+                        x.arc(a + (Math.random() - .5) * 60, b + (Math.random() - .5) * 34, 4 + Math.random() * 13, 0, 6.283);
+                        x.fill()
+                    }
+                }
+                x.fillStyle = 'rgba(255,255,255,.9)';
+                x.fillRect(0, 0, W, 9);
+                x.fillRect(0, H - 11, W, 11);
+                for (let i = 0; i < 90; i++) {
+                    x.fillStyle = 'rgba(255,255,255,.3)';
+                    x.beginPath();
+                    x.ellipse(Math.random() * W, Math.random() * H, 10 + Math.random() * 34, 2 + Math.random() * 7, 0, 0, 6.283);
+                    x.fill()
+                }
+            }
+            );
+            const earth = mesh(new THREE.SphereGeometry(8,48,32), new THREE.MeshStandardMaterial({
+                map: earthT,
+                roughness: 1,
+                metalness: 0,
+                fog: false,
+                transparent: true,
+                emissive: 0x0c2244,
+                emissiveIntensity: .5
+            }));
+            scene.add(earth);
+            const atm = spr(0x5aa0ff, 36, .5)
+              , sunS = spr(0xffffff, 80, 1)
+              , sunC = spr(0xffffff, 16, 1);
+            const neb = [[0xff4fa3, -130, 40, 300], [0x4f7cff, 120, 75, 340], [0x8a4fff, -30, 115, 360], [0x2fe0c0, 160, -5, 240], [0xff9a4f, -180, 10, 260]].map(a => {
+                const q = spr(a[0], a[3], 0);
+                q.userData.o = a;
+                return q
+            }
+            );
+            const itemGlow = spr(0x9fe8ff, 5, .6);
+            /* ---------- part builders ---------- */
+            function wheel() {
+                const g = new THREE.Group()
+                  , r = mesh(new THREE.TorusGeometry(.5,.12,10,24), M(0x9aa0a8, {
+                    roughness: .4,
+                    metalness: .8
+                }));
+                r.rotation.y = Math.PI / 2;
+                g.add(r);
+                const h = mesh(new THREE.CylinderGeometry(.14,.14,.2,12), M(0xe0b040, {
+                    metalness: .9,
+                    roughness: .3
+                }));
+                h.rotation.z = Math.PI / 2;
+                g.add(h);
+                for (let i = 0; i < 4; i++) {
+                    const q = mesh(new THREE.BoxGeometry(.06,.9,.06), M(0x7a808a));
+                    q.rotation.x = i * Math.PI / 4;
+                    g.add(q)
+                }
+                return g
+            }
+            const B = {
+                wheels() {
+                    const g = new THREE.Group()
+                      , a = wheel()
+                      , b = wheel();
+                    a.position.x = -.8;
+                    b.position.x = .8;
+                    g.add(a, b);
+                    return g
+                },
+                antenna() {
+                    const g = new THREE.Group();
+                    g.add(mesh(new THREE.CylinderGeometry(.04,.04,.9,8), M(0xcccccc), 0, .45, 0));
+                    const d = mesh(new THREE.SphereGeometry(.6,24,10,0,6.283,0,1.1), M(0xe8e8f0, {
+                        side: THREE.DoubleSide,
+                        roughness: .35,
+                        metalness: .7
+                    }), 0, 1, 0);
+                    d.rotation.x = -.5;
+                    g.add(d);
+                    return g
+                },
+                foil() {
+                    return mesh(new THREE.IcosahedronGeometry(.8,2), M(0xf0b429, {
+                        metalness: 1,
+                        roughness: .18,
+                        flatShading: true
+                    }))
+                },
+                mariner() {
+                    const g = new THREE.Group();
+                    g.add(mesh(new THREE.CylinderGeometry(.35,.35,.4,10), M(0xd8c060, {
+                        metalness: .8,
+                        roughness: .3
+                    })));
+                    for (const x of [-1, 1]) {
+                        g.add(mesh(new THREE.BoxGeometry(1.7,.05,.95), M(0x1f3f9a, {
+                            metalness: .85,
+                            roughness: .2
+                        }), x * 1.2, 0, 0))
+                    }
+                    return g
+                },
+                boom() {
+                    const g = new THREE.Group()
+                      , c = mesh(new THREE.CylinderGeometry(.04,.04,2.4,8), M(0xbbbbbb));
+                    c.rotation.x = Math.PI / 2;
+                    g.add(c, mesh(new THREE.BoxGeometry(.3,.3,.3), M(0xffd166), 0, 0, -1.2), mesh(new THREE.SphereGeometry(.18,14,10), M(0x9fe8ff, {
+                        emissive: 0x226688
+                    }), 0, 0, 1.2));
+                    return g
+                },
+                viking() {
+                    const g = new THREE.Group();
+                    g.add(mesh(new THREE.BoxGeometry(1,.5,1), M(0xd6d0c4), 0, .6, 0), mesh(new THREE.BoxGeometry(.5,.3,.5), M(0x6a7280), 0, 1, 0));
+                    for (const [x,z] of [[-.5, -.5], [.5, -.5], [0, .6]])
+                        g.add(mesh(new THREE.CylinderGeometry(.04,.04,.7,6), M(0x999999), x, .3, z));
+                    return g
+                },
+                pancam() {
+                    const g = new THREE.Group();
+                    g.add(mesh(new THREE.BoxGeometry(.9,.4,.3), M(0x444a5a)));
+                    for (const x of [-.2, .2]) {
+                        const l = mesh(new THREE.CylinderGeometry(.12,.12,.2,16), M(0x88e8ff, {
+                            emissive: 0x33c0ff,
+                            emissiveIntensity: 1
+                        }), x, 0, -.2);
+                        l.rotation.x = Math.PI / 2;
+                        g.add(l)
+                    }
+                    return g
+                },
+                seismo() {
+                    const g = new THREE.Group();
+                    g.add(mesh(new THREE.CylinderGeometry(.5,.55,.12,20), M(0x777777)), mesh(new THREE.SphereGeometry(.45,20,10,0,6.283,0,1.57), M(0xc8ccd4, {
+                        metalness: .9,
+                        roughness: .25
+                    }), 0, .06, 0));
+                    return g
+                }
+            };
+            /* ---------- Kite ---------- */
+            const kite = new THREE.Group();
+            scene.add(kite);
+            const glowM = new THREE.MeshBasicMaterial({
+                color: 0x7fe8ff
+            })
+              , dk = M(0x262c3a, {
+                roughness: .35,
+                metalness: .8
+            });
+            kite.add(mesh(new THREE.BoxGeometry(.9,.5,1.3), M(0xc3cbd8, {
+                roughness: .35,
+                metalness: .6
+            }), 0, .55, 0));
+            kite.add(mesh(new THREE.BoxGeometry(.5,.14,.04), glowM, 0, .6, -.66), mesh(new THREE.BoxGeometry(.02,.07,.9), glowM, -.46, .55, 0), mesh(new THREE.BoxGeometry(.02,.07,.9), glowM, .46, .55, 0), mesh(new THREE.CylinderGeometry(.13,.17,.2,14), dk, 0, .85, 0));
+            const kl = new THREE.PointLight(0x7fe8ff,.9,7);
+            kl.position.set(0, .5, -1);
+            kite.add(kl);
+            const head = new THREE.Group();
+            head.position.set(0, 1.05, -.15);
+            kite.add(head);
+            head.add(mesh(new THREE.BoxGeometry(.6,.42,.5), M(0xdfe5ee, {
+                roughness: .3,
+                metalness: .5
+            })), mesh(new THREE.BoxGeometry(.5,.26,.05), dk, 0, 0, -.255));
+            const dimEye = mesh(new THREE.SphereGeometry(.09,16,10), new THREE.MeshBasicMaterial({
+                color: 0x4fd8ff
+            }), 0, 0, -.28);
+            head.add(dimEye);
+            const skids = new THREE.Group();
+            skids.add(mesh(new THREE.BoxGeometry(.12,.1,1.3), M(0x555a66), -.4, .15, 0), mesh(new THREE.BoxGeometry(.12,.1,1.3), M(0x555a66), .4, .15, 0));
+            kite.add(skids);
+            const SL = {
+                antenna: [.28, .8, .45, .5],
+                mariner: [0, .82, .1, .7],
+                boom: [.25, .55, -1.3, .55],
+                viking: [-.2, .95, .35, .42],
+                pancam: [0, 1.06, -.4, .55],
+                seismo: [0, .3, .72, .5]
+            };
+            const FS = {
+                wheels: .55,
+                foil: .6
+            }
+              , KP = {}
+              , wheelSet = [];
+            ITEMS.forEach(it => {
+                let p;
+                if (it.id === 'wheels') {
+                    p = new THREE.Group();
+                    for (const x of [-.62, .62])
+                        for (const z of [-.5, .5]) {
+                            const q = wheel();
+                            q.scale.setScalar(.55);
+                            q.position.set(x, .3, z);
+                            p.add(q);
+                            wheelSet.push(q)
+                        }
+                } else if (it.id === 'foil') {
+                    p = mesh(new THREE.BoxGeometry(.98,.54,1.34), M(0xf0b429, {
+                        metalness: 1,
+                        roughness: .2
+                    }), 0, .55, 0)
+                } else {
+                    p = B[it.id]();
+                    const l = SL[it.id];
+                    p.position.set(l[0], l[1], l[2]);
+                    p.scale.setScalar(l[3])
+                }
+                p.userData.ts = p.scale.x;
+                p.visible = false;
+                kite.add(p);
+                KP[it.id] = p
+            }
+            );
+            kite.traverse(o => {
+                if (o.isMesh)
+                    o.castShadow = true
+            }
+            );
+            /* ---------- items & beacon ---------- */
+            const hitM = new THREE.MeshBasicMaterial({
+                transparent: true,
+                opacity: 0,
+                depthWrite: false
+            });
+            const setOp = (g, o) => g.traverse(m => {
+                if (m.material && m.material !== hitM) {
+                    m.material.transparent = o < 1;
+                    m.material.opacity = o
+                }
+            }
+            );
+            ITEMS.forEach( (it, i) => {
+                const h = new THREE.Group()
+                  , g = B[it.id]();
+                h.add(g);
+                const hit = mesh(new THREE.SphereGeometry(1.7,8,6), hitM);
+                hit.userData.hit = 1;
+                h.add(hit);
+                h.position.set(i % 2 ? 2.6 : -2.6, 1.4, -it.s);
+                h.scale.setScalar(1.3);
+                h.userData.x = h.position.x;
+                scene.add(h);
+                it.g = h;
+                setOp(g, .25);
+                g.traverse(o => {
+                    if (o.isMesh)
+                        o.castShadow = true
+                }
+                )
+            }
+            );
+            const beam = mesh(new THREE.CylinderGeometry(.35,.35,40,16,1,true), new THREE.MeshBasicMaterial({
+                color: 0x9fe8ff,
+                transparent: true,
+                opacity: .25,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+                side: THREE.DoubleSide
+            }), 0, 20, 0);
+            const ring = mesh(new THREE.RingGeometry(1.5,1.8,48), new THREE.MeshBasicMaterial({
+                color: 0x9fe8ff,
+                transparent: true,
+                opacity: .7,
+                side: THREE.DoubleSide,
+                blending: THREE.AdditiveBlending
+            }), 0, .06, 0);
+            ring.rotation.x = -Math.PI / 2;
+            scene.add(beam, ring);
+            const tgt = () => got < N ? {
+                x: ITEMS[got].g.userData.x,
+                s: ITEMS[got].s
+            } : {
+                x: 0,
+                s: END
+            };
+            /* sun shadow rig */
+            sun.castShadow = true;
+            sun.shadow.mapSize.set(2048, 2048);
+            {
+                const c = sun.shadow.camera;
+                c.left = c.bottom = -16;
+                c.right = c.top = 16;
+                c.near = 1;
+                c.far = 60
+            }
+            sun.shadow.bias = -.0004;
+            sun.shadow.normalBias = .03;
+            /* post-processing: MSAA + bloom + grade/vignette/grain (falls back to plain render) */
+            let comp = null;
+            try {
+                const pr = R.getPixelRatio()
+                  , rt = new THREE.WebGLMultisampleRenderTarget(innerWidth * pr,innerHeight * pr);
+                rt.samples = 4;
+                comp = new THREE.EffectComposer(R,rt);
+                comp.addPass(new THREE.RenderPass(scene,cam));
+                comp.addPass(new THREE.UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.5,.7,.82));
+                comp.gr = new THREE.ShaderPass({
+                    uniforms: {
+                        tDiffuse: {
+                            value: null
+                        },
+                        t: {
+                            value: 0
+                        }
+                    },
+                    vertexShader: 'varying vec2 v;void main(){v=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+                    fragmentShader: 'varying vec2 v;uniform sampler2D tDiffuse;uniform float t;float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233))+t)*43758.5453);}void main(){vec4 c=texture2D(tDiffuse,v);float vg=smoothstep(.9,.25,length((v-.5)*vec2(1.,.9)));c.rgb=c.rgb*c.rgb*(3.-2.*c.rgb)*.35+c.rgb*.65;c.rgb*=vec3(.98,.99,1.03);c.rgb*=mix(.5,1.,vg);c.rgb+=(h(v*900.)-.5)*.028;gl_FragColor=c;}'
+                });
+                comp.addPass(comp.gr)
+            } catch (e) {
+                comp = null
+            }
+            function fx(t) {
+                sun.position.set(-9, 8, 5 - s);
+                sun.target.position.set(0, 0, -s);
+                sun.target.updateMatrixWorld();
+                sun.color.setRGB(w[0] + .6 * w[1] + w[2], w[0] + .66 * w[1] + .78 * w[2], w[0] + w[1] + .6 * w[2]);
+                cam.fov = 58 + Math.min(7, Math.abs(dv) * .12);
+                cam.updateProjectionMatrix();
+                const c = cam.position;
+                earth.position.set(c.x - 48, c.y + 30, c.z - 170);
+                earth.rotation.y = t * .02;
+                earth.material.opacity = w[0];
+                earth.visible = atm.visible = w[0] > .01;
+                atm.position.copy(earth.position);
+                atm.material.opacity = .5 * w[0];
+                sunS.position.set(c.x + 80, c.y + 48, c.z - 230);
+                sunC.position.copy(sunS.position);
+                sunS.material.opacity = .9 * w[0] + .45 * w[1] + .8 * w[2];
+                sunS.material.color.setRGB(1, 1 - .25 * w[2], 1 - .5 * w[2]);
+                sunS.scale.setScalar(80 + 40 * w[2]);
+                sunC.material.opacity = .9 * (1 - w[1] * .7);
+                neb.forEach( (q, i) => {
+                    const o = q.userData.o;
+                    q.position.set(c.x + o[1], c.y + o[2], c.z - 260);
+                    q.material.opacity = .38 * w[1] * (.85 + .15 * Math.sin(t * .3 + i))
+                }
+                );
+                itemGlow.visible = got < N;
+                if (got < N) {
+                    const g = ITEMS[got].g;
+                    itemGlow.position.copy(g.position);
+                    itemGlow.scale.setScalar(5 + Math.sin(t * 3) * .7)
+                }
+            }
+            /* ---------- audio ---------- */
+            let A = null;
+            function initAudio() {
+                if (A)
+                    return;
+                try {
+                    const c = new (window.AudioContext || window.webkitAudioContext)()
+                      , m = c.createGain();
+                    m.gain.value = .5;
+                    m.connect(c.destination);
+                    const o1 = c.createOscillator()
+                      , o2 = c.createOscillator()
+                      , og = c.createGain();
+                    og.gain.value = .12;
+                    o1.connect(og);
+                    o2.connect(og);
+                    og.connect(m);
+                    o1.start();
+                    o2.start();
+                    const nb = c.createBuffer(1, c.sampleRate * 2, c.sampleRate)
+                      , d = nb.getChannelData(0);
+                    for (let i = 0; i < d.length; i++)
+                        d[i] = Math.random() * 2 - 1;
+                    const ns = c.createBufferSource();
+                    ns.buffer = nb;
+                    ns.loop = true;
+                    const bp = c.createBiquadFilter();
+                    bp.type = 'bandpass';
+                    bp.Q.value = .8;
+                    const ng = c.createGain();
+                    ng.gain.value = 0;
+                    ns.connect(bp);
+                    bp.connect(ng);
+                    ng.connect(m);
+                    ns.start();
+                    const lf = c.createOscillator()
+                      , lg = c.createGain();
+                    lf.frequency.value = .15;
+                    lg.gain.value = 350;
+                    lf.connect(lg);
+                    lg.connect(bp.frequency);
+                    lf.start();
+                    A = {
+                        c,
+                        m,
+                        o1,
+                        o2,
+                        og,
+                        bp,
+                        ng
+                    }
+                } catch (e) {}
+            }
+            function audioTick() {
+                if (!A)
+                    return;
+                const t = A.c.currentTime
+                  , f = w[0] * 58 + w[1] * 40 + w[2] * 72;
+                A.o1.frequency.setTargetAtTime(f, t, .3);
+                A.o2.frequency.setTargetAtTime(f * 1.012, t, .3);
+                A.og.gain.setTargetAtTime(w[0] * .1 + w[1] * .16 + w[2] * .04, t, .4);
+                A.bp.frequency.setTargetAtTime(500 + w[2] * 500, t, .5);
+                A.ng.gain.setTargetAtTime(w[0] * .02 + w[2] * .3, t, .4)
+            }
+            function blip(f1, f2, d, type='sine', v=.25) {
+                if (!A || muted)
+                    return;
+                const c = A.c
+                  , o = c.createOscillator()
+                  , g = c.createGain();
+                o.type = type;
+                o.frequency.setValueAtTime(f1, c.currentTime);
+                o.frequency.exponentialRampToValueAtTime(f2, c.currentTime + d);
+                g.gain.setValueAtTime(v, c.currentTime);
+                g.gain.exponentialRampToValueAtTime(.001, c.currentTime + d + .2);
+                o.connect(g);
+                g.connect(A.m);
+                o.start();
+                o.stop(c.currentTime + d + .25)
+            }
+            const chime = () => {
+                blip(880, 880, .4);
+                setTimeout( () => blip(1320, 1320, .5), 130)
+            }
+              , snap = () => {
+                blip(180, 900, .18, 'square', .15);
+                setTimeout( () => chime(), 200)
+            }
+            ;
+            $('mute').onclick = () => {
+                muted = !muted;
+                $('mute').textContent = muted ? '🔇' : '🔊';
+                if (A)
+                    A.m.gain.value = muted ? 0 : .5;
+                if (muted)
+                    stopSpeak()
+            }
+            ;
+            /* ---------- speech ---------- */
+            let speaking = false;
+            function stopSpeak() {
+                try {
+                    speechSynthesis.cancel()
+                } catch (e) {}
+                speaking = false;
+                $('listen').textContent = '🔈 Listen to Kite'
+            }
+            $('listen').onclick = () => {
+                if (speaking) {
+                    stopSpeak();
+                    return
+                }
+                try {
+                    const it = ITEMS[cur]
+                      , u = new SpeechSynthesisUtterance(it.mono.join(' ') + ' ' + it.facts.join(' '));
+                    u.pitch = 1.5;
+                    u.rate = .95;
+                    u.onend = stopSpeak;
+                    speechSynthesis.cancel();
+                    speechSynthesis.speak(u);
+                    speaking = true;
+                    $('listen').textContent = '⏹ Stop'
+                } catch (e) {
+                    toast('Speech is not available in this browser.')
+                }
+            }
+            ;
+            /* ---------- UI ---------- */
+            let cur = 0
+              , tt = 0;
+            function toast(m) {
+                const t = $('toast');
+                t.textContent = m;
+                t.style.opacity = 1;
+                clearTimeout(tt);
+                tt = setTimeout( () => t.style.opacity = 0, 2200)
+            }
+            function openDrawer(i) {
+                cur = i;
+                const it = ITEMS[i];
+                $('dTag').textContent = ACTS[i < 3 ? 0 : i < 5 ? 1 : 2][0];
+                $('dName').textContent = it.name;
+                $('dMono').innerHTML = it.mono.map(p => `<p>${p}</p>`).join('');
+                $('dFacts').innerHTML = it.facts.map(f => `<li>${f}</li>`).join('');
+                $('dChips').innerHTML = it.st.map( (v, k) => v ? `<span>+${v} ${N_STAT[k]}</span>` : '').join('');
+                $('drawer').scrollTop = 0;
+                $('drawer').classList.add('open');
+                open = true
+            }
+            $('cont').onclick = () => {
+                $('drawer').classList.remove('open');
+                open = false;
+                stopSpeak()
+            }
+            ;
+            $('go').onclick = () => {
+                $('intro').style.display = 'none';
+                started = true;
+                initAudio();
+                chime()
+            }
+            ;
+            document.querySelectorAll('.ch').forEach(b => b.onclick = () => {
+                const e = ENDS[b.dataset.c];
+                $('endBox').innerHTML = `<h1>${b.textContent.slice(0, 2)}</h1><p><b>${e[0]}</b></p><p>${e[1]}</p><p>“I was never the incomplete one,” says Kite. “I was the one who kept going.”</p><button class="b" onclick="location.reload()">Roll again</button>`;
+                try {
+                    speechSynthesis.speak(Object.assign(new SpeechSynthesisUtterance(e[1]), {
+                        pitch: 1.5,
+                        rate: .95
+                    }))
+                } catch (x) {}
+            }
+            );
+            function refreshHud() {
+                stats.forEach( (v, i) => $('s' + i).style.width = Math.min(100, v) + '%');
+                $('cnt').textContent = `Parts: ${got} / ${N}`;
+                ITEMS.forEach( (it, i) => {
+                    if (!it.done)
+                        setOp(it.g.children[0], i === got ? 1 : .25)
+                }
+                )
+            }
+            /* ---------- input ---------- */
+            const push = d => {
+                if (!started || open || ended)
+                    return;
+                vel = Math.max(-40, Math.min(40, vel + d))
+            }
+            ;
+            addEventListener('wheel', e => {
+                if (e.target.closest && e.target.closest('#drawer'))
+                    return;
+                e.preventDefault();
+                push(-e.deltaY * .15)
+            }
+            , {
+                passive: false
+            });
+            addEventListener('keydown', e => {
+                if (e.key === 'ArrowUp' || e.key === 'w')
+                    push(5);
+                if (e.key === 'ArrowDown' || e.key === 's')
+                    push(-5)
+            }
+            );
+            let ty = null;
+            R.domElement.addEventListener('touchstart', e => ty = e.touches[0].clientY, {
+                passive: true
+            });
+            R.domElement.addEventListener('touchmove', e => {
+                const y = e.touches[0].clientY;
+                push((ty - y) * .5);
+                ty = y
+            }
+            , {
+                passive: true
+            });
+            const ray = new THREE.Raycaster()
+              , mv = new THREE.Vector2()
+              , dist = () => {
+                const t = tgt();
+                return Math.hypot(t.x, t.s - s)
+            }
+            ;
+            function pick(e) {
+                mv.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+                ray.setFromCamera(mv, cam);
+                return got < N && ray.intersectObject(ITEMS[got].g, true).length > 0
+            }
+            R.domElement.addEventListener('pointermove', e => {
+                R.domElement.style.cursor = started && !open && pick(e) ? 'pointer' : 'default'
+            }
+            );
+            R.domElement.addEventListener('pointerdown', e => {
+                if (!started || open || fly.length || !pick(e))
+                    return;
+                if (dist() > RANGE) {
+                    toast('Roll a little closer first.');
+                    return
+                }
+                collect()
+            }
+            );
+            addEventListener('resize', () => {
+                R.setSize(innerWidth, innerHeight);
+                if (comp)
+                    comp.setSize(innerWidth, innerHeight);
+                cam.aspect = innerWidth / innerHeight;
+                cam.updateProjectionMatrix()
+            }
+            );
+            /* ---------- collect ---------- */
+            const fly = []
+              , pops = [];
+            function collect() {
+                const i = got
+                  , it = ITEMS[i];
+                it.done = true;
+                got++;
+                it.st.forEach( (v, k) => stats[k] += v);
+                setOp(it.g.children[0], 1);
+                const p = KP[it.id];
+                kite.updateMatrixWorld(true);
+                const to = new THREE.Vector3();
+                p.visible = true;
+                p.getWorldPosition(to);
+                p.visible = false;
+                fly.push({
+                    t: 0,
+                    it,
+                    p,
+                    from: it.g.position.clone(),
+                    to,
+                    sc: it.g.scale.x,
+                    es: FS[it.id] || p.userData.ts
+                });
+                snap();
+                openDrawer(i);
+                refreshHud()
+            }
+            function afterFly(f) {
+                f.it.g.visible = false;
+                f.p.visible = true;
+                f.p.scale.setScalar(0);
+                pops.push({
+                    p: f.p,
+                    t: 0
+                });
+                if (f.it.id === 'pancam')
+                    dimEye.visible = false;
+                if (f.it.id === 'wheels')
+                    skids.visible = false
+            }
+            /* ---------- loop ---------- */
+            const clock = new THREE.Clock()
+              , pcol = new THREE.Color();
+            let beep = -1;
+            function loop() {
+                requestAnimationFrame(loop);
+                const dt = Math.min(clock.getDelta(), .05)
+                  , t = clock.elapsedTime;
+                if (started && !open) {
+                    vel *= Math.pow(.05, dt);
+                    dv += (vel - dv) * Math.min(1, dt * 7);
+                    s += dv * dt;
+                    const lim = got < N ? ITEMS[got].s - 3.2 : END;
+                    if (s > lim) {
+                        s = lim;
+                        vel = dv = Math.min(0, dv)
+                    }
+                    if (s < 0) {
+                        s = 0;
+                        vel = dv = Math.max(0, dv)
+                    }
+                } else
+                    dv *= .9;
+                const t1 = sm((s - 110) / 30)
+                  , t2 = sm((s - 205) / 30);
+                w = [1 - t1, t1 - t2, t2];
+                scene.background.copy(mix('bg'));
+                scene.fog.color.copy(tc);
+                groundM.color.copy(mix('g'));
+                rockM.color.copy(mix('r'));
+                const lv = w[0] * E[0].l + w[1] * E[1].l + w[2] * E[2].l;
+                sun.intensity = lv;
+                hemi.intensity = .5 + w[2] * .3;
+                starM.opacity = 1 - w[2] * .95;
+                stars.position.copy(cam.position);
+                kite.position.z = -s;
+                kite.position.y = Math.sin(t * 2.2) * .03;
+                kite.rotation.z = Math.sin(t * 1.3) * .02;
+                wheelSet.forEach(q => q.rotation.x -= dv * dt * 1.8);
+                head.rotation.y = Math.sin(t * .8) * .25 * (1 - Math.min(1, Math.abs(dv) / 6));
+                const cx = Math.sin(t * .3) * .3;
+                cam.position.lerp(new THREE.Vector3(2.6 + cx,3.3,-s + 7.6), Math.min(1, dt * 4));
+                cam.lookAt(0, 1, -s - 5);
+                /* particles */
+                const P = pg.attributes.position
+                  , vx = w[0] * .1 + w[2] * -9
+                  , vy = w[0] * .35 + w[1] * .05 + w[2] * .3
+                  , vz = w[1] * .15;
+                pm.color.copy(mix('p'));
+                pm.size = .3 * w[0] + .25 * w[1] + .5 * w[2] + .05;
+                pm.opacity = .55 + .35 * w[2];
+                for (let i = 0; i < PN; i++) {
+                    let x = P.getX(i) + vx * dt + Math.sin(t + i) * .004
+                      , y = P.getY(i) + vy * dt * (.6 + (i % 5) * .2)
+                      , z = P.getZ(i) + vz * dt;
+                    if (x < -20)
+                        x += 40;
+                    if (x > 20)
+                        x -= 40;
+                    if (y > 12)
+                        y = 0;
+                    if (y < 0)
+                        y = 12;
+                    const cz = -s;
+                    if (z > cz + 20)
+                        z -= 40;
+                    if (z < cz - 20)
+                        z += 40;
+                    P.setXYZ(i, x, y, z)
+                }
+                P.needsUpdate = true;
+                /* items */
+                ITEMS.forEach( (it, i) => {
+                    if (it.done || !it.g.visible)
+                        return;
+                    const a = i === got;
+                    it.g.rotation.y = t * (a ? 1.2 : .4);
+                    if (!it.fl)
+                        it.g.position.y = 1.4 + Math.sin(t * 1.6 + i) * .15
+                }
+                );
+                for (let k = fly.length - 1; k >= 0; k--) {
+                    const f = fly[k];
+                    f.t += dt / .9;
+                    const e = sm(f.t)
+                      , g = f.it.g;
+                    g.position.lerpVectors(f.from, f.to, e);
+                    g.position.y += Math.sin(Math.PI * e) * 1.6;
+                    g.scale.setScalar(f.sc + (f.es - f.sc) * e);
+                    g.rotation.y += dt * 8;
+                    if (f.t >= 1) {
+                        afterFly(f);
+                        fly.splice(k, 1)
+                    }
+                }
+                for (let k = pops.length - 1; k >= 0; k--) {
+                    const q = pops[k];
+                    q.t += dt / .45;
+                    const e = Math.min(1, q.t)
+                      , b = 1 + 2.7 * Math.pow(e - 1, 3) + 1.7 * Math.pow(e - 1, 2);
+                    q.p.scale.setScalar(q.p.userData.ts * b);
+                    if (q.t >= 1) {
+                        q.p.scale.setScalar(q.p.userData.ts);
+                        pops.splice(k, 1)
+                    }
+                }
+                /* beacon */
+                const T = tgt();
+                beam.position.set(T.x, 20, -T.s);
+                ring.position.set(T.x, .06, -T.s);
+                const d = dist()
+                  , pl = 1 + .25 * Math.sin(t * 4);
+                ring.scale.setScalar(pl);
+                ring.material.opacity = .4 + .35 * Math.sin(t * 4);
+                beam.material.opacity = .18 + .1 * Math.sin(t * 2);
+                const near = got < N && d < RANGE;
+                if (near && beep !== got) {
+                    beep = got;
+                    chime();
+                    toast('Click the glowing part!')
+                }
+                beam.material.color.setHex(got < N ? (near ? 0xffe27a : 0x9fe8ff) : 0xffd166);
+                ring.material.color.copy(beam.material.color);
+                itemGlow.material.color.copy(beam.material.color);
+                /* HUD */
+                const act = got >= N && s > END - 60 ? 3 : s < 120 ? 0 : s < 210 ? 1 : 2;
+                $('act').innerHTML = `${ACTS[act][0]}<small>${ACTS[act][1]}</small>`;
+                $('dist').innerHTML = `${Math.round(d)} m<small>${got < N ? 'to the next part' : 'to the horizon'}</small>`;
+                $('hint').textContent = !started ? '' : open ? 'Scroll the memory log to read' : got >= N ? 'Roll to the glowing horizon' : near ? 'Click the glowing part to scavenge it' : 'Scroll up to roll forward · scroll down to go back';
+                if (got >= N && !open && !ended && s > END - 3 && !fly.length) {
+                    ended = true;
+                    $('end').style.display = 'flex'
+                }
+                audioTick();
+                fx(t);
+                if (comp) {
+                    comp.gr.uniforms.t.value = t % 10;
+                    comp.render()
+                } else
+                    R.render(scene, cam)
+            }
+            refreshHud();
+            loop();
+        </script>
+    </body>
 </html>
