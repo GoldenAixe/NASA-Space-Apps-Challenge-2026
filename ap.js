@@ -1796,7 +1796,14 @@ class NasaSolarApp {
     }
 }
 
-// Start application on window load
-window.addEventListener("DOMContentLoaded", () => {
-    window.app = new NasaSolarApp();
-});
+// Start application (works whether script loads before or after DOMContentLoaded)
+function bootApp() {
+    if (!window.app) {
+        window.app = new NasaSolarApp();
+    }
+}
+if (document.readyState === "loading") {
+    window.addEventListener("DOMContentLoaded", bootApp);
+} else {
+    bootApp();
+}
