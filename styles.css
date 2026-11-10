@@ -1,40 +1,129 @@
 /* ============================================================================
-FILE 2 OF 3 (CSS): styles.css
+FILE 2 OF 3 (CSS): styles.css  — IMPROVED
 ============================================================================ */
+
+/* ---------- Base: deep space nebula + twinkling star field (not just dots) ---------- */
 body {
   background-color: #070b19;
   background-image:
-    radial-gradient(
-      circle at 15% 18%,
-      rgba(11, 61, 145, 0.38) 0%,
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at 85% 82%,
-      rgba(56, 189, 248, 0.18) 0%,
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(139, 92, 246, 0.08) 0%,
-      transparent 60%
-    ),
-    radial-gradient(white, rgba(255, 255, 255, 0.18) 1px, transparent 2px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    56px 56px;
+    radial-gradient(circle at 12% 15%, rgba(11, 61, 145, 0.45) 0%, transparent 42%),
+    radial-gradient(circle at 88% 80%, rgba(56, 189, 248, 0.22) 0%, transparent 42%),
+    radial-gradient(circle at 78% 12%, rgba(168, 85, 247, 0.16) 0%, transparent 38%),
+    radial-gradient(circle at 25% 88%, rgba(252, 61, 33, 0.10) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  background-attachment: fixed;
   color: #f8fafc;
   overflow-x: hidden;
   font-weight: 600;
+  transition: background-color 0.9s ease;
 }
+
+/* Two drifting star layers rendered on pseudo-elements */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: -100px;
+  pointer-events: none;
+  z-index: 0;
+  background-repeat: repeat;
+}
+body::before {
+  background-image:
+    radial-gradient(1.6px 1.6px at 22px 34px, rgba(255, 255, 255, 0.95) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 78px 92px, rgba(186, 230, 253, 0.85) 50%, transparent 51%),
+    radial-gradient(2px 2px at 140px 60px, rgba(255, 255, 255, 0.7) 50%, transparent 51%),
+    radial-gradient(1px 1px at 190px 150px, rgba(255, 255, 255, 0.55) 50%, transparent 51%);
+  background-size: 220px 220px;
+  animation: starDrift 180s linear infinite;
+}
+body::after {
+  background-image:
+    radial-gradient(1px 1px at 40px 120px, rgba(255, 255, 255, 0.5) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 160px 40px, rgba(253, 224, 71, 0.6) 50%, transparent 51%);
+  background-size: 340px 340px;
+  animation: starDrift 260s linear infinite reverse;
+}
+@keyframes starDrift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-220px, 160px, 0); }
+}
+
+/* ============================================================================
+   CHAPTER-THEMED BACKGROUNDS — the scene shifts with Captain Nova's location
+============================================================================ */
+
+/* Chapter 1–2 • The Moon: cold, dusty silver-blue */
+body[data-chapter="ch1"],
+body[data-chapter="ch2"] {
+  background-color: #0b1120;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(148, 163, 184, 0.28) 0%, transparent 45%),
+    radial-gradient(circle at 80% 75%, rgba(100, 116, 139, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 60% 40%, rgba(56, 189, 248, 0.14) 0%, transparent 50%),
+    radial-gradient(circle at 50% 110%, rgba(226, 232, 240, 0.10) 0%, transparent 55%);
+}
+
+/* Chapter 3–4 • Mars: red dust and ember skies */
+body[data-chapter="ch3"],
+body[data-chapter="ch4"] {
+  background-color: #190b0b;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(252, 61, 33, 0.32) 0%, transparent 45%),
+    radial-gradient(circle at 85% 70%, rgba(249, 115, 22, 0.22) 0%, transparent 45%),
+    radial-gradient(circle at 55% 15%, rgba(253, 186, 116, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 45% 95%, rgba(127, 29, 29, 0.35) 0%, transparent 55%);
+}
+
+/* Chapter 5 • Deep Space: violet interstellar dark */
+body[data-chapter="ch5"] {
+  background-color: #0d0a1f;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.30) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(99, 102, 241, 0.28) 0%, transparent 48%),
+    radial-gradient(circle at 70% 15%, rgba(56, 189, 248, 0.14) 0%, transparent 40%),
+    radial-gradient(circle at 40% 60%, rgba(217, 70, 239, 0.10) 0%, transparent 55%);
+}
+
+/* Chapter 6 • Saturn: golden rings glow */
+body[data-chapter="ch6"] {
+  background-color: #171106;
+  background-image:
+    radial-gradient(circle at 20% 25%, rgba(251, 191, 36, 0.26) 0%, transparent 45%),
+    radial-gradient(circle at 82% 70%, rgba(245, 158, 11, 0.22) 0%, transparent 48%),
+    radial-gradient(circle at 55% 10%, rgba(253, 230, 138, 0.12) 0%, transparent 40%),
+    radial-gradient(ellipse 60% 18% at 50% 105%, rgba(251, 191, 36, 0.20) 0%, transparent 70%);
+}
+
+/* Final Mission: warm homecoming sunrise */
+body[data-chapter="final"] {
+  background-color: #120b1c;
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(251, 191, 36, 0.24) 0%, transparent 45%),
+    radial-gradient(circle at 75% 25%, rgba(56, 189, 248, 0.20) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(244, 114, 182, 0.16) 0%, transparent 50%);
+}
+
+/* Badges page: trophy gold */
+body[data-chapter="badges"] {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(251, 191, 36, 0.20) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(251, 191, 36, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 70% 15%, rgba(168, 85, 247, 0.16) 0%, transparent 40%);
+}
+
+header, main, footer, #guest-banner { position: relative; z-index: 1; }
+
+/* ---------- Glass panels ---------- */
 .glass-panel {
   background: rgba(17, 25, 54, 0.88);
   backdrop-filter: blur(14px);
   border: 2px solid rgba(148, 163, 184, 0.18);
   box-shadow: 0 12px 32px -8px rgba(2, 6, 23, 0.6);
 }
+
+/* ---------- Tactile buttons ---------- */
 .btn-tactile {
   transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
@@ -47,34 +136,243 @@ body {
   transform: translateY(2px);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
 }
+
+/* ---------- Animated map route ---------- */
 .map-path-active {
   stroke-dasharray: 10 8;
   animation: dashMove 16s linear infinite;
 }
 @keyframes dashMove {
-  to {
-    stroke-dashoffset: -200;
-  }
+  to { stroke-dashoffset: -200; }
 }
+
+/* Pulsing glow on unlocked map nodes */
+.map-node-open {
+  animation: nodePulse 2.4s ease-in-out infinite;
+}
+@keyframes nodePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.55), 0 10px 24px -6px rgba(2, 6, 23, 0.7); }
+  50%      { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0), 0 10px 24px -6px rgba(2, 6, 23, 0.7); }
+}
+
+/* Twinkling decorative stars inside map canvas */
+.map-star {
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 1; }
+}
+
+/* ---------- Splash ---------- */
 .splash-fade-out {
   opacity: 0;
   pointer-events: none;
   transform: scale(1.03);
-  transition:
-    opacity 0.65s ease,
-    transform 0.65s ease;
+  transition: opacity 0.65s ease, transform 0.65s ease;
 }
-/ Custom Scrollbar */ ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+
+/* ---------- Captain Nova animations ---------- */
+.nova-float {
+  animation: novaFloat 3.6s ease-in-out infinite;
 }
-::-webkit-scrollbar-track {
-  background: #070b19;
+@keyframes novaFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
 }
-::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 6px;
+.nova-arm {
+  transform-origin: 102px 92px;
+  animation: novaWave 1.8s ease-in-out infinite;
 }
-::-webkit-scrollbar-thumb:hover {
+@keyframes novaWave {
+  0%, 100% { transform: rotate(0deg); }
+  30%      { transform: rotate(-16deg); }
+  60%      { transform: rotate(6deg); }
+}
+.nova-antenna {
+  animation: antennaBlink 1.4s ease-in-out infinite;
+}
+@keyframes antennaBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+.nova-shine {
+  animation: shineMove 3.2s ease-in-out infinite;
+}
+@keyframes shineMove {
+  0%, 100% { transform: translateX(0); opacity: 0.9; }
+  50%      { transform: translateX(8px); opacity: 0.5; }
+}
+.nova-caret {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  margin-left: 3px;
+  vertical-align: -2px;
   background: #38bdf8;
+  border-radius: 1px;
+  animation: caretBlink 0.9s steps(2) infinite;
+}
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* Non-scrollable Home (large screens) */
+@media (min-width: 1024px) {
+  #app-viewport.viewport-locked {
+    height: calc(100dvh - 5.5rem);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Fact / lesson card flip-in */
+.card-enter {
+  animation: cardIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #070b19; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+/* ============================================================================
+   CAPTAIN NOVA — big narrating companion (cartoon astronaut, like the picture)
+============================================================================ */
+
+/* Idle size */
+.nova-svg {
+  width: 7.5rem;
+  height: 9.75rem;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 0.6s ease;
+  filter: drop-shadow(0 14px 26px rgba(56, 189, 248, 0.30));
+}
+
+/* When narrating a chapter he becomes LITERAL BIG */
+#nova-companion.nova-narrating .nova-svg {
+  width: 12rem;
+  height: 15.6rem;
+  filter: drop-shadow(0 0 26px rgba(56, 189, 248, 0.55)) drop-shadow(0 18px 30px rgba(2, 6, 23, 0.6));
+}
+@media (min-width: 1024px) {
+  #nova-companion.nova-narrating .nova-svg {
+    width: 16rem;
+    height: 20.8rem;
+  }
+}
+
+/* Bigger speech bubble while he narrates */
+#nova-companion.nova-narrating #nova-bubble {
+  width: 300px;
+}
+@media (min-width: 1024px) {
+  #nova-companion.nova-narrating #nova-bubble {
+    width: 380px;
+  }
+  #nova-companion.nova-narrating #nova-text {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+}
+
+/* Floating-in-space drift: slow hover with gentle rotation */
+#nova-avatar {
+  animation: novaSpaceFloat 5.2s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+@keyframes novaSpaceFloat {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  25%      { transform: translateY(-14px) rotate(2deg); }
+  50%      { transform: translateY(-6px) rotate(4deg); }
+  75%      { transform: translateY(-16px) rotate(-1deg); }
+}
+#nova-companion.nova-narrating #nova-avatar {
+  animation-duration: 4.2s;
+}
+
+/* Waving arm */
+.nova-arm-wave {
+  transform-origin: 58px 120px;
+  animation: novaArmWave 1.7s ease-in-out infinite;
+}
+@keyframes novaArmWave {
+  0%, 100% { transform: rotate(0deg); }
+  30%      { transform: rotate(-18deg); }
+  60%      { transform: rotate(7deg); }
+}
+
+/* Blinking eyes */
+.nova-eyes {
+  transform-origin: 100px 72px;
+  animation: novaBlink 4.4s ease-in-out infinite;
+}
+@keyframes novaBlink {
+  0%, 91%, 100% { transform: scaleY(1); }
+  94%, 96%      { transform: scaleY(0.06); }
+}
+
+/* Kicking legs while floating */
+.nova-leg-kick {
+  transform-origin: 86px 198px;
+  animation: novaLegKick 3.1s ease-in-out infinite alternate;
+}
+@keyframes novaLegKick {
+  from { transform: rotate(-5deg); }
+  to   { transform: rotate(9deg); }
+}
+.nova-leg-bend {
+  transform-origin: 116px 198px;
+  animation: novaLegBend 3.7s ease-in-out infinite alternate;
+}
+@keyframes novaLegBend {
+  from { transform: rotate(6deg); }
+  to   { transform: rotate(-8deg); }
+}
+
+/* Helmet shine sweep */
+.nova-shine-sweep {
+  animation: shineSweep 3.6s ease-in-out infinite;
+}
+@keyframes shineSweep {
+  0%, 100% { transform: translateX(0); opacity: 0.55; }
+  50%      { transform: translateX(10px); opacity: 0.9; }
+}
+
+/* Talking mouth while voice is on */
+.nova-mouth {
+  transform-origin: 100px 94px;
+}
+#nova-companion.nova-speaking .nova-mouth {
+  animation: novaTalk 0.28s ease-in-out infinite;
+}
+@keyframes novaTalk {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(1.45); }
+}
+
+/* Talking indicator ring on the audio button */
+#nova-audio-btn.nova-speaking-btn {
+  animation: novaBtnPulse 1.2s ease-in-out infinite;
+}
+@keyframes novaBtnPulse {
+  0%, 100% { box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35), 0 0 0 0 rgba(52, 211, 153, 0.5); }
+  50%      { box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35), 0 0 0 9px rgba(52, 211, 153, 0); }
+}
+
+/* Muted state */
+#nova-audio-btn.nova-muted {
+  background: linear-gradient(to bottom right, #64748b, #334155) !important;
+  border-color: rgba(148, 163, 184, 0.4) !important;
 }

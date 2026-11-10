@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts: Fredoka (Friendly Display) & Quicksand (Clean School-Age Body) -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="styles.css">
@@ -34,7 +34,6 @@
                     },
                     animation: {
                         'float': 'float 4s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'orbit': 'orbit 14s linear infinite',
                     },
                     keyframes: {
@@ -52,25 +51,20 @@
         }
     </script>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white" data-chapter="landing">
 
-    <!-- NASA-STYLE INTRODUCTORY SPLASH SCREEN (Auto-transitions to Guest Mode Home) -->
-    <div id="nasa-splash-screen" class="fixed inset-0 z-50 bg-[#050814] flex flex-col items-center justify-center p-6 text-center select-none">
+    <!-- ============ SPLASH SCREEN ============ -->
+    <div id="nasa-splash-screen" class="fixed inset-0 z-[60] bg-[#050814] flex flex-col items-center justify-center p-6 text-center select-none">
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full bg-nasa-blue/35 blur-3xl"></div>
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full bg-sky-500/15 blur-2xl"></div>
         </div>
-
         <div class="relative z-10 max-w-md w-full flex flex-col items-center space-y-6">
-            <div id="nasa-intro-video-slot" class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
+            <div class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
                 <div class="absolute inset-0 rounded-full border-2 border-dashed border-sky-400/35 animate-orbit">
                     <div class="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-lg shadow-amber-400/80 -mt-1.5 mx-auto"></div>
                 </div>
-
                 <div class="w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-[#0B3D91] to-[#061F4A] border-4 border-sky-300/30 shadow-2xl flex flex-col items-center justify-center relative overflow-hidden animate-float">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white absolute top-6 left-9"></span>
-                    <span class="w-1 h-1 rounded-full bg-sky-200 absolute top-8 right-8"></span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-white absolute bottom-7 left-10"></span>
                     <svg viewBox="0 0 120 120" class="w-full h-full absolute inset-0">
                         <path d="M 18 78 Q 60 22 104 42 Q 62 46 28 86 Z" fill="#FC3D21" />
                         <ellipse cx="60" cy="60" rx="46" ry="16" transform="rotate(-28 60 60)" stroke="#F8FAFC" stroke-width="2.5" fill="none" stroke-dasharray="120" />
@@ -79,19 +73,13 @@
                     <span class="relative z-10 text-[10px] uppercase tracking-widest text-sky-200 font-bold mt-0.5">Space Explorer</span>
                 </div>
             </div>
-
             <div class="space-y-2">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-bold tracking-wide uppercase">
                     <i class="fa-solid fa-satellite-dish animate-pulse"></i> Initializing Mission Control
                 </div>
-                <h1 class="font-display font-bold text-2xl sm:text-4xl text-white tracking-wide">
-                    Lost in the Solar System
-                </h1>
-                <p class="text-sm text-slate-300 max-w-sm mx-auto">
-                    Get ready to explore the Moon, Mars, and Deep Space with your robot guide, <strong>A.R.I.</strong>!
-                </p>
+                <h1 class="font-display font-bold text-2xl sm:text-4xl text-white tracking-wide">Lost in the Solar System</h1>
+                <p class="text-sm text-slate-300 max-w-sm mx-auto">Captain Nova is getting ready to guide you across the Moon, Mars, and Deep Space!</p>
             </div>
-
             <div class="w-64 sm:w-72 space-y-2">
                 <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-slate-700/80 p-0.5">
                     <div id="splash-progress-bar" class="h-full bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 rounded-full transition-all duration-150" style="width: 5%"></div>
@@ -103,14 +91,14 @@
         </div>
     </div>
 
-    <!-- FRIENDLY GUEST STATUS PILL BAR -->
+    <!-- ============ GUEST BANNER ============ -->
     <div id="guest-banner" class="hidden bg-gradient-to-r from-indigo-950/90 via-slate-900/90 to-sky-950/90 border-b border-sky-500/25 px-4 py-2 text-xs sm:text-sm">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center gap-2 text-sky-100">
                 <span class="w-6 h-6 rounded-full bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300">
                     <i class="fa-solid fa-user-astronaut text-xs"></i>
                 </span>
-                <span><strong>Explorer Guest Mode:</strong> You can play right away! Create a free account anytime to save your badges.</span>
+                <span><strong>Guest Explorer Mode:</strong> Play right away! Create a free account anytime to save your badges automatically.</span>
             </div>
             <button onclick="window.app.openAuthModal('register')" class="px-3.5 py-1 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-display font-bold text-xs transition shadow-sm">
                 <i class="fa-solid fa-floppy-disk mr-1"></i> Save My Progress
@@ -118,18 +106,18 @@
         </div>
     </div>
 
-    <!-- TOP NAVIGATION BAR -->
+    <!-- ============ TOP NAVIGATION ============ -->
     <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-2.5 flex items-center justify-between gap-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
             <button onclick="window.app.navigate('landing')" class="flex items-center gap-3 text-left group focus:outline-none">
                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-nasa-blue to-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/20 border-2 border-sky-300/40 group-hover:scale-105 transition">
                     <i class="fa-solid fa-rocket text-white text-lg"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-display font-bold text-lg sm:text-xl tracking-wide text-white">NASA: Solar System Explorer</span>
+                        <span class="font-display font-bold text-lg sm:text-xl tracking-wide text-white">NASA: Lost in the Solar System</span>
                     </div>
-                    <p class="text-xs text-sky-300/90 hidden sm:block">Interactive Space Hardware Adventure</p>
+                    <p class="text-xs text-sky-300/90 hidden sm:block">An Interactive Space Adventure with Captain Nova</p>
                 </div>
             </button>
 
@@ -140,11 +128,9 @@
                 <button onclick="window.app.navigate('map')" id="nav-map" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition">
                     <i class="fa-solid fa-earth-americas mr-1.5"></i>Space Map
                 </button>
-                <button onclick="window.app.navigate('archive')" id="nav-archive" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition">
-                    <i class="fa-solid fa-layer-group mr-1.5"></i>Fact Cards <span id="nav-facts-count" class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-sky-300 text-xs">0</span>
-                </button>
                 <button onclick="window.app.navigate('badges')" id="nav-badges" class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition">
-                    <i class="fa-solid fa-medal mr-1.5"></i>My Badges <span id="nav-badges-count" class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 text-xs">0</span>
+                    <i class="fa-solid fa-medal mr-1.5"></i>My Badges
+                    <span id="nav-badges-count" class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 text-xs">0/6</span>
                 </button>
             </nav>
 
@@ -160,46 +146,124 @@
             <button onclick="window.app.navigate('map')" id="mob-nav-map" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5">
                 <i class="fa-solid fa-earth-americas"></i><span>Space Map</span>
             </button>
-            <button onclick="window.app.navigate('archive')" id="mob-nav-archive" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-layer-group"></i><span>Fact Cards</span>
-            </button>
             <button onclick="window.app.navigate('badges')" id="mob-nav-badges" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5">
                 <i class="fa-solid fa-medal"></i><span>Badges</span>
             </button>
         </div>
     </header>
 
-    <main id="app-viewport" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"></main>
+    <!-- ============ MAIN VIEWPORT ============ -->
+    <main id="app-viewport" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 min-h-0"></main>
 
-    <!-- PERSISTENT ROBOT GUIDE ("A.R.I.") COMPANION BAR -->
-    <aside class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <div class="glass-panel rounded-3xl p-4 sm:p-5 border-2 border-sky-400/35 shadow-xl flex flex-col sm:flex-row items-center gap-4">
-            <div class="relative flex-shrink-0">
-                <div id="robot-avatar-box" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-sky-400 flex items-center justify-center animate-float shadow-lg shadow-sky-500/15"></div>
-                <span id="robot-mood-badge" class="absolute -bottom-1 -right-1 px-2 py-0.5 text-[10px] font-display font-bold uppercase rounded-full bg-sky-400 text-slate-950 shadow">FRIEND</span>
+    <!-- ============ CAPTAIN NOVA COMPANION ============ -->
+    <div id="nova-companion" class="fixed z-40 bottom-4 right-4 sm:bottom-6 sm:right-6 flex flex-col items-end gap-2 pointer-events-none">
+        <div id="nova-bubble" class="hidden pointer-events-auto relative w-[280px] sm:w-[320px] bg-slate-900/95 border-2 border-sky-400/60 rounded-2xl px-4 py-3 shadow-2xl shadow-sky-500/20">
+            <div class="text-[10px] font-display font-bold uppercase tracking-widest text-sky-300 mb-1">
+                <i class="fa-solid fa-user-astronaut mr-1"></i>Captain Nova
             </div>
-            <div class="flex-1 text-center sm:text-left">
-                <div class="flex items-center justify-center sm:justify-start gap-2 mb-1">
-                    <span class="text-sm font-display font-bold tracking-wide text-sky-300">A.R.I. — Your Robot Space Buddy</span>
-                </div>
-                <p id="robot-dialogue-text" class="text-sm sm:text-base text-white leading-relaxed">
-                    Hi Explorer! I'm A.R.I.! Let's travel across the solar system, meet real NASA spacecraft, and collect awesome space badges!
-                </p>
-            </div>
-            <div class="flex-shrink-0">
-                <button onclick="window.app.triggerRobotTip()" class="btn-tactile px-4 py-2.5 rounded-2xl bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/40 text-xs sm:text-sm font-display font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Space Tip!
-                </button>
+            <p class="text-sm text-white leading-snug"><span id="nova-text"></span><span class="nova-caret"></span></p>
+            <button onclick="window.app.novaHide()" title="Hide" class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-700 border border-slate-500 text-slate-300 text-xs hover:bg-rose-500 hover:text-white transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="absolute -bottom-[9px] right-12 w-4 h-4 bg-slate-900 border-b-2 border-r-2 border-sky-400/60 rotate-45"></div>
+        </div>
+        <div class="pointer-events-auto flex items-end gap-2.5">
+            <button id="nova-audio-btn" onclick="window.app.novaAudioToggle()" title="Nova voice on/off"
+                class="btn-tactile mb-1 w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 text-white border-2 border-emerald-300/50 shadow-lg shadow-emerald-500/30 flex items-center justify-center hover:scale-105 transition">
+                <i id="nova-audio-icon" class="fa-solid fa-volume-high"></i>
+            </button>
+            <button onclick="window.app.novaTip()" title="Talk to Nova"
+                class="btn-tactile mb-1 w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 text-white border-2 border-sky-300/50 shadow-lg shadow-sky-500/30 flex items-center justify-center hover:scale-105 transition">
+                <i class="fa-solid fa-comment-dots"></i>
+            </button>
+            <div id="nova-avatar" class="cursor-pointer" title="Captain Nova" onclick="window.app.novaToggle()">
+                <!-- Captain Nova: cartoon kid astronaut floating in space (based on the reference picture) -->
+                <svg viewBox="0 0 200 260" class="nova-svg">
+                    <!-- tether hose -->
+                    <path d="M 146 138 C 186 148 194 176 172 192" stroke="#94A3B8" stroke-width="3" fill="none" opacity="0.55" stroke-linecap="round"/>
+
+                    <!-- right arm (extended, viewer right) -->
+                    <g>
+                        <rect x="140" y="124" width="46" height="18" rx="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" transform="rotate(20 140 130)"/>
+                        <rect x="152" y="126" width="8" height="18" rx="3" fill="#E8702D" transform="rotate(20 156 135)"/>
+                        <ellipse cx="193" cy="156" rx="14" ry="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" transform="rotate(15 193 156)"/>
+                        <path d="M 186 150 l -5 -6 M 192 148 l -2 -8 M 198 148 l 1 -8" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- left arm (waving, viewer left) -->
+                    <g class="nova-arm-wave">
+                        <rect x="14" y="104" width="46" height="18" rx="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" transform="rotate(-38 58 114)"/>
+                        <rect x="26" y="98" width="8" height="18" rx="3" fill="#E8702D" transform="rotate(-38 30 107)"/>
+                        <ellipse cx="22" cy="88" rx="13" ry="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" transform="rotate(-18 22 88)"/>
+                        <path d="M 14 78 l -7 -4 M 16 70 l -5 -7 M 23 66 l -1 -8 M 30 68 l 3 -8" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- legs (kicking gently while floating) -->
+                    <g class="nova-leg-kick">
+                        <rect x="74" y="196" width="20" height="38" rx="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" transform="rotate(8 84 198)"/>
+                        <rect x="74" y="212" width="20" height="7" rx="3" fill="#E8702D" transform="rotate(8 84 215)"/>
+                        <ellipse cx="88" cy="240" rx="15" ry="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" transform="rotate(10 88 240)"/>
+                    </g>
+                    <g class="nova-leg-bend">
+                        <rect x="106" y="194" width="20" height="36" rx="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" transform="rotate(-12 116 196)"/>
+                        <rect x="106" y="208" width="20" height="7" rx="3" fill="#E8702D" transform="rotate(-12 116 211)"/>
+                        <ellipse cx="112" cy="238" rx="15" ry="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" transform="rotate(-14 112 238)"/>
+                    </g>
+
+                    <!-- body suit -->
+                    <rect x="62" y="112" width="76" height="96" rx="28" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2.5"/>
+                    <!-- collar ring -->
+                    <path d="M 76 116 Q 100 128 124 116" stroke="#CBD5E1" stroke-width="2.5" fill="none"/>
+
+                    <!-- chest panel with colored buttons -->
+                    <rect x="80" y="134" width="40" height="36" rx="8" fill="#4A90D9" stroke="#E8702D" stroke-width="3"/>
+                    <rect x="86" y="140" width="9" height="9" rx="4.5" fill="#E8702D"/>
+                    <circle cx="110" cy="144.5" r="4.5" fill="#FBBF24"/>
+                    <rect x="86" y="154" width="20" height="7" rx="3.5" fill="#4ADE80"/>
+                    <circle cx="113" cy="158" r="2.5" fill="#F8FAFC" opacity="0.85"/>
+
+                    <!-- helmet -->
+                    <circle cx="100" cy="64" r="55" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+                    <circle cx="100" cy="66" r="47" fill="#B7DCF0"/>
+                    <!-- face -->
+                    <circle cx="100" cy="72" r="40" fill="#F8C89D"/>
+                    <!-- hair (brown fringe inside helmet) -->
+                    <path d="M 61 66 Q 63 28 100 26 Q 137 28 139 66 Q 134 42 117 41 Q 126 50 123 58 Q 111 40 95 42 Q 103 50 100 58 Q 87 42 73 50 Q 66 55 64 63 Z" fill="#7A4A2B"/>
+                    <!-- ears -->
+                    <circle cx="61" cy="78" r="6.5" fill="#F8C89D" stroke="#E8B07F" stroke-width="1.5"/>
+                    <circle cx="139" cy="78" r="6.5" fill="#F8C89D" stroke="#E8B07F" stroke-width="1.5"/>
+                    <!-- eyebrows -->
+                    <path d="M 75 58 Q 84 52 94 57" stroke="#6B4226" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M 106 57 Q 116 52 125 58" stroke="#6B4226" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- eyes -->
+                    <g class="nova-eyes">
+                        <ellipse cx="85" cy="72" rx="9" ry="10.5" fill="#FFFFFF"/>
+                        <ellipse cx="115" cy="72" rx="9" ry="10.5" fill="#FFFFFF"/>
+                        <circle cx="86.5" cy="74" r="5" fill="#2F2F3D"/>
+                        <circle cx="113.5" cy="74" r="5" fill="#2F2F3D"/>
+                        <circle cx="88" cy="71" r="1.8" fill="#FFFFFF"/>
+                        <circle cx="115" cy="71" r="1.8" fill="#FFFFFF"/>
+                    </g>
+                    <!-- nose -->
+                    <path d="M 100 79 Q 103 84 99 86.5" stroke="#E0A06E" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <!-- smiling mouth -->
+                    <g class="nova-mouth">
+                        <path d="M 87 91 Q 100 107 113 91 Q 108 101 100 101 Q 92 101 87 91 Z" fill="#7F3B33"/>
+                        <ellipse cx="100" cy="98" rx="7" ry="3.5" fill="#E8837B"/>
+                    </g>
+                    <!-- helmet shine -->
+                    <ellipse class="nova-shine-sweep" cx="74" cy="36" rx="19" ry="8" fill="#FFFFFF" opacity="0.55" transform="rotate(-25 74 36)"/>
+                </svg>
             </div>
         </div>
-    </aside>
+    </div>
 
-    <!-- FOOTER -->
-    <footer class="border-t border-slate-800/80 bg-slate-950/70 py-5 px-4 text-xs text-slate-400">
+    <!-- ============ FOOTER ============ -->
+    <footer id="app-footer" class="border-t border-slate-800/80 bg-slate-950/70 py-5 px-4 text-xs text-slate-400">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                <span><strong>NASA: Lost in the Solar System</strong></span>
+                <span><strong>NASA: Lost in the Solar System</strong> — An Interactive Space Adventure</span>
             </div>
             <div class="flex flex-wrap items-center gap-4">
                 <button onclick="window.app.openHowToPlayModal()" class="hover:text-sky-300 transition font-bold"><i class="fa-regular fa-circle-question mr-1"></i>How to Play</button>
@@ -208,13 +272,13 @@
         </div>
     </footer>
 
-    <!-- MODAL CONTAINER -->
+    <!-- ============ MODAL ============ -->
     <div id="modal-backdrop" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
         <div id="modal-content" class="glass-panel rounded-2xl max-w-2xl w-full p-6 border border-slate-700 shadow-2xl my-8"></div>
     </div>
 
-    <!-- TOAST NOTIFICATION CONTAINER -->
-    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+    <!-- ============ TOASTS ============ -->
+    <div id="toast-container" class="fixed bottom-5 left-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
     <!-- Main JS Module -->
     <script type="module" src="app.js"></script>
