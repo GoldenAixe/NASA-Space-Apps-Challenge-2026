@@ -111,7 +111,7 @@
                 </div>
                 <div class="flex items-center justify-between text-xs text-slate-400">
                     <span id="splash-status-text">Loading Solar System Map...</span>
-                    <button onclick="window.app.finishSplashScreen()" class="text-sky-300 hover:text-white underline font-bold">
+                    <button onclick="window.finishNasaSplash && window.finishNasaSplash()" class="text-sky-300 hover:text-white underline font-bold">
                         Skip Intro <i class="fa-solid fa-forward-step ml-0.5"></i>
                     </button>
                 </div>
@@ -261,6 +261,60 @@
     <!-- ============================================================================
          APPLICATION ARCHITECTURE & CONFIGURATION SCRIPT
          ============================================================================ -->
+
+    <!-- Lightweight splash controller (works even on file://) -->
+    <script>
+    (function () {
+        function finishNasaSplash() {
+            const splash = document.getElementById("nasa-splash-screen");
+            if (!splash || splash.classList.contains("splash-fade-out")) return;
+            splash.classList.add("splash-fade-out");
+            setTimeout(function () {
+                splash.classList.add("hidden");
+            }, 650);
+            // Also notify the main app if it has already loaded
+            if (window.app && typeof window.app.finishSplashScreen === "function") {
+                try { window.app.finishSplashScreen(); } catch (e) {}
+            }
+        }
+        window.finishNasaSplash = finishNasaSplash;
+
+        // Auto-run progress bar as soon as DOM is ready
+        function runSplash() {
+            const bar = document.getElementById("splash-progress-bar");
+            const status = document.getElementById("splash-status-text");
+            if (!bar) return;
+
+            let pct = 10;
+            const messages = [
+                "Calibrating Lunar Orbiter cameras...",
+                "Warming up Mars Rover wheels...",
+                "Tuning Voyager 1 deep space antenna...",
+                "Ready for Launch!"
+            ];
+
+            const timer = setInterval(function () {
+                pct += 30;
+                if (pct > 100) pct = 100;
+                bar.style.width = pct + "%";
+                const msgIdx = Math.min(Math.floor(pct / 30), messages.length - 1);
+                if (status) status.textContent = messages[msgIdx];
+
+                if (pct >= 100) {
+                    clearInterval(timer);
+                    setTimeout(finishNasaSplash, 350);
+                }
+            }, 650);
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", runSplash);
+        } else {
+            runSplash();
+        }
+    })();
+    </script>
+
     <script src="app.js"></script>
 
 </body>
