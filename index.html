@@ -1,442 +1,710 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MISSION ECHOES | AstroQuest — An Interactive Space Exploration Story</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <!-- Multi-Layered Cosmic Background Canvas -->
-  <canvas id="cosmos-canvas" aria-hidden="true"></canvas>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      MISSION ECHOES | AstroQuest — An Interactive Space Exploration Story
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Multi-Layered Cosmic Background Canvas -->
+    <canvas id="cosmos-canvas" aria-hidden="true"></canvas>
 
-  <!-- Top Navigation Bar -->
-  <header class="top-nav">
-    <div class="brand-cluster" onclick="navigateTo('home')">
-      <div class="brand-emblem">
-        <span class="pulse-ring"></span>
-        <svg viewBox="0 0 36 36" width="28" height="28" fill="none">
-          <circle cx="18" cy="18" r="15" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/>
-          <circle cx="18" cy="18" r="6" fill="#f59e0b"/>
-          <path d="M6 26C11 19 25 19 30 10" stroke="#a855f7" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="30" cy="10" r="2.5" fill="#38bdf8"/>
-        </svg>
-      </div>
-      <div>
-        <span class="brand-title">MISSION ECHOES</span>
-        <span class="brand-sub">DEEP SPACE HERITAGE ARCHIVE • ASTROQUEST</span>
-      </div>
-    </div>
-
-    <nav class="nav-links" aria-label="Primary Navigation">
-      <button class="nav-btn active" id="nav-home" onclick="navigateTo('home')">
-        <span>🏠</span> Home
-      </button>
-      <button class="nav-btn" id="nav-map" onclick="navigateTo('map')">
-        <span>🗺️</span> Solar System Map
-      </button>
-      <button class="nav-btn" id="nav-badges" onclick="navigateTo('badges')">
-        <span>🏅</span> My Badges <span class="badge-pill" id="nav-badge-count">0/8</span>
-      </button>
-    </nav>
-
-    <div class="user-controls">
-      <button class="demo-unlock-btn" id="btn-unlock-all" onclick="toggleUnlockAll()" title="Toggle test mode to unlock all artifacts and Final Mission immediately">
-        🔓 Unlock All: OFF
-      </button>
-      <div class="xp-chip" title="Archivist Exploration XP">
-        <span>⚡</span> <span id="user-xp-display">0 XP</span>
-      </div>
-      <div id="auth-guest-zone">
-        <button class="btn-auth-open" onclick="openAuthModal('signin')">Sign In / Join Archive</button>
-      </div>
-      <div id="auth-user-zone" class="hidden">
-        <div class="user-chip">
-          <span class="status-dot"></span>
-          <span id="active-username-label">Archivist</span>
-          <span class="autosave-tag" id="autosave-indicator">✓ Saved</span>
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="brand-cluster" onclick="navigateTo('home')">
+        <div class="brand-emblem">
+          <span class="pulse-ring"></span>
+          <svg viewBox="0 0 36 36" width="28" height="28" fill="none">
+            <circle
+              cx="18"
+              cy="18"
+              r="15"
+              stroke="#38bdf8"
+              stroke-width="1.5"
+              stroke-dasharray="4 3"
+            />
+            <circle cx="18" cy="18" r="6" fill="#f59e0b" />
+            <path
+              d="M6 26C11 19 25 19 30 10"
+              stroke="#a855f7"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <circle cx="30" cy="10" r="2.5" fill="#38bdf8" />
+          </svg>
         </div>
-        <button class="btn-logout" onclick="handleLogout()" title="Sign Out">Sign Out</button>
+        <div>
+          <span class="brand-title">MISSION ECHOES</span>
+          <span class="brand-sub"
+            >DEEP SPACE HERITAGE ARCHIVE • ASTROQUEST</span
+          >
+        </div>
       </div>
-    </div>
-  </header>
 
-  <!-- =========================================================
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <button
+          class="nav-btn active"
+          id="nav-home"
+          onclick="navigateTo('home')"
+        >
+          <span>🏠</span> Home
+        </button>
+        <button class="nav-btn" id="nav-map" onclick="navigateTo('map')">
+          <span>🗺️</span> Solar System Map
+        </button>
+        <button class="nav-btn" id="nav-badges" onclick="navigateTo('badges')">
+          <span>🏅</span> My Badges
+          <span class="badge-pill" id="nav-badge-count">0/8</span>
+        </button>
+      </nav>
+
+      <div class="user-controls">
+        <button
+          class="demo-unlock-btn"
+          id="btn-unlock-all"
+          onclick="toggleUnlockAll()"
+          title="Toggle test mode to unlock all artifacts and Final Mission immediately"
+        >
+          🔓 Unlock All: OFF
+        </button>
+        <div class="xp-chip" title="Archivist Exploration XP">
+          <span>⚡</span> <span id="user-xp-display">0 XP</span>
+        </div>
+        <div id="auth-guest-zone">
+          <button class="btn-auth-open" onclick="openAuthModal('signin')">
+            Sign In / Join Archive
+          </button>
+        </div>
+        <div id="auth-user-zone" class="hidden">
+          <div class="user-chip">
+            <span class="status-dot"></span>
+            <span id="active-username-label">Archivist</span>
+            <span class="autosave-tag" id="autosave-indicator">✓ Saved</span>
+          </div>
+          <button class="btn-logout" onclick="handleLogout()" title="Sign Out">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =========================================================
        VIEW 1: HOME SCREEN (Strictly Non-Scrollable 100vh)
        ========================================================= -->
-  <main id="view-home" class="view-section active-view">
-    <div class="home-grid">
-      <!-- Left Narrative Hero Column -->
-      <section class="hero-content">
-        <div class="archive-transmission-pill">
-          <span class="live-beacon"></span>
-          NASA SPACE APPS 2026 • INTERACTIVE HARDWARE ARCHIVE
-        </div>
-        <h1 class="hero-headline">
-          Every Machine Has a <span class="gradient-text-cyan">Story.</span><br />
-          Every Mission Leaves a <span class="gradient-text-amber">Legacy.</span>
-        </h1>
-        <p class="hero-lead">
-          Since the 1960s, humanity has left robotic scouts, rovers, mirrors, and interstellar messengers across the Solar System. Step inside the <strong>Deep Space Heritage Archive</strong> with <strong>Captain Nova</strong> to hear their first-person <em>Echo Logs</em> and uncover the verified science they made possible.
-        </p>
-
-        <!-- 3-Chapter Frontier Preview Strip (Replaces old Fact Cards) -->
-        <div class="frontier-chapter-strip">
-          <div class="frontier-mini-card" onclick="openChapterDirectly(1)">
-            <span class="chapter-roman">CHAPTER I</span>
-            <strong>The Moon</strong>
-            <span>The First Footprints</span>
+    <main id="view-home" class="view-section active-view">
+      <div class="home-grid">
+        <!-- Left Narrative Hero Column -->
+        <section class="hero-content">
+          <div class="archive-transmission-pill">
+            <span class="live-beacon"></span>
+            NASA SPACE APPS 2026 • INTERACTIVE HARDWARE ARCHIVE
           </div>
-          <div class="frontier-mini-card" onclick="openChapterDirectly(2)">
-            <span class="chapter-roman">CHAPTER II</span>
-            <strong>Mars</strong>
-            <span>The Silent Explorers</span>
-          </div>
-          <div class="frontier-mini-card" onclick="openChapterDirectly(3)">
-            <span class="chapter-roman">CHAPTER III</span>
-            <strong>Deep Space</strong>
-            <span>Beyond the Horizon</span>
-          </div>
-        </div>
+          <h1 class="hero-headline">
+            Every Machine Has a <span class="gradient-text-cyan">Story.</span
+            ><br />
+            Every Mission Leaves a
+            <span class="gradient-text-amber">Legacy.</span>
+          </h1>
+          <p class="hero-lead">
+            Since the 1960s, humanity has left robotic scouts, rovers, mirrors,
+            and interstellar messengers across the Solar System. Step inside the
+            <strong>Deep Space Heritage Archive</strong> with
+            <strong>Captain Nova</strong> to hear their first-person
+            <em>Echo Logs</em> and uncover the verified science they made
+            possible.
+          </p>
 
-        <div class="hero-cta-row">
-          <button class="btn-primary-glow" onclick="navigateTo('map')">
-            🚀 Enter the Archive Map
-          </button>
-          <button class="btn-secondary-glass" onclick="startNextUnfinishedArtifact()">
-            📖 Resume Current Story
-          </button>
-          <button class="btn-secondary-glass" onclick="triggerNovaIntro()">
-            🔊 Hear Captain Nova's Briefing
-          </button>
-        </div>
-      </section>
-
-      <!-- Right Interactive Hologram / Archive Status Console -->
-      <aside class="hero-hologram-panel">
-        <div class="holo-card">
-          <div class="holo-header">
-            <span class="holo-tag">LIVE ARCHIVE TELEMETRY</span>
-            <span class="holo-epoch">EPOCH: NOV 2026</span>
-          </div>
-
-          <!-- Visual Solar System Orbits Graphic -->
-          <div class="holo-orrery">
-            <div class="orrery-sun"></div>
-            <div class="orrery-orbit orbit-moon">
-              <span class="orrery-node node-moon" title="Chapter I: The Moon (2 Artifacts)"></span>
+          <!-- 3-Chapter Frontier Preview Strip (Replaces old Fact Cards) -->
+          <div class="frontier-chapter-strip">
+            <div class="frontier-mini-card" onclick="openChapterDirectly(1)">
+              <span class="chapter-roman">CHAPTER I</span>
+              <strong>The Moon</strong>
+              <span>The First Footprints</span>
             </div>
-            <div class="orrery-orbit orbit-mars">
-              <span class="orrery-node node-mars" title="Chapter II: Mars (3 Artifacts)"></span>
+            <div class="frontier-mini-card" onclick="openChapterDirectly(2)">
+              <span class="chapter-roman">CHAPTER II</span>
+              <strong>Mars</strong>
+              <span>The Silent Explorers</span>
             </div>
-            <div class="orrery-orbit orbit-deep">
-              <span class="orrery-node node-deep" title="Chapter III: Deep Space (2 Artifacts)"></span>
+            <div class="frontier-mini-card" onclick="openChapterDirectly(3)">
+              <span class="chapter-roman">CHAPTER III</span>
+              <strong>Deep Space</strong>
+              <span>Beyond the Horizon</span>
             </div>
           </div>
 
-          <div class="holo-progress-box">
-            <div class="holo-progress-labels">
-              <span>Archive Stories Restored</span>
-              <strong id="home-progress-text">0 / 7 Artifacts</strong>
-            </div>
-            <div class="progress-bar-track">
-              <div class="progress-bar-fill" id="home-progress-bar" style="width: 0%"></div>
-            </div>
-            <p class="holo-layer-note">
-              <span class="pill-echo">Echo Log</span> First-person storytelling clearly paired with <span class="pill-record">Verified NASA Record</span> historical telemetry.
-            </p>
+          <div class="hero-cta-row">
+            <button class="btn-primary-glow" onclick="navigateTo('map')">
+              🚀 Enter the Archive Map
+            </button>
+            <button
+              class="btn-secondary-glass"
+              onclick="startNextUnfinishedArtifact()"
+            >
+              📖 Resume Current Story
+            </button>
+            <button class="btn-secondary-glass" onclick="triggerNovaIntro()">
+              🔊 Hear Captain Nova's Briefing
+            </button>
           </div>
-        </div>
-      </aside>
-    </div>
-  </main>
+        </section>
 
-  <!-- =========================================================
+        <!-- Right Interactive Hologram / Archive Status Console -->
+        <aside class="hero-hologram-panel">
+          <div class="holo-card">
+            <div class="holo-header">
+              <span class="holo-tag">LIVE ARCHIVE TELEMETRY</span>
+              <span class="holo-epoch">EPOCH: NOV 2026</span>
+            </div>
+
+            <!-- Visual Solar System Orbits Graphic -->
+            <div class="holo-orrery">
+              <div class="orrery-sun"></div>
+              <div class="orrery-orbit orbit-moon">
+                <span
+                  class="orrery-node node-moon"
+                  title="Chapter I: The Moon (2 Artifacts)"
+                ></span>
+              </div>
+              <div class="orrery-orbit orbit-mars">
+                <span
+                  class="orrery-node node-mars"
+                  title="Chapter II: Mars (3 Artifacts)"
+                ></span>
+              </div>
+              <div class="orrery-orbit orbit-deep">
+                <span
+                  class="orrery-node node-deep"
+                  title="Chapter III: Deep Space (2 Artifacts)"
+                ></span>
+              </div>
+            </div>
+
+            <div class="holo-progress-box">
+              <div class="holo-progress-labels">
+                <span>Archive Stories Restored</span>
+                <strong id="home-progress-text">0 / 7 Artifacts</strong>
+              </div>
+              <div class="progress-bar-track">
+                <div
+                  class="progress-bar-fill"
+                  id="home-progress-bar"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <p class="holo-layer-note">
+                <span class="pill-echo">Echo Log</span> First-person
+                storytelling clearly paired with
+                <span class="pill-record">Verified NASA Record</span> historical
+                telemetry.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- =========================================================
        VIEW 2: INTERACTIVE SOLAR SYSTEM MAP (3 Chapters + Final Mission)
        ========================================================= -->
-  <section id="view-map" class="view-section scrollable-view">
-    <div class="map-container">
-      <div class="map-top-banner">
-        <div>
-          <span class="section-eyebrow">SOLAR SYSTEM SIGNAL SCANNER</span>
-          <h2>Three Exploration Frontiers • Seven Hardware Stories</h2>
-          <p>Select an unlocked artifact node to experience its 8-part story and unlock its verification challenge. Complete all 7 artifacts (or enable <em>Unlock All</em>) to enter the <strong>Final Mission</strong>.</p>
+    <section id="view-map" class="view-section scrollable-view">
+      <div class="map-container">
+        <div class="map-top-banner">
+          <div>
+            <span class="section-eyebrow">SOLAR SYSTEM SIGNAL SCANNER</span>
+            <h2>Three Exploration Frontiers • Seven Hardware Stories</h2>
+            <p>
+              Select an unlocked artifact node to experience its 8-part story
+              and unlock its verification challenge. Complete all 7 artifacts
+              (or enable <em>Unlock All</em>) to enter the
+              <strong>Final Mission</strong>.
+            </p>
+          </div>
+          <div class="map-legend">
+            <span class="legend-item"
+              ><i class="dot dot-completed"></i> Restored</span
+            >
+            <span class="legend-item"
+              ><i class="dot dot-unlocked"></i> Signal Active</span
+            >
+            <span class="legend-item"
+              ><i class="dot dot-locked"></i> Encrypted</span
+            >
+          </div>
         </div>
-        <div class="map-legend">
-          <span class="legend-item"><i class="dot dot-completed"></i> Restored</span>
-          <span class="legend-item"><i class="dot dot-unlocked"></i> Signal Active</span>
-          <span class="legend-item"><i class="dot dot-locked"></i> Encrypted</span>
-        </div>
+
+        <!-- Dynamic 3-Chapter Map Grid -->
+        <div id="chapters-map-grid" class="chapters-map-grid"></div>
+
+        <!-- Final Mission Node: The Legacy of Space Exploration -->
+        <div id="final-mission-card" class="final-mission-banner"></div>
       </div>
+    </section>
 
-      <!-- Dynamic 3-Chapter Map Grid -->
-      <div id="chapters-map-grid" class="chapters-map-grid"></div>
-
-      <!-- Final Mission Node: The Legacy of Space Exploration -->
-      <div id="final-mission-card" class="final-mission-banner"></div>
-    </div>
-  </section>
-
-  <!-- =========================================================
+    <!-- =========================================================
        VIEW 3: ARTIFACT STORY THEATER & CHALLENGE VIEW
        ========================================================= -->
-  <section id="view-artifact" class="view-section scrollable-view">
-    <div class="artifact-theater-wrap">
-      <!-- Top Breadcrumb & Mode Bar -->
-      <div class="theater-topbar">
-        <button class="btn-back-map" onclick="navigateTo('map')">
-          ← Back to Solar System Map
-        </button>
-        <div class="artifact-chapter-crumb" id="artifact-crumb-label">
-          CHAPTER I • THE MOON
-        </div>
-        <div class="artifact-mode-tabs">
-          <button class="mode-tab active" id="tab-btn-learn" onclick="switchArtifactTab('learn')">
-            📖 1. Story &amp; Hardware Archive
+    <section id="view-artifact" class="view-section scrollable-view">
+      <div class="artifact-theater-wrap">
+        <!-- Top Breadcrumb & Mode Bar -->
+        <div class="theater-topbar">
+          <button class="btn-back-map" onclick="navigateTo('map')">
+            ← Back to Solar System Map
           </button>
-          <button class="mode-tab" id="tab-btn-challenge" onclick="switchArtifactTab('challenge')">
-            <span id="challenge-tab-lock-icon">🔒</span> 2. Verification Challenge
-          </button>
-        </div>
-      </div>
-
-      <!-- Artifact Hero Banner -->
-      <div class="artifact-hero-header" id="artifact-hero-header"></div>
-
-      <!-- TAB PANEL A: LEARN & STORYTELLING THEATER -->
-      <div id="panel-artifact-learn" class="artifact-tab-panel">
-        <!-- First-Person Echo Log Audio/Visual Theater Card -->
-        <div class="echo-log-stage" id="echo-log-stage"></div>
-
-        <!-- Story View Controls: Step-by-Step Story Beats vs Full Scroll -->
-        <div class="story-navigation-toolbar">
-          <div class="story-progress-indicator">
-            <span class="story-step-title">8-ACT NARRATIVE JOURNEY:</span>
-            <div class="story-step-dots" id="story-step-dots"></div>
+          <div class="artifact-chapter-crumb" id="artifact-crumb-label">
+            CHAPTER I • THE MOON
           </div>
-          <div class="story-view-toggle">
-            <button class="btn-view-mode active" id="btn-mode-beats" onclick="setStoryDisplayMode('beats')">
-              🎬 Story Theater (Step-by-Step)
+          <div class="artifact-mode-tabs">
+            <button
+              class="mode-tab active"
+              id="tab-btn-learn"
+              onclick="switchArtifactTab('learn')"
+            >
+              📖 1. Story &amp; Hardware Archive
             </button>
-            <button class="btn-view-mode" id="btn-mode-scroll" onclick="setStoryDisplayMode('scroll')">
-              📜 Read All 8 Sections
+            <button
+              class="mode-tab"
+              id="tab-btn-challenge"
+              onclick="switchArtifactTab('challenge')"
+            >
+              <span id="challenge-tab-lock-icon">🔒</span> 2. Verification
+              Challenge
             </button>
           </div>
         </div>
 
-        <!-- Dynamic 8-Part Story Content Container (A through H) -->
-        <div id="story-sections-container" class="story-sections-container"></div>
+        <!-- Artifact Hero Banner -->
+        <div class="artifact-hero-header" id="artifact-hero-header"></div>
 
-        <!-- Bottom Action Bar to Complete Learn & Unlock Challenge -->
-        <div class="learn-completion-footer" id="learn-completion-footer"></div>
+        <!-- TAB PANEL A: LEARN & STORYTELLING THEATER -->
+        <div id="panel-artifact-learn" class="artifact-tab-panel">
+          <!-- First-Person Echo Log Audio/Visual Theater Card -->
+          <div class="echo-log-stage" id="echo-log-stage"></div>
+
+          <!-- Story View Controls: Step-by-Step Story Beats vs Full Scroll -->
+          <div class="story-navigation-toolbar">
+            <div class="story-progress-indicator">
+              <span class="story-step-title">8-ACT NARRATIVE JOURNEY:</span>
+              <div class="story-step-dots" id="story-step-dots"></div>
+            </div>
+            <div class="story-view-toggle">
+              <button
+                class="btn-view-mode active"
+                id="btn-mode-beats"
+                onclick="setStoryDisplayMode('beats')"
+              >
+                🎬 Story Theater (Step-by-Step)
+              </button>
+              <button
+                class="btn-view-mode"
+                id="btn-mode-scroll"
+                onclick="setStoryDisplayMode('scroll')"
+              >
+                📜 Read All 8 Sections
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic 8-Part Story Content Container (A through H) -->
+          <div
+            id="story-sections-container"
+            class="story-sections-container"
+          ></div>
+
+          <!-- Bottom Action Bar to Complete Learn & Unlock Challenge -->
+          <div
+            class="learn-completion-footer"
+            id="learn-completion-footer"
+          ></div>
+        </div>
+
+        <!-- TAB PANEL B: VERIFICATION CHALLENGE (Quiz + Myth Decoder) -->
+        <div id="panel-artifact-challenge" class="artifact-tab-panel hidden">
+          <div id="challenge-content-box" class="challenge-content-box"></div>
+        </div>
       </div>
+    </section>
 
-      <!-- TAB PANEL B: VERIFICATION CHALLENGE (Quiz + Myth Decoder) -->
-      <div id="panel-artifact-challenge" class="artifact-tab-panel hidden">
-        <div id="challenge-content-box" class="challenge-content-box"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
+    <!-- =========================================================
        VIEW 4: FINAL MISSION — THE LEGACY OF SPACE EXPLORATION
        ========================================================= -->
-  <section id="view-final" class="view-section scrollable-view">
-    <div class="final-mission-wrap" id="final-mission-content"></div>
-  </section>
+    <section id="view-final" class="view-section scrollable-view">
+      <div class="final-mission-wrap" id="final-mission-content"></div>
+    </section>
 
-  <!-- =========================================================
+    <!-- =========================================================
        VIEW 5: DEDICATED "MY BADGES & ECHO THREADS" PAGE
        ========================================================= -->
-  <section id="view-badges" class="view-section scrollable-view">
-    <div class="badges-vault-container">
-      <div class="vault-header">
-        <div>
-          <span class="section-eyebrow">DEEP SPACE HERITAGE HALL</span>
-          <h2>My Mission Badges &amp; Echo Threads</h2>
-          <p>Every restored artifact story awards a verified archive emblem. Completing linked missions across chapters unlocks <strong>Echo Thread Cards</strong> showing how earlier machines made future missions possible.</p>
+    <section id="view-badges" class="view-section scrollable-view">
+      <div class="badges-vault-container">
+        <div class="vault-header">
+          <div>
+            <span class="section-eyebrow">DEEP SPACE HERITAGE HALL</span>
+            <h2>My Mission Badges &amp; Echo Threads</h2>
+            <p>
+              Every restored artifact story awards a verified archive emblem.
+              Completing linked missions across chapters unlocks
+              <strong>Echo Thread Cards</strong> showing how earlier machines
+              made future missions possible.
+            </p>
+          </div>
+          <div class="vault-stats-card">
+            <div class="vault-stat">
+              <span>Archivist Rank</span>
+              <strong id="vault-rank-title">Cadet Archivist</strong>
+            </div>
+            <div class="vault-stat">
+              <span>Badges Earned</span>
+              <strong id="vault-badges-ratio">0 / 8</strong>
+            </div>
+            <div class="vault-stat">
+              <span>Echo Threads</span>
+              <strong id="vault-threads-ratio">0 / 3</strong>
+            </div>
+          </div>
         </div>
-        <div class="vault-stats-card">
-          <div class="vault-stat">
-            <span>Archivist Rank</span>
-            <strong id="vault-rank-title">Cadet Archivist</strong>
-          </div>
-          <div class="vault-stat">
-            <span>Badges Earned</span>
-            <strong id="vault-badges-ratio">0 / 8</strong>
-          </div>
-          <div class="vault-stat">
-            <span>Echo Threads</span>
-            <strong id="vault-threads-ratio">0 / 3</strong>
-          </div>
-        </div>
+
+        <h3 class="vault-subheading">🏅 Mission Archive Badges (8 Total)</h3>
+        <div id="badges-grid" class="badges-grid"></div>
+
+        <h3 class="vault-subheading">
+          🔗 Cross-Mission Echo Threads (How Missions Connect)
+        </h3>
+        <div id="echo-threads-grid" class="echo-threads-grid"></div>
       </div>
+    </section>
 
-      <h3 class="vault-subheading">🏅 Mission Archive Badges (8 Total)</h3>
-      <div id="badges-grid" class="badges-grid"></div>
-
-      <h3 class="vault-subheading">🔗 Cross-Mission Echo Threads (How Missions Connect)</h3>
-      <div id="echo-threads-grid" class="echo-threads-grid"></div>
-    </div>
-  </section>
-
-  <!-- =========================================================
+    <!-- =========================================================
        FLOATING ANIMATED ASTRONAUT ("CAPTAIN NOVA") + SPEECH BUBBLE
        ========================================================= -->
-  <aside class="nova-companion-dock" aria-live="polite">
-    <div class="nova-speech-bubble" id="nova-speech-bubble">
-      <div class="nova-bubble-header">
-        <div class="nova-title-group">
-          <span class="nova-badge-dot"></span>
-          <strong>CAPTAIN NOVA</strong>
-          <span class="nova-role-tag">Chief Mission Archivist</span>
-        </div>
-        <div class="nova-audio-controls">
-          <div class="voice-equalizer" id="nova-equalizer" title="Voice Transmission Active">
-            <span></span><span></span><span></span><span></span>
+    <aside class="nova-companion-dock" aria-live="polite">
+      <div class="nova-speech-bubble" id="nova-speech-bubble">
+        <div class="nova-bubble-header">
+          <div class="nova-title-group">
+            <span class="nova-badge-dot"></span>
+            <strong>CAPTAIN NOVA</strong>
+            <span class="nova-role-tag">Chief Mission Archivist</span>
           </div>
-          <button class="nova-icon-btn" id="btn-nova-mute" onclick="toggleNovaVoice()" title="Toggle Voice Narration">
-            🔊
-          </button>
-          <button class="nova-icon-btn" onclick="replayNovaSpeech()" title="Replay Current Message">
-            ↻
-          </button>
-          <button class="nova-icon-btn" onclick="minimizeNovaBubble()" title="Minimize Bubble">
-            −
-          </button>
+          <div class="nova-audio-controls">
+            <div
+              class="voice-equalizer"
+              id="nova-equalizer"
+              title="Voice Transmission Active"
+            >
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <button
+              class="nova-icon-btn"
+              id="btn-nova-mute"
+              onclick="toggleNovaVoice()"
+              title="Toggle Voice Narration"
+            >
+              🔊
+            </button>
+            <button
+              class="nova-icon-btn"
+              onclick="replayNovaSpeech()"
+              title="Replay Current Message"
+            >
+              ↻
+            </button>
+            <button
+              class="nova-icon-btn"
+              onclick="minimizeNovaBubble()"
+              title="Minimize Bubble"
+            >
+              −
+            </button>
+          </div>
         </div>
+        <p class="nova-speech-text" id="nova-speech-text">
+          "Hey there, explorer! Welcome to MISSION ECHOES. I'm Captain
+          Nova—click me or any mission node to hear the stories of the machines
+          humanity left across the Solar System!"
+        </p>
       </div>
-      <p class="nova-speech-text" id="nova-speech-text">
-        "Hey there, explorer! Welcome to MISSION ECHOES. I'm Captain Nova—click me or any mission node to hear the stories of the machines humanity left across the Solar System!"
-      </p>
-    </div>
 
-    <!-- Animated SVG Astronaut Character -->
-    <button class="nova-avatar-btn" id="nova-avatar-btn" onclick="toggleNovaBubble()" title="Click to talk with Captain Nova">
-      <div class="nova-avatar-glow"></div>
-      <svg class="nova-svg" viewBox="0 0 120 135" width="84" height="94">
-        <defs>
-          <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0ea5e9" />
-            <stop offset="50%" stop-color="#1e1b4b" />
-            <stop offset="100%" stop-color="#f59e0b" />
-          </linearGradient>
-          <linearGradient id="suitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#f8fafc" />
-            <stop offset="100%" stop-color="#cbd5e1" />
-          </linearGradient>
-        </defs>
-        <!-- Jetpack Thruster Plumes -->
-        <ellipse class="thruster-flame flame-left" cx="38" cy="122" rx="6" ry="10" fill="#f59e0b" />
-        <ellipse class="thruster-flame flame-right" cx="82" cy="122" rx="6" ry="10" fill="#38bdf8" />
-        <!-- Backpack PLSS -->
-        <rect x="26" y="45" width="68" height="58" rx="12" fill="#64748b" stroke="#94a3b8" stroke-width="2" />
-        <!-- Antenna -->
-        <line x1="82" y1="20" x2="82" y2="8" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
-        <circle class="antenna-beacon" cx="82" cy="6" r="4.5" fill="#f59e0b" />
-        <!-- Left & Right Arms (Floating Waving Animation) -->
-        <g class="nova-arm-left">
-          <rect x="14" y="58" width="18" height="34" rx="9" transform="rotate(18 23 58)" fill="url(#suitGrad)" stroke="#475569" stroke-width="2"/>
-          <circle cx="15" cy="89" r="7" fill="#f59e0b"/>
-        </g>
-        <g class="nova-arm-right">
-          <rect x="88" y="54" width="18" height="34" rx="9" transform="rotate(-24 97 54)" fill="url(#suitGrad)" stroke="#475569" stroke-width="2"/>
-          <circle cx="107" cy="82" r="7" fill="#f59e0b"/>
-        </g>
-        <!-- Torso & Chest Mission Patch -->
-        <rect x="32" y="56" width="56" height="50" rx="16" fill="url(#suitGrad)" stroke="#475569" stroke-width="2.5" />
-        <rect x="44" y="68" width="32" height="20" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" />
-        <circle cx="52" cy="78" r="3" fill="#22c55e" />
-        <circle cx="60" cy="78" r="3" fill="#f59e0b" />
-        <circle cx="68" cy="78" r="3" fill="#38bdf8" />
-        <!-- Helmet -->
-        <circle cx="60" cy="36" r="26" fill="url(#suitGrad)" stroke="#475569" stroke-width="2.5" />
-        <!-- Visor -->
-        <rect x="39" y="21" width="42" height="28" rx="14" fill="url(#visorGrad)" stroke="#38bdf8" stroke-width="2" />
-        <!-- Visor Reflection & Animated Speaking Mouth Wave -->
-        <path d="M45 26 Q54 23 64 26" stroke="rgba(255,255,255,0.65)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-        <ellipse class="nova-visor-mouth" cx="60" cy="40" rx="8" ry="2.5" fill="#38bdf8" />
-      </svg>
-    </button>
-  </aside>
+      <!-- Animated SVG Astronaut Character -->
+      <button
+        class="nova-avatar-btn"
+        id="nova-avatar-btn"
+        onclick="toggleNovaBubble()"
+        title="Click to talk with Captain Nova"
+      >
+        <div class="nova-avatar-glow"></div>
+        <svg class="nova-svg" viewBox="0 0 120 135" width="84" height="94">
+          <defs>
+            <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0ea5e9" />
+              <stop offset="50%" stop-color="#1e1b4b" />
+              <stop offset="100%" stop-color="#f59e0b" />
+            </linearGradient>
+            <linearGradient id="suitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#f8fafc" />
+              <stop offset="100%" stop-color="#cbd5e1" />
+            </linearGradient>
+          </defs>
+          <!-- Jetpack Thruster Plumes -->
+          <ellipse
+            class="thruster-flame flame-left"
+            cx="38"
+            cy="122"
+            rx="6"
+            ry="10"
+            fill="#f59e0b"
+          />
+          <ellipse
+            class="thruster-flame flame-right"
+            cx="82"
+            cy="122"
+            rx="6"
+            ry="10"
+            fill="#38bdf8"
+          />
+          <!-- Backpack PLSS -->
+          <rect
+            x="26"
+            y="45"
+            width="68"
+            height="58"
+            rx="12"
+            fill="#64748b"
+            stroke="#94a3b8"
+            stroke-width="2"
+          />
+          <!-- Antenna -->
+          <line
+            x1="82"
+            y1="20"
+            x2="82"
+            y2="8"
+            stroke="#38bdf8"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <circle
+            class="antenna-beacon"
+            cx="82"
+            cy="6"
+            r="4.5"
+            fill="#f59e0b"
+          />
+          <!-- Left & Right Arms (Floating Waving Animation) -->
+          <g class="nova-arm-left">
+            <rect
+              x="14"
+              y="58"
+              width="18"
+              height="34"
+              rx="9"
+              transform="rotate(18 23 58)"
+              fill="url(#suitGrad)"
+              stroke="#475569"
+              stroke-width="2"
+            />
+            <circle cx="15" cy="89" r="7" fill="#f59e0b" />
+          </g>
+          <g class="nova-arm-right">
+            <rect
+              x="88"
+              y="54"
+              width="18"
+              height="34"
+              rx="9"
+              transform="rotate(-24 97 54)"
+              fill="url(#suitGrad)"
+              stroke="#475569"
+              stroke-width="2"
+            />
+            <circle cx="107" cy="82" r="7" fill="#f59e0b" />
+          </g>
+          <!-- Torso & Chest Mission Patch -->
+          <rect
+            x="32"
+            y="56"
+            width="56"
+            height="50"
+            rx="16"
+            fill="url(#suitGrad)"
+            stroke="#475569"
+            stroke-width="2.5"
+          />
+          <rect
+            x="44"
+            y="68"
+            width="32"
+            height="20"
+            rx="4"
+            fill="#1e293b"
+            stroke="#38bdf8"
+            stroke-width="1.5"
+          />
+          <circle cx="52" cy="78" r="3" fill="#22c55e" />
+          <circle cx="60" cy="78" r="3" fill="#f59e0b" />
+          <circle cx="68" cy="78" r="3" fill="#38bdf8" />
+          <!-- Helmet -->
+          <circle
+            cx="60"
+            cy="36"
+            r="26"
+            fill="url(#suitGrad)"
+            stroke="#475569"
+            stroke-width="2.5"
+          />
+          <!-- Visor -->
+          <rect
+            x="39"
+            y="21"
+            width="42"
+            height="28"
+            rx="14"
+            fill="url(#visorGrad)"
+            stroke="#38bdf8"
+            stroke-width="2"
+          />
+          <!-- Visor Reflection & Animated Speaking Mouth Wave -->
+          <path
+            d="M45 26 Q54 23 64 26"
+            stroke="rgba(255,255,255,0.65)"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            fill="none"
+          />
+          <ellipse
+            class="nova-visor-mouth"
+            cx="60"
+            cy="40"
+            rx="8"
+            ry="2.5"
+            fill="#38bdf8"
+          />
+        </svg>
+      </button>
+    </aside>
 
-  <!-- =========================================================
+    <!-- =========================================================
        AUTHENTICATION MODAL (Sign In / Sign Up with Strict Validation)
        ========================================================= -->
-  <div id="auth-modal-backdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-    <div class="auth-modal-card">
-      <button class="modal-close-btn" onclick="closeAuthModal()" aria-label="Close modal">✕</button>
-
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="tab-signin" onclick="switchAuthMode('signin')">Sign In</button>
-        <button class="auth-tab" id="tab-signup" onclick="switchAuthMode('signup')">Create Archivist ID</button>
-      </div>
-
-      <h3 id="auth-modal-title">Sign In to Mission Echoes</h3>
-      <p class="auth-subtitle" id="auth-modal-subtitle">
-        Enter your registered Archivist credentials to load and autosave your mission progress.
-      </p>
-
-      <!-- Inline Error / Alert Box (Prevents fake login redirect) -->
-      <div id="auth-alert-box" class="auth-alert-box hidden"></div>
-
-      <!-- Occupied Username Suggestions Box -->
-      <div id="username-suggestions-box" class="username-suggestions-box hidden">
-        <span>That username is already occupied! Try one of these available IDs:</span>
-        <div id="username-suggestion-chips" class="suggestion-chips"></div>
-      </div>
-
-      <form id="auth-form" onsubmit="handleAuthSubmit(event)" novalidate>
-        <div class="form-group">
-          <div class="label-row">
-            <label for="auth-username">Archivist Username (1–20 characters)</label>
-            <span id="username-char-count" class="char-counter">0 / 20</span>
-          </div>
-          <input
-            type="text"
-            id="auth-username"
-            maxlength="20"
-            placeholder="e.g., StarArchivist"
-            autocomplete="off"
-            oninput="validateAuthInputsLive()"
-          />
-          <small id="username-status-hint" class="field-hint">
-            Pre-occupied test accounts: <code>CaptainNova</code>, <code>Apollo11</code>, <code>Explorer1</code>
-          </small>
-        </div>
-
-        <div class="form-group">
-          <div class="label-row">
-            <label for="auth-password">Security Passcode (8–20 characters)</label>
-            <span id="password-char-count" class="char-counter">0 / 20</span>
-          </div>
-          <input
-            type="password"
-            id="auth-password"
-            maxlength="20"
-            placeholder="8-20 chars: 1 uppercase, 1 number, 1 symbol"
-            oninput="validateAuthInputsLive()"
-          />
-        </div>
-
-        <!-- Live Password Rule Checklist -->
-        <ul class="password-rules-list" id="password-rules-list">
-          <li id="rule-len"><span>○</span> 8 to 20 characters long</li>
-          <li id="rule-upper"><span>○</span> At least 1 uppercase letter (A–Z)</li>
-          <li id="rule-num"><span>○</span> At least 1 number (0–9)</li>
-          <li id="rule-sym"><span>○</span> At least 1 symbol (!@#$%^&amp;* etc.)</li>
-        </ul>
-
-        <button type="submit" class="btn-auth-submit" id="btn-auth-submit">
-          Authenticate &amp; Enter Archive
+    <div
+      id="auth-modal-backdrop"
+      class="modal-backdrop hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-modal-title"
+    >
+      <div class="auth-modal-card">
+        <button
+          class="modal-close-btn"
+          onclick="closeAuthModal()"
+          aria-label="Close modal"
+        >
+          ✕
         </button>
-      </form>
-    </div>
-  </div>
 
-  <script src="script.js"></script>
-</body>
+        <div class="auth-tabs">
+          <button
+            class="auth-tab active"
+            id="tab-signin"
+            onclick="switchAuthMode('signin')"
+          >
+            Sign In
+          </button>
+          <button
+            class="auth-tab"
+            id="tab-signup"
+            onclick="switchAuthMode('signup')"
+          >
+            Create Archivist ID
+          </button>
+        </div>
+
+        <h3 id="auth-modal-title">Sign In to Mission Echoes</h3>
+        <p class="auth-subtitle" id="auth-modal-subtitle">
+          Enter your registered Archivist credentials to load and autosave your
+          mission progress.
+        </p>
+
+        <!-- Inline Error / Alert Box (Prevents fake login redirect) -->
+        <div id="auth-alert-box" class="auth-alert-box hidden"></div>
+
+        <!-- Occupied Username Suggestions Box -->
+        <div
+          id="username-suggestions-box"
+          class="username-suggestions-box hidden"
+        >
+          <span
+            >That username is already occupied! Try one of these available
+            IDs:</span
+          >
+          <div id="username-suggestion-chips" class="suggestion-chips"></div>
+        </div>
+
+        <form id="auth-form" onsubmit="handleAuthSubmit(event)" novalidate>
+          <div class="form-group">
+            <div class="label-row">
+              <label for="auth-username"
+                >Archivist Username (1–20 characters)</label
+              >
+              <span id="username-char-count" class="char-counter">0 / 20</span>
+            </div>
+            <input
+              type="text"
+              id="auth-username"
+              maxlength="20"
+              placeholder="e.g., StarArchivist"
+              autocomplete="off"
+              oninput="validateAuthInputsLive()"
+            />
+            <small id="username-status-hint" class="field-hint">
+              Pre-occupied test accounts: <code>CaptainNova</code>,
+              <code>Apollo11</code>, <code>Explorer1</code>
+            </small>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="auth-password"
+                >Security Passcode (8–20 characters)</label
+              >
+              <span id="password-char-count" class="char-counter">0 / 20</span>
+            </div>
+            <input
+              type="password"
+              id="auth-password"
+              maxlength="20"
+              placeholder="8-20 chars: 1 uppercase, 1 number, 1 symbol"
+              oninput="validateAuthInputsLive()"
+            />
+          </div>
+
+          <!-- Live Password Rule Checklist -->
+          <ul class="password-rules-list" id="password-rules-list">
+            <li id="rule-len"><span>○</span> 8 to 20 characters long</li>
+            <li id="rule-upper">
+              <span>○</span> At least 1 uppercase letter (A–Z)
+            </li>
+            <li id="rule-num"><span>○</span> At least 1 number (0–9)</li>
+            <li id="rule-sym">
+              <span>○</span> At least 1 symbol (!@#$%^&amp;* etc.)
+            </li>
+          </ul>
+
+          <button type="submit" class="btn-auth-submit" id="btn-auth-submit">
+            Authenticate &amp; Enter Archive
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

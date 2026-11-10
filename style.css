@@ -20,12 +20,17 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   background-color: var(--bg-deep);
   color: var(--text-main);
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    "Plus Jakarta Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   overflow: hidden; /* Controlled per view so Home never scrolls */
 }
 
@@ -78,7 +83,7 @@ html, body {
 
 .brand-title {
   display: block;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-weight: 800;
   font-size: 1.05rem;
   letter-spacing: 0.08em;
@@ -87,7 +92,7 @@ html, body {
 
 .brand-sub {
   display: block;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.65rem;
   color: var(--cyan-glow);
   letter-spacing: 0.06em;
@@ -130,7 +135,7 @@ html, body {
   background: rgba(245, 158, 11, 0.2);
   border: 1px solid var(--amber-glow);
   color: #fde68a;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.72rem;
   padding: 0.1rem 0.45rem;
   border-radius: 999px;
@@ -146,7 +151,7 @@ html, body {
   background: rgba(168, 85, 247, 0.16);
   border: 1px solid rgba(168, 85, 247, 0.5);
   color: #e9d5ff;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.74rem;
   padding: 0.42rem 0.75rem;
   border-radius: 8px;
@@ -164,7 +169,7 @@ html, body {
   background: rgba(245, 158, 11, 0.14);
   border: 1px solid rgba(245, 158, 11, 0.45);
   color: #fde68a;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.78rem;
   font-weight: 700;
   padding: 0.42rem 0.75rem;
@@ -205,7 +210,7 @@ html, body {
 }
 
 .autosave-tag {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.68rem;
   color: #86efac;
   background: rgba(34, 197, 94, 0.14);
@@ -278,7 +283,7 @@ html, body {
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.4);
   color: var(--cyan-glow);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.74rem;
   font-weight: 600;
   padding: 0.35rem 0.85rem;
@@ -296,12 +301,19 @@ html, body {
 }
 
 @keyframes pulseBeacon {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.4); opacity: 0.5; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.5;
+  }
 }
 
 .hero-headline {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: clamp(1.9rem, 3.1vw, 3rem);
   line-height: 1.15;
   font-weight: 900;
@@ -353,7 +365,7 @@ html, body {
 
 .chapter-roman {
   display: block;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.66rem;
   color: var(--amber-glow);
   letter-spacing: 0.08em;
@@ -361,7 +373,7 @@ html, body {
 
 .frontier-mini-card strong {
   display: block;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.92rem;
   margin: 0.15rem 0;
   color: #fff;
@@ -384,7 +396,7 @@ html, body {
   border: none;
   padding: 0.78rem 1.35rem;
   border-radius: 10px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-weight: 700;
   font-size: 0.86rem;
   cursor: pointer;
@@ -426,7 +438,7 @@ html, body {
 .holo-header {
   display: flex;
   justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.72rem;
   color: var(--cyan-glow);
   margin-bottom: 0.75rem;
@@ -456,13 +468,29 @@ html, body {
   animation: spinOrbit linear infinite;
 }
 
-.orbit-moon { width: 76px; height: 76px; animation-duration: 14s; }
-.orbit-mars { width: 126px; height: 126px; animation-duration: 24s; }
-.orbit-deep { width: 176px; height: 176px; animation-duration: 38s; }
+.orbit-moon {
+  width: 76px;
+  height: 76px;
+  animation-duration: 14s;
+}
+.orbit-mars {
+  width: 126px;
+  height: 126px;
+  animation-duration: 24s;
+}
+.orbit-deep {
+  width: 176px;
+  height: 176px;
+  animation-duration: 38s;
+}
 
 @keyframes spinOrbit {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .orrery-node {
@@ -475,9 +503,18 @@ html, body {
   border-radius: 50%;
 }
 
-.node-moon { background: #e2e8f0; box-shadow: 0 0 10px #fff; }
-.node-mars { background: #f97316; box-shadow: 0 0 10px #f97316; }
-.node-deep { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
+.node-moon {
+  background: #e2e8f0;
+  box-shadow: 0 0 10px #fff;
+}
+.node-mars {
+  background: #f97316;
+  box-shadow: 0 0 10px #f97316;
+}
+.node-deep {
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
 
 .holo-progress-labels {
   display: flex;
@@ -548,14 +585,14 @@ html, body {
 }
 
 .section-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   color: var(--cyan-glow);
   letter-spacing: 0.1em;
 }
 
 .map-top-banner h2 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1.65rem;
   margin: 0.25rem 0;
 }
@@ -584,9 +621,17 @@ html, body {
   border-radius: 50%;
   display: inline-block;
 }
-.dot-completed { background: var(--emerald-glow); box-shadow: 0 0 8px var(--emerald-glow); }
-.dot-unlocked { background: var(--amber-glow); box-shadow: 0 0 8px var(--amber-glow); }
-.dot-locked { background: #64748b; }
+.dot-completed {
+  background: var(--emerald-glow);
+  box-shadow: 0 0 8px var(--emerald-glow);
+}
+.dot-unlocked {
+  background: var(--amber-glow);
+  box-shadow: 0 0 8px var(--amber-glow);
+}
+.dot-locked {
+  background: #64748b;
+}
 
 .chapters-map-grid {
   display: flex;
@@ -615,7 +660,7 @@ html, body {
 }
 
 .chapter-sector-title h3 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1.2rem;
   color: #fff;
 }
@@ -666,7 +711,7 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.72rem;
 }
 
@@ -680,12 +725,24 @@ html, body {
   border-radius: 999px;
   font-size: 0.68rem;
 }
-.status-restored { background: rgba(34, 197, 94, 0.18); color: #86efac; border: 1px solid #22c55e; }
-.status-ready { background: rgba(245, 158, 11, 0.18); color: #fde68a; border: 1px solid #f59e0b; }
-.status-locked { background: rgba(100, 116, 139, 0.25); color: #cbd5e1; border: 1px solid #64748b; }
+.status-restored {
+  background: rgba(34, 197, 94, 0.18);
+  color: #86efac;
+  border: 1px solid #22c55e;
+}
+.status-ready {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fde68a;
+  border: 1px solid #f59e0b;
+}
+.status-locked {
+  background: rgba(100, 116, 139, 0.25);
+  color: #cbd5e1;
+  border: 1px solid #64748b;
+}
 
 .node-title-group h4 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1.1rem;
   color: #fff;
   margin-bottom: 0.2rem;
@@ -709,7 +766,7 @@ html, body {
   border: 1px solid rgba(56, 189, 248, 0.2);
   padding: 0.45rem 0.65rem;
   border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.7rem;
   color: #93c5fd;
   display: flex;
@@ -719,7 +776,11 @@ html, body {
 
 /* Final Mission Banner on Map */
 .final-mission-banner {
-  background: linear-gradient(135deg, rgba(30, 27, 75, 0.92), rgba(15, 23, 42, 0.95));
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.92),
+    rgba(15, 23, 42, 0.95)
+  );
   border: 2px solid var(--amber-glow);
   border-radius: 18px;
   padding: 1.6rem 2rem;
@@ -764,7 +825,7 @@ html, body {
 }
 
 .artifact-chapter-crumb {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.78rem;
   color: var(--amber-glow);
   letter-spacing: 0.08em;
@@ -793,7 +854,11 @@ html, body {
 }
 
 .artifact-hero-header {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.88));
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.92),
+    rgba(30, 41, 59, 0.88)
+  );
   border: 1px solid rgba(56, 189, 248, 0.35);
   border-radius: 16px;
   padding: 1.4rem 1.75rem;
@@ -806,7 +871,7 @@ html, body {
 }
 
 .artifact-hero-title h2 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1.75rem;
   color: #fff;
 }
@@ -836,7 +901,7 @@ html, body {
   display: block;
   color: var(--text-muted);
   font-size: 0.68rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .spec-box strong {
@@ -845,7 +910,11 @@ html, body {
 
 /* First-Person Echo Log Stage Card */
 .echo-log-stage {
-  background: linear-gradient(135deg, rgba(46, 16, 101, 0.55), rgba(15, 23, 42, 0.94));
+  background: linear-gradient(
+    135deg,
+    rgba(46, 16, 101, 0.55),
+    rgba(15, 23, 42, 0.94)
+  );
   border: 1px solid rgba(168, 85, 247, 0.55);
   border-radius: 16px;
   padding: 1.35rem 1.65rem;
@@ -866,7 +935,7 @@ html, body {
   background: rgba(168, 85, 247, 0.25);
   border: 1px solid #c084fc;
   color: #f3e8ff;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.25rem 0.65rem;
@@ -877,7 +946,7 @@ html, body {
   background: rgba(56, 189, 248, 0.18);
   border: 1px solid #38bdf8;
   color: #bae6fd;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.7rem;
   font-weight: 600;
   padding: 0.22rem 0.6rem;
@@ -922,7 +991,7 @@ html, body {
 }
 
 .story-step-title {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.74rem;
   color: var(--cyan-glow);
 }
@@ -937,7 +1006,7 @@ html, body {
   background: rgba(30, 41, 59, 0.9);
   border: 1px solid rgba(148, 163, 184, 0.35);
   color: #cbd5e1;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.72rem;
   padding: 0.28rem 0.58rem;
   border-radius: 6px;
@@ -990,8 +1059,14 @@ html, body {
 }
 
 @keyframes fadeInStory {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .act-card-header {
@@ -1006,7 +1081,7 @@ html, body {
 }
 
 .act-letter-title {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1.15rem;
   color: var(--amber-glow);
 }
@@ -1031,7 +1106,7 @@ html, body {
 }
 
 .inspector-title {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.76rem;
   color: var(--cyan-glow);
   margin-bottom: 0.65rem;
@@ -1181,13 +1256,13 @@ html, body {
 }
 
 .vault-stat strong {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   color: var(--amber-glow);
   font-size: 1rem;
 }
 
 .vault-subheading {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1.15rem;
   margin: 1.25rem 0 0.9rem;
   color: var(--cyan-glow);
@@ -1211,7 +1286,11 @@ html, body {
 
 .badge-vault-card.earned {
   border-color: var(--amber-glow);
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(69, 26, 3, 0.35));
+  background: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(69, 26, 3, 0.35)
+  );
   box-shadow: 0 8px 25px rgba(245, 158, 11, 0.16);
 }
 
@@ -1309,7 +1388,9 @@ html, body {
   border: 1.5px solid var(--cyan-glow);
   border-radius: 16px 16px 4px 16px;
   padding: 0.85rem 1.05rem;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(56, 189, 248, 0.25);
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.75),
+    0 0 20px rgba(56, 189, 248, 0.25);
   transition: all 0.25s ease;
 }
 
@@ -1338,7 +1419,7 @@ html, body {
 
 .nova-role-tag {
   color: var(--amber-glow);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.66rem;
 }
 
@@ -1385,14 +1466,26 @@ html, body {
   border-radius: 2px;
 }
 
-.voice-equalizer.speaking span:nth-child(1) { animation: eqBounce 0.45s infinite alternate; }
-.voice-equalizer.speaking span:nth-child(2) { animation: eqBounce 0.35s 0.1s infinite alternate; }
-.voice-equalizer.speaking span:nth-child(3) { animation: eqBounce 0.5s 0.2s infinite alternate; }
-.voice-equalizer.speaking span:nth-child(4) { animation: eqBounce 0.4s 0.15s infinite alternate; }
+.voice-equalizer.speaking span:nth-child(1) {
+  animation: eqBounce 0.45s infinite alternate;
+}
+.voice-equalizer.speaking span:nth-child(2) {
+  animation: eqBounce 0.35s 0.1s infinite alternate;
+}
+.voice-equalizer.speaking span:nth-child(3) {
+  animation: eqBounce 0.5s 0.2s infinite alternate;
+}
+.voice-equalizer.speaking span:nth-child(4) {
+  animation: eqBounce 0.4s 0.15s infinite alternate;
+}
 
 @keyframes eqBounce {
-  from { height: 3px; }
-  to { height: 12px; }
+  from {
+    height: 3px;
+  }
+  to {
+    height: 12px;
+  }
 }
 
 .nova-avatar-btn {
@@ -1405,8 +1498,13 @@ html, body {
 }
 
 @keyframes novaFloat {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-9px) rotate(2deg); }
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(2deg);
+  }
 }
 
 .nova-companion-dock.is-speaking .nova-visor-mouth {
@@ -1414,8 +1512,14 @@ html, body {
 }
 
 @keyframes visorTalk {
-  from { ry: 1.5; fill: #38bdf8; }
-  to { ry: 5.5; fill: #fde047; }
+  from {
+    ry: 1.5;
+    fill: #38bdf8;
+  }
+  to {
+    ry: 5.5;
+    fill: #fde047;
+  }
 }
 
 /* =========================================================
@@ -1518,7 +1622,7 @@ html, body {
   color: #bae6fd;
   padding: 0.22rem 0.55rem;
   border-radius: 6px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.74rem;
   cursor: pointer;
 }
@@ -1536,7 +1640,7 @@ html, body {
 }
 
 .char-counter {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.72rem;
   color: var(--cyan-glow);
 }
@@ -1584,7 +1688,7 @@ html, body {
   border: none;
   padding: 0.75rem;
   border-radius: 10px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-weight: 700;
   cursor: pointer;
 }

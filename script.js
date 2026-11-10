@@ -10,23 +10,29 @@ const CHAPTERS_META = [
     id: 1,
     roman: "CHAPTER I",
     title: "The Moon — The First Footprints",
-    theme: "The machines that prepared the way for human exploration of the Moon—and the passive instruments left behind that still operate without a battery today.",
-    transitionOut: "On the Moon, radio signals take only 1.28 seconds from Earth. Next, we journey to Mars—where signals take up to 20 minutes, requiring machines with wheels, rotors, and brains of their own!"
+    theme:
+      "The machines that prepared the way for human exploration of the Moon—and the passive instruments left behind that still operate without a battery today.",
+    transitionOut:
+      "On the Moon, radio signals take only 1.28 seconds from Earth. Next, we journey to Mars—where signals take up to 20 minutes, requiring machines with wheels, rotors, and brains of their own!",
   },
   {
     id: 2,
     roman: "CHAPTER II",
     title: "Mars — The Silent Explorers",
-    theme: "The robotic trailblazers that drove across another planet, discovered ancient water environments, and achieved the first powered flight in alien skies.",
-    transitionOut: "Every machine on the Moon and Mars relied on bright sunlight. Now, travel past the asteroid belt into Deep Space—where the Sun shrinks to a cold point of light and nuclear-powered explorers journey toward the stars."
+    theme:
+      "The robotic trailblazers that drove across another planet, discovered ancient water environments, and achieved the first powered flight in alien skies.",
+    transitionOut:
+      "Every machine on the Moon and Mars relied on bright sunlight. Now, travel past the asteroid belt into Deep Space—where the Sun shrinks to a cold point of light and nuclear-powered explorers journey toward the stars.",
   },
   {
     id: 3,
     roman: "CHAPTER III",
     title: "Deep Space — Beyond the Horizon",
-    theme: "The spacecraft whose journeys extended far beyond their original missions—one still hurtling through interstellar space, and another that sacrificed itself to protect alien oceans.",
-    transitionOut: "All seven artifact logs are restored! You have unlocked the Final Mission: The Legacy of Space Exploration."
-  }
+    theme:
+      "The spacecraft whose journeys extended far beyond their original missions—one still hurtling through interstellar space, and another that sacrificed itself to protect alien oceans.",
+    transitionOut:
+      "All seven artifact logs are restored! You have unlocked the Final Mission: The Legacy of Space Exploration.",
+  },
 ];
 
 /* 7 Featured Artifacts with all 8 Mandatory Story Acts (A-H), Hardware Hotspots, Quiz & Myth Check */
@@ -50,76 +56,88 @@ const ARTIFACTS_DATA = [
       {
         part: "Pantograph Soil Scoop",
         what: "A motorized scissor-like mechanical arm extending 1.5 meters with a sharpened scoop door.",
-        why: "Built to dig trenches up to 18 cm deep and crush soil clods in front of the camera so engineers could measure the bearing strength of lunar dust."
+        why: "Built to dig trenches up to 18 cm deep and crush soil clods in front of the camera so engineers could measure the bearing strength of lunar dust.",
       },
       {
         part: "Tilting-Mirror TV Camera",
         what: "A vertically mounted television camera aimed upward into a rotating, tilting beryllium mirror.",
-        why: "Allowed the lander to scan a full 360-degree panorama without moving the heavy camera body—later snipped off by Apollo 12 astronauts and returned to Earth!"
+        why: "Allowed the lander to scan a full 360-degree panorama without moving the heavy camera body—later snipped off by Apollo 12 astronauts and returned to Earth!",
       },
       {
         part: "Crushable Honeycomb Footpads",
         what: "Three landing leg pads made of crushable aluminum honeycomb blocks.",
-        why: "Absorbed landing impact energy while leaving calibrated footprints in the dust to measure surface firmness."
-      }
+        why: "Absorbed landing impact energy while leaving calibrated footprints in the dust to measure surface firmness.",
+      },
     ],
     sections: [
       {
         code: "A",
         title: "Opening Scene",
-        content: "In April 1967, perched at an angle inside a shallow 200-meter crater on the Moon's vast volcanic plain Oceanus Procellarum (the Ocean of Storms), NASA's Surveyor 3 robotic lander became a cornerstone of the Space Age—and the only robotic spacecraft ever visited on another world by human astronauts."
+        content:
+          "In April 1967, perched at an angle inside a shallow 200-meter crater on the Moon's vast volcanic plain Oceanus Procellarum (the Ocean of Storms), NASA's Surveyor 3 robotic lander became a cornerstone of the Space Age—and the only robotic spacecraft ever visited on another world by human astronauts.",
       },
       {
         code: "B",
         title: "The Beginning",
-        content: "Before NASA could commit astronauts to landing on the Moon, scientists faced an urgent question: Would millions of years of meteoroid impacts turn the Moon's surface into a deep trap of powdery dust (regolith) that might swallow a heavy crewed lander like quicksand? Launched on April 17, 1967, atop an Atlas-Centaur rocket, Surveyor 3 arrived on April 20, 1967. During touchdown, bright rocks inside its crater confused its landing radar, keeping its vernier steering engines firing. Surveyor 3 bounced twice—rising 10 meters on the first bounce and 3 meters on the second—before engineers on Earth sent a manual engine cutoff command."
+        content:
+          "Before NASA could commit astronauts to landing on the Moon, scientists faced an urgent question: Would millions of years of meteoroid impacts turn the Moon's surface into a deep trap of powdery dust (regolith) that might swallow a heavy crewed lander like quicksand? Launched on April 17, 1967, atop an Atlas-Centaur rocket, Surveyor 3 arrived on April 20, 1967. During touchdown, bright rocks inside its crater confused its landing radar, keeping its vernier steering engines firing. Surveyor 3 bounced twice—rising 10 meters on the first bounce and 3 meters on the second—before engineers on Earth sent a manual engine cutoff command.",
       },
       {
         code: "C",
         title: "Inside the Machine",
-        content: "Standing 3 meters tall with a landed mass of 296 kilograms, Surveyor 3 was a tripod-shaped aluminum frame packed with rugged survival hardware. Click each component below to inspect how its engineering worked on the Moon."
+        content:
+          "Standing 3 meters tall with a landed mass of 296 kilograms, Surveyor 3 was a tripod-shaped aluminum frame packed with rugged survival hardware. Click each component below to inspect how its engineering worked on the Moon.",
       },
       {
         code: "D",
         title: "The Mission",
-        content: "Across two Earth weeks of blistering lunar daylight (April 20 to May 3, 1967), Surveyor 3 beamed back 6,315 television pictures. Operating for over 18 hours, its mechanical surface sampler dug four trenches, performed bearing-strength impact tests, and dumped lunar soil onto its footpad for close-up inspection. It even captured a solar eclipse caused by Earth passing directly in front of the Sun, revealing Earth's glowing twilight atmosphere from lunar soil."
+        content:
+          "Across two Earth weeks of blistering lunar daylight (April 20 to May 3, 1967), Surveyor 3 beamed back 6,315 television pictures. Operating for over 18 hours, its mechanical surface sampler dug four trenches, performed bearing-strength impact tests, and dumped lunar soil onto its footpad for close-up inspection. It even captured a solar eclipse caused by Earth passing directly in front of the Sun, revealing Earth's glowing twilight atmosphere from lunar soil.",
       },
       {
         code: "E",
         title: "The Discoveries",
-        content: "Surveyor 3 proved that lunar regolith behaves much like damp beach sand: powdery in the top few millimeters, but firm and compact underneath—capable of supporting the 15-ton Apollo Lunar Module and walking astronauts. Its precise location also gave NASA the bullseye target needed to prove pinpoint crewed landing navigation."
+        content:
+          "Surveyor 3 proved that lunar regolith behaves much like damp beach sand: powdery in the top few millimeters, but firm and compact underneath—capable of supporting the 15-ton Apollo Lunar Module and walking astronauts. Its precise location also gave NASA the bullseye target needed to prove pinpoint crewed landing navigation.",
       },
       {
         code: "F",
         title: "The Final Chapter",
-        content: "On May 3, 1967, sunset plunged Surveyor 3 into the minus-150-degree-Celsius lunar night, permanently freezing its batteries. Classification: A machine that stopped functioning on a planetary surface and later had selected components returned to Earth. Thirty-one months later, on November 20, 1969, Apollo 12 astronauts Pete Conrad and Alan Bean landed their Lunar Module Intrepid just 163 meters away, walked down into Surveyor Crater, photographed the tanned spacecraft, and used cable cutters to bring its TV camera and scoop home to Earth."
+        content:
+          "On May 3, 1967, sunset plunged Surveyor 3 into the minus-150-degree-Celsius lunar night, permanently freezing its batteries. Classification: A machine that stopped functioning on a planetary surface and later had selected components returned to Earth. Thirty-one months later, on November 20, 1969, Apollo 12 astronauts Pete Conrad and Alan Bean landed their Lunar Module Intrepid just 163 meters away, walked down into Surveyor Crater, photographed the tanned spacecraft, and used cable cutters to bring its TV camera and scoop home to Earth.",
       },
       {
         code: "G",
         title: "Where It Is Now",
-        content: "Surveyor 3's three-legged frame, solar panel, and thermal boxes remain sitting silently inside Surveyor Crater in Oceanus Procellarum (2.99°S, 23.34°W), right beside the discarded descent stage of Apollo 12's Lunar Module Intrepid. Meanwhile, Surveyor 3's retrieved television camera is on permanent public display at the Smithsonian National Air and Space Museum in Washington, D.C."
+        content:
+          "Surveyor 3's three-legged frame, solar panel, and thermal boxes remain sitting silently inside Surveyor Crater in Oceanus Procellarum (2.99°S, 23.34°W), right beside the discarded descent stage of Apollo 12's Lunar Module Intrepid. Meanwhile, Surveyor 3's retrieved television camera is on permanent public display at the Smithsonian National Air and Space Museum in Washington, D.C.",
       },
       {
         code: "H",
         title: "Its Legacy",
-        content: "Surveyor 3 bridged robotic scouting and human exploration. Studying its returned camera and aluminum tubes taught engineers how 31 months of solar radiation, thermal cycling, and micrometeorites affect spacecraft—data now guiding NASA's Artemis lunar surface habitats. Primary Source: NASA NSSDCA ID 1967-035A; NASA SP-284 (1972)."
-      }
+        content:
+          "Surveyor 3 bridged robotic scouting and human exploration. Studying its returned camera and aluminum tubes taught engineers how 31 months of solar radiation, thermal cycling, and micrometeorites affect spacecraft—data now guiding NASA's Artemis lunar surface habitats. Primary Source: NASA NSSDCA ID 1967-035A; NASA SP-284 (1972).",
+      },
     ],
     quiz: {
-      question: "Why did Apollo 12 astronauts Pete Conrad and Alan Bean walk over to Surveyor 3 in November 1969 and cut off its television camera?",
+      question:
+        "Why did Apollo 12 astronauts Pete Conrad and Alan Bean walk over to Surveyor 3 in November 1969 and cut off its television camera?",
       options: [
         "To repair Surveyor 3's solar panel so it could keep broadcasting",
         "To study how 31 months of harsh lunar exposure affected real spacecraft hardware",
-        "Because Apollo 12 forgot to bring its own surface camera from Earth"
+        "Because Apollo 12 forgot to bring its own surface camera from Earth",
       ],
       correctIndex: 1,
-      explanation: "Correct! Returning Surveyor 3's camera, scoop, and cabling after 31 months on the Moon gave engineers direct physical proof of how vacuum, radiation, and extreme temperature swings affect hardware."
+      explanation:
+        "Correct! Returning Surveyor 3's camera, scoop, and cabling after 31 months on the Moon gave engineers direct physical proof of how vacuum, radiation, and extreme temperature swings affect hardware.",
     },
     mythCheck: {
-      claim: "Surveyor 3 landed smoothly on the first try using fully automated AI.",
+      claim:
+        "Surveyor 3 landed smoothly on the first try using fully automated AI.",
       isTrue: false,
-      truthExplanation: "FALSE! Glare from lunar rocks confused its landing radar, causing Surveyor 3's engines to stay on and bounce the spacecraft twice before engineers on Earth sent a manual cutoff command."
-    }
+      truthExplanation:
+        "FALSE! Glare from lunar rocks confused its landing radar, causing Surveyor 3's engines to stay on and bounce the spacecraft twice before engineers on Earth sent a manual cutoff command.",
+    },
   },
   {
     id: 2,
@@ -140,76 +158,88 @@ const ARTIFACTS_DATA = [
       {
         part: "100 Corner-Cube Quartz Prisms",
         what: "Recessed 3.8-cm three-sided corner-cube prisms ground from ultra-pure fused silica glass (300 prisms on Apollo 15's larger panel).",
-        why: "Unlike a flat mirror that bounces light away at an angle, a corner cube reflects light off three perpendicular faces straight back toward the exact telescope on Earth that fired it."
+        why: "Unlike a flat mirror that bounces light away at an angle, a corner cube reflects light off three perpendicular faces straight back toward the exact telescope on Earth that fired it.",
       },
       {
         part: "Recessed Thermal Sockets",
         what: "Machined aluminum cavities that shade each glass prism from direct sunlight.",
-        why: "Lunar temperatures swing by nearly 300°C between day and night; keeping the prisms thermally uniform prevents glass warping that would scatter the returning laser beam."
+        why: "Lunar temperatures swing by nearly 300°C between day and night; keeping the prisms thermally uniform prevents glass warping that would scatter the returning laser beam.",
       },
       {
         part: "Bubble Level & Sun-Compass Aiming Mount",
         what: "A mechanical levelingขา stand adjusted by hand by Moon-walking astronauts.",
-        why: "Allowed Neil Armstrong, Buzz Aldrin, and later crews to tilt the panel directly toward Earth with zero electrical motors."
-      }
+        why: "Allowed Neil Armstrong, Buzz Aldrin, and later crews to tilt the panel directly toward Earth with zero electrical motors.",
+      },
     ],
     sections: [
       {
         code: "A",
         title: "Opening Scene",
-        content: "Placed onto the dusty plains of Mare Tranquillitatis on July 21, 1969, by Apollo 11 astronauts (and joined by sister arrays on Apollo 14 and Apollo 15 in 1971), the Lunar Laser Ranging Retroreflector (LRRR) is the longest-running scientific experiment on the Moon."
+        content:
+          "Placed onto the dusty plains of Mare Tranquillitatis on July 21, 1969, by Apollo 11 astronauts (and joined by sister arrays on Apollo 14 and Apollo 15 in 1971), the Lunar Laser Ranging Retroreflector (LRRR) is the longest-running scientific experiment on the Moon.",
       },
       {
         code: "B",
         title: "The Beginning",
-        content: "Physicists wanted to measure the exact distance between Earth and the Moon to millimeter precision to test Einstein's theory of gravity and understand the Moon's interior. Active radio transponders would eventually run out of battery or nuclear power. Engineers solved this by designing a completely passive optical target that astronauts could deploy and aim toward Earth in minutes."
+        content:
+          "Physicists wanted to measure the exact distance between Earth and the Moon to millimeter precision to test Einstein's theory of gravity and understand the Moon's interior. Active radio transponders would eventually run out of battery or nuclear power. Engineers solved this by designing a completely passive optical target that astronauts could deploy and aim toward Earth in minutes.",
       },
       {
         code: "C",
         title: "Inside the Machine",
-        content: "In space hardware archiving, it is essential to distinguish a passive scientific instrument from an active spacecraft. The Retroreflector has no power supply, no transmitter, and no moving parts. Inspect its optical hardware below."
+        content:
+          "In space hardware archiving, it is essential to distinguish a passive scientific instrument from an active spacecraft. The Retroreflector has no power supply, no transmitter, and no moving parts. Inspect its optical hardware below.",
       },
       {
         code: "D",
         title: "The Mission",
-        content: "Observatories on Earth (such as Apache Point in New Mexico and Côte d'Azur in France) fire powerful laser pulses through telescopes toward the Apollo sites. Over the 384,400-kilometer trip, Earth's atmosphere spreads the beam to about 6.5 kilometers wide. Roughly 2.5 seconds later, the telescope on Earth detects a single returning photon out of 10^17 photons sent—calculating the Earth–Moon distance from the speed of light!"
+        content:
+          "Observatories on Earth (such as Apache Point in New Mexico and Côte d'Azur in France) fire powerful laser pulses through telescopes toward the Apollo sites. Over the 384,400-kilometer trip, Earth's atmosphere spreads the beam to about 6.5 kilometers wide. Roughly 2.5 seconds later, the telescope on Earth detects a single returning photon out of 10^17 photons sent—calculating the Earth–Moon distance from the speed of light!",
       },
       {
         code: "E",
         title: "The Discoveries",
-        content: "Five decades of laser ranging proved that the Moon is spiraling away from Earth at 3.8 centimeters (1.5 inches) per year due to ocean tidal friction. Tiny rotational wobbles also revealed that the Moon has a fluid outer core and confirmed Einstein's Strong Equivalence Principle—that gravity pulls equally on bodies of different composition—to extreme precision."
+        content:
+          "Five decades of laser ranging proved that the Moon is spiraling away from Earth at 3.8 centimeters (1.5 inches) per year due to ocean tidal friction. Tiny rotational wobbles also revealed that the Moon has a fluid outer core and confirmed Einstein's Strong Equivalence Principle—that gravity pulls equally on bodies of different composition—to extreme precision.",
       },
       {
         code: "F",
         title: "The Final Chapter",
-        content: "While NASA switched off the radio-powered Apollo Lunar Surface Experiments Package (ALSEP) stations on September 30, 1977, the Lunar Laser Retroreflectors have no final chapter. Classification: A passive scientific instrument remaining on a planetary surface and actively used for science today."
+        content:
+          "While NASA switched off the radio-powered Apollo Lunar Surface Experiments Package (ALSEP) stations on September 30, 1977, the Lunar Laser Retroreflectors have no final chapter. Classification: A passive scientific instrument remaining on a planetary surface and actively used for science today.",
       },
       {
         code: "G",
         title: "Where It Is Now",
-        content: "All three Apollo retroreflector arrays sit intact on the Moon at Mare Tranquillitatis (Apollo 11), Fra Mauro (Apollo 14), and Hadley Rille (Apollo 15), alongside two French-built reflectors carried on Soviet Lunokhod rovers. Even with a thin dusting of lunar fines, observatories range them weekly."
+        content:
+          "All three Apollo retroreflector arrays sit intact on the Moon at Mare Tranquillitatis (Apollo 11), Fra Mauro (Apollo 14), and Hadley Rille (Apollo 15), alongside two French-built reflectors carried on Soviet Lunokhod rovers. Even with a thin dusting of lunar fines, observatories range them weekly.",
       },
       {
         code: "H",
         title: "Its Legacy",
-        content: "The Apollo Retroreflectors proved that elegant optical geometry can outlast any electronic computer. Today, NASA mounts miniature dome-shaped Laser Retroreflector Arrays (LRAs) on modern commercial and international lunar landers so lunar orbiters can pinpoint their exact positions. Primary Source: NASA NSSDCA 1969-059C-04."
-      }
+        content:
+          "The Apollo Retroreflectors proved that elegant optical geometry can outlast any electronic computer. Today, NASA mounts miniature dome-shaped Laser Retroreflector Arrays (LRAs) on modern commercial and international lunar landers so lunar orbiters can pinpoint their exact positions. Primary Source: NASA NSSDCA 1969-059C-04.",
+      },
     ],
     quiz: {
-      question: "How is the Apollo Lunar Laser Retroreflector able to continue providing scientific data more than 55 years after deployment?",
+      question:
+        "How is the Apollo Lunar Laser Retroreflector able to continue providing scientific data more than 55 years after deployment?",
       options: [
         "It uses a miniature plutonium-238 nuclear battery that lasts 100 years",
         "It is a passive array of corner-cube quartz prisms that reflects laser pulses from Earth without needing any electricity",
-        "Astronauts replaced its solar panels during the Space Shuttle era"
+        "Astronauts replaced its solar panels during the Space Shuttle era",
       ],
       correctIndex: 1,
-      explanation: "Spot on! Corner-cube prisms rely purely on optical geometry—reflecting incoming laser photons straight back toward their source on Earth with zero power supply required."
+      explanation:
+        "Spot on! Corner-cube prisms rely purely on optical geometry—reflecting incoming laser photons straight back toward their source on Earth with zero power supply required.",
     },
     mythCheck: {
-      claim: "The Apollo Lunar Laser Retroreflector still works today because it uses a tiny nuclear battery.",
+      claim:
+        "The Apollo Lunar Laser Retroreflector still works today because it uses a tiny nuclear battery.",
       isTrue: false,
-      truthExplanation: "FALSE! It is a passive scientific instrument—not a powered spacecraft—and uses zero electricity, batteries, or wires."
-    }
+      truthExplanation:
+        "FALSE! It is a passive scientific instrument—not a powered spacecraft—and uses zero electricity, batteries, or wires.",
+    },
   },
   {
     id: 3,
@@ -230,81 +260,93 @@ const ARTIFACTS_DATA = [
       {
         part: "Rocker-Bogie 6-Wheel Suspension",
         what: "A springless articulated linkage connecting threecleated aluminum wheels on each side.",
-        why: "Kept all six wheels pressed evenly against jagged Martian rocks so the rover could climb obstacles taller than a wheel without tipping over—now the blueprint for every NASA Mars rover."
+        why: "Kept all six wheels pressed evenly against jagged Martian rocks so the rover could climb obstacles taller than a wheel without tipping over—now the blueprint for every NASA Mars rover.",
       },
       {
         part: "APXS Chemical Rock Sensor",
         what: "The Alpha Particle X-Ray Spectrometer mounted on an extendable nose bracket (built with Germany's Max Planck Institute and the University of Chicago).",
-        why: "Pressed against Martian rocks like 'Barnacle Bill' and 'Yogi' to identify the exact chemical elements inside Martian stone."
+        why: "Pressed against Martian rocks like 'Barnacle Bill' and 'Yogi' to identify the exact chemical elements inside Martian stone.",
       },
       {
         part: "5-Stripe Laser Hazard Detector",
         what: "Five red laser projectors paired with stereo front cameras and a 2-MHz Intel 80C85 CPU.",
-        why: "Because radio signals took over 10 minutes to travel from Earth, Sojourner watched how laser stripes bent over boulders to steer around hazards by itself."
+        why: "Because radio signals took over 10 minutes to travel from Earth, Sojourner watched how laser stripes bent over boulders to steer around hazards by itself.",
       },
       {
         part: "Silica Aerogel Insulation",
         what: "Ultra-lightweight 'frozen smoke' insulation (99.8% air by volume) lining the warm electronics box.",
-        why: "Trapped daytime heat so the rover's computer and batteries survived minus-100°C Martian nights without heavy heaters."
-      }
+        why: "Trapped daytime heat so the rover's computer and batteries survived minus-100°C Martian nights without heavy heaters.",
+      },
     ],
     sections: [
       {
         code: "A",
         title: "Opening Scene",
-        content: "On July 5, 1997 (Sol 2 of the Mars Pathfinder mission), a six-wheeled robot no bigger than a microwave oven rolled down a steep metal ramp onto the rusty floodplains of Ares Vallis—becoming the first wheeled rover ever to explore another planet."
+        content:
+          "On July 5, 1997 (Sol 2 of the Mars Pathfinder mission), a six-wheeled robot no bigger than a microwave oven rolled down a steep metal ramp onto the rusty floodplains of Ares Vallis—becoming the first wheeled rover ever to explore another planet.",
       },
       {
         code: "B",
         title: "The Beginning",
-        content: "After the stationary Viking landers of 1976, 21 years passed without a successful Mars landing. NASA developed Mars Pathfinder and Sojourner (named by 12-year-old Valerie Ambroise after abolitionist Sojourner Truth) to prove that a low-cost, airbag-cushioned lander could deliver a mobile geologist to Mars. Launched December 4, 1996, Pathfinder hit the Martian atmosphere on July 4, 1997, discarded its heat shield and parachute nearby, inflated 24 giant airbags, and bounced at least 15 times across Ares Vallis before coming to rest."
+        content:
+          "After the stationary Viking landers of 1976, 21 years passed without a successful Mars landing. NASA developed Mars Pathfinder and Sojourner (named by 12-year-old Valerie Ambroise after abolitionist Sojourner Truth) to prove that a low-cost, airbag-cushioned lander could deliver a mobile geologist to Mars. Launched December 4, 1996, Pathfinder hit the Martian atmosphere on July 4, 1997, discarded its heat shield and parachute nearby, inflated 24 giant airbags, and bounced at least 15 times across Ares Vallis before coming to rest.",
       },
       {
         code: "C",
         title: "Inside the Machine",
-        content: "Weighing just 11.5 kilograms on Earth (4.3 kg in Martian gravity) and measuring 65 centimeters long, Sojourner relied on ingenious lightweight engineering. Click its components below to see how it worked."
+        content:
+          "Weighing just 11.5 kilograms on Earth (4.3 kg in Martian gravity) and measuring 65 centimeters long, Sojourner relied on ingenious lightweight engineering. Click its components below to see how it worked.",
       },
       {
         code: "D",
         title: "The Mission",
-        content: "Designed for a 7-sol technology demonstration, Sojourner operated for 83 sols—nearly 12 times its planned lifespan! Communicating via a short-range UHF radio with its base station (the Carl Sagan Memorial Station lander), Sojourner drove 104 meters, never straying more than 12 meters from the lander while inspecting rocks nicknamed 'Barnacle Bill,' 'Yogi,' 'Scooby Doo,' and 'Shark.'"
+        content:
+          "Designed for a 7-sol technology demonstration, Sojourner operated for 83 sols—nearly 12 times its planned lifespan! Communicating via a short-range UHF radio with its base station (the Carl Sagan Memorial Station lander), Sojourner drove 104 meters, never straying more than 12 meters from the lander while inspecting rocks nicknamed 'Barnacle Bill,' 'Yogi,' 'Scooby Doo,' and 'Shark.'",
       },
       {
         code: "E",
         title: "The Discoveries",
-        content: "Using its APXS spectrometer, Sojourner revealed that several Ares Vallis rocks were rich in silica (similar to volcanic andesites on Earth), while rounded pebbles and flood deposits confirmed that catastrophic ancient floods once carved the Ares Vallis channel."
+        content:
+          "Using its APXS spectrometer, Sojourner revealed that several Ares Vallis rocks were rich in silica (similar to volcanic andesites on Earth), while rounded pebbles and flood deposits confirmed that catastrophic ancient floods once carved the Ares Vallis channel.",
       },
       {
         code: "F",
         title: "The Final Chapter",
-        content: "On September 27, 1997 (Sol 83), the Pathfinder base station transmitted its final signal after repeated freeze-thaw cycles caused the lander's battery to fail. Classification: A machine that remains on a planetary surface after its relay lander stopped functioning. Moving detail: Sojourner's fault-protection rules instructed the little rover to drive back toward the lander and circle it if radio link was lost, trying to reconnect with a base station that could no longer answer."
+        content:
+          "On September 27, 1997 (Sol 83), the Pathfinder base station transmitted its final signal after repeated freeze-thaw cycles caused the lander's battery to fail. Classification: A machine that remains on a planetary surface after its relay lander stopped functioning. Moving detail: Sojourner's fault-protection rules instructed the little rover to drive back toward the lander and circle it if radio link was lost, trying to reconnect with a base station that could no longer answer.",
       },
       {
         code: "G",
         title: "Where It Is Now",
-        content: "Sojourner and the Carl Sagan Memorial Station sit silently in Ares Vallis (19.13°N, 33.22°W), with Pathfinder's discarded heat shield and parachute nearby. NASA's Mars Reconnaissance Orbiter has photographed the lander and its deflated airbags from orbit."
+        content:
+          "Sojourner and the Carl Sagan Memorial Station sit silently in Ares Vallis (19.13°N, 33.22°W), with Pathfinder's discarded heat shield and parachute nearby. NASA's Mars Reconnaissance Orbiter has photographed the lander and its deflated airbags from orbit.",
       },
       {
         code: "H",
         title: "Its Legacy",
-        content: "Sojourner's 104-meter drive unlocked the entire surface of Mars. Every NASA Mars rover since—Spirit, Opportunity, Curiosity, and Perseverance—rides on a scaled-up version of Sojourner's six-wheeled rocker-bogie suspension. Primary Source: NASA NSSDCA ID 1996-068A."
-      }
+        content:
+          "Sojourner's 104-meter drive unlocked the entire surface of Mars. Every NASA Mars rover since—Spirit, Opportunity, Curiosity, and Perseverance—rides on a scaled-up version of Sojourner's six-wheeled rocker-bogie suspension. Primary Source: NASA NSSDCA ID 1996-068A.",
+      },
     ],
     quiz: {
-      question: "Why did Sojourner need a 5-stripe laser hazard detection system and onboard computer to steer around rocks by itself?",
+      question:
+        "Why did Sojourner need a 5-stripe laser hazard detection system and onboard computer to steer around rocks by itself?",
       options: [
         "Because radio signals take 10 to 20 minutes between Earth and Mars, making real-time joystick driving impossible",
         "Because NASA engineers forgot to install cameras on the Pathfinder lander",
-        "So it could drive at 60 kilometers per hour across Martian dunes"
+        "So it could drive at 60 kilometers per hour across Martian dunes",
       ],
       correctIndex: 0,
-      explanation: "Exactly! Light-time delay between Earth and Mars means a human driver on Earth would see a cliff 10+ minutes too late. Autonomous hazard avoidance made roving on Mars possible."
+      explanation:
+        "Exactly! Light-time delay between Earth and Mars means a human driver on Earth would see a cliff 10+ minutes too late. Autonomous hazard avoidance made roving on Mars possible.",
     },
     mythCheck: {
-      claim: "Sojourner communicated directly with giant antennas on Earth using its own dish antenna.",
+      claim:
+        "Sojourner communicated directly with giant antennas on Earth using its own dish antenna.",
       isTrue: false,
-      truthExplanation: "FALSE! Sojourner only carried a short-range UHF radio and relied on the Carl Sagan Memorial Station (Pathfinder lander) a few meters away to relay its data to Earth."
-    }
+      truthExplanation:
+        "FALSE! Sojourner only carried a short-range UHF radio and relied on the Carl Sagan Memorial Station (Pathfinder lander) a few meters away to relay its data to Earth.",
+    },
   },
   {
     id: 4,
@@ -325,76 +367,88 @@ const ARTIFACTS_DATA = [
       {
         part: "Pancam & Mini-TES Mast",
         what: "A neck-like mast standing 1.5 meters high (human eye level) holding stereo color Panoramic Cameras and an infrared thermal spectrometer.",
-        why: "Allowed Opportunity to scan crater rims in 3D color and spot water-bearing minerals from across a valley before driving over."
+        why: "Allowed Opportunity to scan crater rims in 3D color and spot water-bearing minerals from across a valley before driving over.",
       },
       {
         part: "Rock Abrasion Tool (RAT)",
         what: "A high-speed diamond-tipped grinding wheel mounted on the rover's 5-jointed robotic arm.",
-        why: "Ground 5-mm holes through dusty, weathered rock rinds so spectrometers and the Microscopic Imager could examine fresh interior stone."
+        why: "Ground 5-mm holes through dusty, weathered rock rinds so spectrometers and the Microscopic Imager could examine fresh interior stone.",
       },
       {
         part: "Dust-Swept Solar Array Wings",
         what: "Triple-junction gallium arsenide solar panels unfolding like wings across the rover's deck.",
-        why: "Generated up to 140 watts of power—and thanks to unexpected Martian wind gusts ('cleaning events'), kept Opportunity alive 55 times longer than planned!"
-      }
+        why: "Generated up to 140 watts of power—and thanks to unexpected Martian wind gusts ('cleaning events'), kept Opportunity alive 55 times longer than planned!",
+      },
     ],
     sections: [
       {
         code: "A",
         title: "Opening Scene",
-        content: "On January 25, 2004 UTC, wrapped in bouncing airbags, NASA's Opportunity rover scored a cosmic 'hole-in-one'—rolling across the flat plains of Meridiani Planum and coming to rest inside a 22-meter crater (Eagle Crater) right in front of exposed ancient bedrock."
+        content:
+          "On January 25, 2004 UTC, wrapped in bouncing airbags, NASA's Opportunity rover scored a cosmic 'hole-in-one'—rolling across the flat plains of Meridiani Planum and coming to rest inside a 22-meter crater (Eagle Crater) right in front of exposed ancient bedrock.",
       },
       {
         code: "B",
         title: "The Beginning",
-        content: "Orbital infrared maps had detected gray crystalline hematite—an iron mineral that usually forms in water—across Meridiani Planum. Launched July 7, 2003, Opportunity (twin to the Spirit rover in Gusev Crater) was sent to 'Follow the Water' and act as an all-in-one field geologist."
+        content:
+          "Orbital infrared maps had detected gray crystalline hematite—an iron mineral that usually forms in water—across Meridiani Planum. Launched July 7, 2003, Opportunity (twin to the Spirit rover in Gusev Crater) was sent to 'Follow the Water' and act as an all-in-one field geologist.",
       },
       {
         code: "C",
         title: "Inside the Machine",
-        content: "Weighing 185 kilograms—16 times heavier than Sojourner—Opportunity carried its own long-range X-band antenna to talk directly to Earth or relay through Mars orbiters. Click its geological instruments below."
+        content:
+          "Weighing 185 kilograms—16 times heavier than Sojourner—Opportunity carried its own long-range X-band antenna to talk directly to Earth or relay through Mars orbiters. Click its geological instruments below.",
       },
       {
         code: "D",
         title: "The Mission",
-        content: "Planned for 90 sols and 600 meters, Opportunity operated for 5,111 sols (nearly 15 Earth years)! Saved repeatedly by seasonal winds that blew dust off its solar panels, it escaped a 5-week sand trap at Purgatory Dune, explored Eagle, Endurance, and Victoria Craters, and reached the 22-km Endeavour Crater—becoming the first vehicle to complete a full 42.195-km marathon on another world (45.16 km total)."
+        content:
+          "Planned for 90 sols and 600 meters, Opportunity operated for 5,111 sols (nearly 15 Earth years)! Saved repeatedly by seasonal winds that blew dust off its solar panels, it escaped a 5-week sand trap at Purgatory Dune, explored Eagle, Endurance, and Victoria Craters, and reached the 22-km Endeavour Crater—becoming the first vehicle to complete a full 42.195-km marathon on another world (45.16 km total).",
       },
       {
         code: "E",
         title: "The Discoveries",
-        content: "Inside Eagle Crater, Opportunity discovered 'Martian blueberries'—tiny hematite spheres formed when mineral-rich groundwater soaked porous rock. Years later at Endeavour Crater, it discovered gypsum veins ('Homestake') and ancient clay minerals formed in neutral-pH, drinkable water capable of supporting ancient microbial life."
+        content:
+          "Inside Eagle Crater, Opportunity discovered 'Martian blueberries'—tiny hematite spheres formed when mineral-rich groundwater soaked porous rock. Years later at Endeavour Crater, it discovered gypsum veins ('Homestake') and ancient clay minerals formed in neutral-pH, drinkable water capable of supporting ancient microbial life.",
       },
       {
         code: "F",
         title: "The Final Chapter",
-        content: "In June 2018, a planet-encircling dust storm blotted out 99% of sunlight over Meridiani Planum. Opportunity sent its final signal on June 10, 2018 (Sol 5,111), and after beaming over 1,000 recovery commands, NASA declared its mission complete on February 13, 2019. Classification: A machine that stopped functioning on a planetary surface due to environmental power loss."
+        content:
+          "In June 2018, a planet-encircling dust storm blotted out 99% of sunlight over Meridiani Planum. Opportunity sent its final signal on June 10, 2018 (Sol 5,111), and after beaming over 1,000 recovery commands, NASA declared its mission complete on February 13, 2019. Classification: A machine that stopped functioning on a planetary surface due to environmental power loss.",
       },
       {
         code: "G",
         title: "Where It Is Now",
-        content: "Opportunity rests intact and silent in Perseverance Valley on the western rim of Endeavour Crater (2.80°S, 5.43°W). Miles back along its 45.16-km route lie its discarded 2004 heat shield (which Opportunity actually drove up to and photographed in 2004!) and its empty airbag lander platform in Eagle Crater."
+        content:
+          "Opportunity rests intact and silent in Perseverance Valley on the western rim of Endeavour Crater (2.80°S, 5.43°W). Miles back along its 45.16-km route lie its discarded 2004 heat shield (which Opportunity actually drove up to and photographed in 2004!) and its empty airbag lander platform in Eagle Crater.",
       },
       {
         code: "H",
         title: "Its Legacy",
-        content: "By proving ancient Mars had wet, habitable environments, Opportunity transformed Mars science from 'Was there water?' to 'Did life ever arise here?'—directly shaping the Curiosity and Perseverance rover missions. Primary Source: NASA NSSDCA ID 2003-032A."
-      }
+        content:
+          "By proving ancient Mars had wet, habitable environments, Opportunity transformed Mars science from 'Was there water?' to 'Did life ever arise here?'—directly shaping the Curiosity and Perseverance rover missions. Primary Source: NASA NSSDCA ID 2003-032A.",
+      },
     ],
     quiz: {
-      question: "What were the 'Martian blueberries' that Opportunity discovered inside Eagle Crater, and why did they matter?",
+      question:
+        "What were the 'Martian blueberries' that Opportunity discovered inside Eagle Crater, and why did they matter?",
       options: [
         "Fossilized berries from ancient Martian plants",
         "Hematite mineral concretions that formed inside water-soaked rock, proving liquid water once existed on Mars",
-        "Drops of melted metal from Opportunity's landing rockets"
+        "Drops of melted metal from Opportunity's landing rockets",
       ],
       correctIndex: 1,
-      explanation: "Correct! Those BB-sized hematite spheres (concretions) formed when groundwater percolated through porous rock billions of years ago, providing ground-truth proof of liquid water on Mars."
+      explanation:
+        "Correct! Those BB-sized hematite spheres (concretions) formed when groundwater percolated through porous rock billions of years ago, providing ground-truth proof of liquid water on Mars.",
     },
     mythCheck: {
-      claim: "Opportunity sent a final text message in English saying 'My battery is low and it's getting dark.'",
+      claim:
+        "Opportunity sent a final text message in English saying 'My battery is low and it's getting dark.'",
       isTrue: false,
-      truthExplanation: "FALSE! Opportunity transmitted numerical engineering telemetry showing critically low battery power and extreme atmospheric dust opacity (tau 10.8); science journalists translated that telemetry into the famous poetic phrase."
-    }
+      truthExplanation:
+        "FALSE! Opportunity transmitted numerical engineering telemetry showing critically low battery power and extreme atmospheric dust opacity (tau 10.8); science journalists translated that telemetry into the famous poetic phrase.",
+    },
   },
   {
     id: 5,
@@ -403,7 +457,8 @@ const ARTIFACTS_DATA = [
     subtitle: "The Little Helicopter That Changed Mars Exploration",
     era: "April 19, 2021 – January 18, 2024 • Jezero Crater, Mars",
     agency: "NASA / JPL-Caltech / AeroVironment",
-    statusShort: "Grounded in Neretva Vallis (Electronics Still Logging Weather)",
+    statusShort:
+      "Grounded in Neretva Vallis (Electronics Still Logging Weather)",
     signalPing: "FLIGHT ENDED (72 FLIGHTS) • LOCAL MEMORY LOGGING ACTIVE",
     badgeIcon: "🚁",
     badgeTitle: "First Alien Aviator",
@@ -415,76 +470,88 @@ const ARTIFACTS_DATA = [
       {
         part: "2,400-RPM Coaxial Carbon-Fiber Rotors",
         what: "Two counter-rotating 1.2-meter (4-foot) rotor blades filled with ultra-light structural foam and carbon fiber.",
-        why: "Because Mars's atmosphere has less than 1% of Earth's density, the blades had to spin at 2,400–2,537 RPM in opposite directions to generate lift without needing a heavy tail rotor."
+        why: "Because Mars's atmosphere has less than 1% of Earth's density, the blades had to spin at 2,400–2,537 RPM in opposite directions to generate lift without needing a heavy tail rotor.",
       },
       {
         part: "Downward Visual Navigation Camera & Snapdragon CPU",
         what: "A downward-pointing black-and-white camera tracking surface rocks 30 times a second, paired with a laser altimeter and a 500-Hz flight controller.",
-        why: "No human could pilot Ingenuity across a 15-minute radio delay; the helicopter had to balance and steer itself autonomously."
+        why: "No human could pilot Ingenuity across a 15-minute radio delay; the helicopter had to balance and steer itself autonomously.",
       },
       {
         part: "1903 Wright Flyer Wing Swatch",
         what: "A postage-stamp-sized piece of unbleached muslin fabric from the Wright brothers' 1903 airplane wrapped around a cable beneath the solar panel.",
-        why: "Honored the historic link between the first powered flight on Earth at Kitty Hawk (1903) and the first powered flight on another planet (2021)."
-      }
+        why: "Honored the historic link between the first powered flight on Earth at Kitty Hawk (1903) and the first powered flight on another planet (2021).",
+      },
     ],
     sections: [
       {
         code: "A",
         title: "Opening Scene",
-        content: "On April 19, 2021, on a flat patch of Martian dirt named Wright Brothers Field inside Jezero Crater, a 1.8-kilogram rotorcraft spun its twin carbon-fiber blades to 2,537 RPM, lifted three meters into the air, hovered, and landed safely—achieving the first powered, controlled flight by an aircraft on another planet."
+        content:
+          "On April 19, 2021, on a flat patch of Martian dirt named Wright Brothers Field inside Jezero Crater, a 1.8-kilogram rotorcraft spun its twin carbon-fiber blades to 2,537 RPM, lifted three meters into the air, hovered, and landed safely—achieving the first powered, controlled flight by an aircraft on another planet.",
       },
       {
         code: "B",
         title: "The Beginning",
-        content: "Rovers can inspect rocks up close, but steep boulders and soft sand traps slow them down. JPL engineers designed Ingenuity (named by student Vaneeza Rupani) as a pure technology demonstration carrying zero science instruments, aiming simply to prove that aerodynamic flight is possible in an atmosphere equivalent to 30,000 meters (100,000 feet) above Earth."
+        content:
+          "Rovers can inspect rocks up close, but steep boulders and soft sand traps slow them down. JPL engineers designed Ingenuity (named by student Vaneeza Rupani) as a pure technology demonstration carrying zero science instruments, aiming simply to prove that aerodynamic flight is possible in an atmosphere equivalent to 30,000 meters (100,000 feet) above Earth.",
       },
       {
         code: "C",
         title: "Inside the Machine",
-        content: "Every gram mattered: Ingenuity weighed just 1.8 kilograms on Earth (about the weight of a half-gallon carton of milk, and only 0.68 kg in Martian gravity). Two-thirds of its battery energy went simply to keeping its electronics warm at night. Explore its parts below."
+        content:
+          "Every gram mattered: Ingenuity weighed just 1.8 kilograms on Earth (about the weight of a half-gallon carton of milk, and only 0.68 kg in Martian gravity). Two-thirds of its battery energy went simply to keeping its electronics warm at night. Explore its parts below.",
       },
       {
         code: "D",
         title: "The Mission",
-        content: "Designed for just 5 flights over 30 sols, Ingenuity operated for nearly three Earth years! Promoted to an operational aerial scout for Perseverance, it survived freezing Martian winter nights through remote software patches and completed 72 total flights—logging 128.8 minutes aloft, covering 17.0 kilometers, and reaching 24 meters in altitude."
+        content:
+          "Designed for just 5 flights over 30 sols, Ingenuity operated for nearly three Earth years! Promoted to an operational aerial scout for Perseverance, it survived freezing Martian winter nights through remote software patches and completed 72 total flights—logging 128.8 minutes aloft, covering 17.0 kilometers, and reaching 24 meters in altitude.",
       },
       {
         code: "E",
         title: "The Discoveries",
-        content: "Ingenuity unlocked aerial planetary exploration—providing real-world aerodynamic data in thin carbon-dioxide air and scouting ancient river delta ridges in Neretva Vallis from above to save Perseverance weeks of risky driving."
+        content:
+          "Ingenuity unlocked aerial planetary exploration—providing real-world aerodynamic data in thin carbon-dioxide air and scouting ancient river delta ridges in Neretva Vallis from above to save Perseverance weeks of risky driving.",
       },
       {
         code: "F",
         title: "The Final Chapter",
-        content: "On January 18, 2024 (Flight 72), while flying over smooth, featureless sand ripples in Neretva Vallis that gave its downward navigation camera too few rock textures to track, Ingenuity made a hard landing that damaged the tips of its rotor blades. NASA officially ended its flight mission on January 25, 2024. Classification: A machine that remains upright on a planetary surface—grounded by rotor damage, yet with active electronics."
+        content:
+          "On January 18, 2024 (Flight 72), while flying over smooth, featureless sand ripples in Neretva Vallis that gave its downward navigation camera too few rock textures to track, Ingenuity made a hard landing that damaged the tips of its rotor blades. NASA officially ended its flight mission on January 25, 2024. Classification: A machine that remains upright on a planetary surface—grounded by rotor damage, yet with active electronics.",
       },
       {
         code: "G",
         title: "Where It Is Now",
-        content: "Ingenuity stands upright on a sandy slope at 'Valinor Hills' in Neretva Vallis, Jezero Crater. Before Perseverance drove out of radio range, JPL uploaded final software allowing Ingenuity to wake up each sol, check battery temperatures, and snap a daily surface photo—storing up to 20 years of local weather data in onboard memory for future astronauts to retrieve!"
+        content:
+          "Ingenuity stands upright on a sandy slope at 'Valinor Hills' in Neretva Vallis, Jezero Crater. Before Perseverance drove out of radio range, JPL uploaded final software allowing Ingenuity to wake up each sol, check battery temperatures, and snap a daily surface photo—storing up to 20 years of local weather data in onboard memory for future astronauts to retrieve!",
       },
       {
         code: "H",
         title: "Its Legacy",
-        content: "Just as Sojourner's 1997 wheel test led to giant rovers, Ingenuity's 72 flights birthed extraterrestrial aviation—inspiring future six-rotor Mars Chopper concepts and NASA's nuclear-powered Dragonfly rotorcraft mission to Saturn's moon Titan. Primary Source: NASA/JPL Mars Helicopter Archive."
-      }
+        content:
+          "Just as Sojourner's 1997 wheel test led to giant rovers, Ingenuity's 72 flights birthed extraterrestrial aviation—inspiring future six-rotor Mars Chopper concepts and NASA's nuclear-powered Dragonfly rotorcraft mission to Saturn's moon Titan. Primary Source: NASA/JPL Mars Helicopter Archive.",
+      },
     ],
     quiz: {
-      question: "What caused Ingenuity's 72nd and final flight to end in rotor blade damage on January 18, 2024?",
+      question:
+        "What caused Ingenuity's 72nd and final flight to end in rotor blade damage on January 18, 2024?",
       options: [
         "It flew over smooth, featureless sand ripples that gave its downward visual navigation camera too few surface features to track horizontal speed",
         "A Martian dust devil struck the helicopter in mid-air",
-        "Its solar panel detached during takeoff"
+        "Its solar panel detached during takeoff",
       ],
       correctIndex: 0,
-      explanation: "Correct! Ingenuity's downward navigation camera relies on tracking distinct rocks and surface textures to calculate velocity; the smooth sand ripples in Neretva Vallis confused its visual tracker during landing."
+      explanation:
+        "Correct! Ingenuity's downward navigation camera relies on tracking distinct rocks and surface textures to calculate velocity; the smooth sand ripples in Neretva Vallis confused its visual tracker during landing.",
     },
     mythCheck: {
-      claim: "Since Ingenuity broke its rotor blade in January 2024, its computer is completely dead.",
+      claim:
+        "Since Ingenuity broke its rotor blade in January 2024, its computer is completely dead.",
       isTrue: false,
-      truthExplanation: "FALSE! While Ingenuity can no longer fly, its solar panel and computer remain healthy—waking up daily to log temperature measurements and photos into its onboard memory for up to 20 years!"
-    }
+      truthExplanation:
+        "FALSE! While Ingenuity can no longer fly, its solar panel and computer remain healthy—waking up daily to log temperature measurements and photos into its onboard memory for up to 20 years!",
+    },
   },
   {
     id: 6,
@@ -493,7 +560,8 @@ const ARTIFACTS_DATA = [
     subtitle: "The Machine That Keeps Traveling",
     era: "Launched September 5, 1977 – Present • Interstellar Space",
     agency: "NASA / JPL-Caltech",
-    statusShort: "Active in Interstellar Space (~1 Light-Day from Earth in Nov 2026)",
+    statusShort:
+      "Active in Interstellar Space (~1 Light-Day from Earth in Nov 2026)",
     signalPing: "LIVE DOWNLINK • 24h LIGHT-TIME • MAG & PWS ONLINE",
     badgeIcon: "📀",
     badgeTitle: "Interstellar Messenger",
@@ -505,81 +573,92 @@ const ARTIFACTS_DATA = [
       {
         part: "Three Plutonium-238 RTGs",
         what: "Radioisotope Thermoelectric Generators mounted on a boom, converting heat from decaying plutonium-238 into electricity.",
-        why: "Sunlight in deep space is thousands of times too weak for solar panels; RTGs still power Voyager 1 nearly 50 years later (though losing ~4 watts per year)."
+        why: "Sunlight in deep space is thousands of times too weak for solar panels; RTGs still power Voyager 1 nearly 50 years later (though losing ~4 watts per year).",
       },
       {
         part: "The Voyager Golden Record",
         what: "A 12-inch gold-plated copper phonograph record inside an aluminum cover electroplated with ultra-pure uranium-238.",
-        why: "Curated by Carl Sagan's committee to carry 115 images, greetings in 55 languages, Earth sounds, and 90 minutes of music as a time capsule for any civilization that might find it."
+        why: "Curated by Carl Sagan's committee to carry 115 images, greetings in 55 languages, Earth sounds, and 90 minutes of music as a time capsule for any civilization that might find it.",
       },
       {
         part: "13-Meter Magnetometer Boom & Plasma Wave Antennas",
         what: "A long fiberglass boom holding magnetic field sensors (MAG) and twin 10-meter whip antennas (PWS).",
-        why: "The two remaining active instruments in late 2026—measuring the galactic magnetic field and interstellar plasma density outside the Sun's bubble."
+        why: "The two remaining active instruments in late 2026—measuring the galactic magnetic field and interstellar plasma density outside the Sun's bubble.",
       },
       {
         part: "3.7-Meter High-Gain Dish & 23-Watt Transmitter",
         what: "A 12-foot white parabolic dish antenna aimed continuously back toward Earth.",
-        why: "Focuses a 23-watt radio signal (no stronger than a refrigerator bulb!) across 25.9 billion kilometers to NASA's giant 70-meter Deep Space Network dishes."
-      }
+        why: "Focuses a 23-watt radio signal (no stronger than a refrigerator bulb!) across 25.9 billion kilometers to NASA's giant 70-meter Deep Space Network dishes.",
+      },
     ],
     sections: [
       {
         code: "A",
         title: "Opening Scene",
-        content: "Speeding through the cold dark between the stars at 17 kilometers per second (38,000 mph) toward the constellation Ophiuchus, NASA's Voyager 1 is the farthest human-made object in history—reaching the landmark distance of one full light-day (25.9 billion kilometers / 173 AU) from Earth in November 2026."
+        content:
+          "Speeding through the cold dark between the stars at 17 kilometers per second (38,000 mph) toward the constellation Ophiuchus, NASA's Voyager 1 is the farthest human-made object in history—reaching the landmark distance of one full light-day (25.9 billion kilometers / 173 AU) from Earth in November 2026.",
       },
       {
         code: "B",
         title: "The Beginning",
-        content: "In the 1960s, aerospace engineer Gary Flandro discovered that the four giant outer planets line up once every 176 years, allowing a spacecraft to use each planet's gravity like a slingshot ('gravity assist'). Launched September 5, 1977 (16 days after its twin Voyager 2), Voyager 1 raced past Jupiter in March 1979 and Saturn in November 1980."
+        content:
+          "In the 1960s, aerospace engineer Gary Flandro discovered that the four giant outer planets line up once every 176 years, allowing a spacecraft to use each planet's gravity like a slingshot ('gravity assist'). Launched September 5, 1977 (16 days after its twin Voyager 2), Voyager 1 raced past Jupiter in March 1979 and Saturn in November 1980.",
       },
       {
         code: "C",
         title: "Inside the Machine",
-        content: "Voyager 1 has a mass of 722 kilograms and runs on three redundant 1970s computer systems with just 69.63 kilobytes of total memory—recording onto an 8-track digital magnetic tape recorder! Inspect its deep-space hardware below."
+        content:
+          "Voyager 1 has a mass of 722 kilograms and runs on three redundant 1970s computer systems with just 69.63 kilobytes of total memory—recording onto an 8-track digital magnetic tape recorder! Inspect its deep-space hardware below.",
       },
       {
         code: "D",
         title: "The Mission",
-        content: "After close flybys of Jupiter, Saturn, and Saturn's hazy moon Titan (which slung Voyager 1 35 degrees northward out of the planetary plane), Voyager 1 turned its camera around on February 14, 1990, from 6 billion km away to snap the 'Pale Blue Dot' portrait of Earth before shutting off its cameras forever to save power. On August 25, 2012, at 121 AU, it crossed the heliopause into interstellar space!"
+        content:
+          "After close flybys of Jupiter, Saturn, and Saturn's hazy moon Titan (which slung Voyager 1 35 degrees northward out of the planetary plane), Voyager 1 turned its camera around on February 14, 1990, from 6 billion km away to snap the 'Pale Blue Dot' portrait of Earth before shutting off its cameras forever to save power. On August 25, 2012, at 121 AU, it crossed the heliopause into interstellar space!",
       },
       {
         code: "E",
         title: "The Discoveries",
-        content: "Voyager 1 discovered the first active extraterrestrial volcanoes on Jupiter's moon Io, revealed complex braids and shepherd moons in Saturn's rings, found that Titan has a thick nitrogen-methane atmosphere, and made humanity's first direct measurements of the interstellar medium outside the Sun's heliosphere."
+        content:
+          "Voyager 1 discovered the first active extraterrestrial volcanoes on Jupiter's moon Io, revealed complex braids and shepherd moons in Saturn's rings, found that Titan has a thick nitrogen-methane atmosphere, and made humanity's first direct measurements of the interstellar medium outside the Sun's heliosphere.",
       },
       {
         code: "F",
         title: "The Final Chapter (Still Being Written!)",
-        content: "Voyager 1's mission has NOT ended! Classification: An active spacecraft continuing its extended mission through interstellar space under severe power and instrument limitations. In 2024, JPL engineers famously rescued Voyager 1 from a corrupted Flight Data Subsystem memory chip by rewriting code across healthy memory from 24 billion km away. To conserve dwindling plutonium power, NASA shut off the Cosmic Ray Subsystem in February 2025 and the Low-Energy Charged Particles sensor in April 2026."
+        content:
+          "Voyager 1's mission has NOT ended! Classification: An active spacecraft continuing its extended mission through interstellar space under severe power and instrument limitations. In 2024, JPL engineers famously rescued Voyager 1 from a corrupted Flight Data Subsystem memory chip by rewriting code across healthy memory from 24 billion km away. To conserve dwindling plutonium power, NASA shut off the Cosmic Ray Subsystem in February 2025 and the Low-Energy Charged Particles sensor in April 2026.",
       },
       {
         code: "G",
         title: "Where It Is Now (Verified November 2026 Status)",
-        content: "As of November 2026, Voyager 1 is in interstellar space roughly 25.9 billion kilometers (one light-day) from Earth. Two science instruments—the Magnetometer (MAG) and Plasma Wave Subsystem (PWS)—remain powered and transmitting data to the Deep Space Network, expected to operate into the late 2020s or early 2030s."
+        content:
+          "As of November 2026, Voyager 1 is in interstellar space roughly 25.9 billion kilometers (one light-day) from Earth. Two science instruments—the Magnetometer (MAG) and Plasma Wave Subsystem (PWS)—remain powered and transmitting data to the Deep Space Network, expected to operate into the late 2020s or early 2030s.",
       },
       {
         code: "H",
         title: "Its Legacy",
-        content: "Even after its radio falls silent around the 2030s, Voyager 1 and its Golden Record will orbit the Milky Way galaxy for billions of years—passing within 1.6 light-years of the star Gliese 445 in 40,000 years as humanity's permanent ambassador to the cosmos. Primary Source: NASA/JPL Voyager Mission Status (2026)."
-      }
+        content:
+          "Even after its radio falls silent around the 2030s, Voyager 1 and its Golden Record will orbit the Milky Way galaxy for billions of years—passing within 1.6 light-years of the star Gliese 445 in 40,000 years as humanity's permanent ambassador to the cosmos. Primary Source: NASA/JPL Voyager Mission Status (2026).",
+      },
     ],
     quiz: {
-      question: "Why did NASA turn off Voyager 1's cameras in 1990 and gradually power down instruments like CRS (2025) and LECP (2026)?",
+      question:
+        "Why did NASA turn off Voyager 1's cameras in 1990 and gradually power down instruments like CRS (2025) and LECP (2026)?",
       options: [
         "Because there is nothing interesting to measure outside the Solar System",
         "Because its plutonium-238 RTG power supply loses about 4 watts per year as the isotope decays, requiring careful power rationing to keep the spacecraft alive",
-        "Because Voyager 1's solar panels are covered in interstellar dust"
+        "Because Voyager 1's solar panels are covered in interstellar dust",
       ],
       correctIndex: 1,
-      explanation: "Correct! Voyager 1 has no solar panels; its three plutonium-238 RTGs lose about 4 watts every year, so engineers shut down heaters and sensors one by one so its remaining instruments can operate into the 2030s."
+      explanation:
+        "Correct! Voyager 1 has no solar panels; its three plutonium-238 RTGs lose about 4 watts every year, so engineers shut down heaters and sensors one by one so its remaining instruments can operate into the 2030s.",
     },
     mythCheck: {
       claim: "Voyager 1 has completely left our Milky Way galaxy.",
       isTrue: false,
-      truthExplanation: "FALSE! Voyager 1 left the heliosphere (the Sun's magnetic wind bubble) to enter interstellar space between the stars, but it is still deep inside our Milky Way galaxy—and hasn't even reached the distant Oort Cloud of comets yet!"
-    }
+      truthExplanation:
+        "FALSE! Voyager 1 left the heliosphere (the Sun's magnetic wind bubble) to enter interstellar space between the stars, but it is still deep inside our Milky Way galaxy—and hasn't even reached the distant Oort Cloud of comets yet!",
+    },
   },
   {
     id: 7,
@@ -588,8 +667,10 @@ const ARTIFACTS_DATA = [
     subtitle: "The Final Journey of Cassini",
     era: "October 15, 1997 – September 15, 2017 • Saturn & Titan",
     agency: "NASA / ESA (European Space Agency) / ASI (Italian Space Agency)",
-    statusShort: "Cassini Vaporized in Saturn (2017) • ESA Huygens Intact on Titan",
-    signalPing: "ORBITER VAPORIZED • HUYGENS LANDER INTACT AT 10.25°S, 192.32°W TITAN",
+    statusShort:
+      "Cassini Vaporized in Saturn (2017) • ESA Huygens Intact on Titan",
+    signalPing:
+      "ORBITER VAPORIZED • HUYGENS LANDER INTACT AT 10.25°S, 192.32°W TITAN",
     badgeIcon: "🪐",
     badgeTitle: "Guardian of the Ocean Worlds",
     echoLog:
@@ -600,77 +681,89 @@ const ARTIFACTS_DATA = [
       {
         part: "ASI 4-Meter High-Gain Radar Antenna",
         what: "A giant white top-mounted dish antenna designed and built by the Italian Space Agency (ASI).",
-        why: "Served triple duty: beaming telemetry across 1.4 billion km to Earth, bouncing microwave radar beams through Titan's thick orange smog to map methane seas, and shielding the spacecraft from ring dust."
+        why: "Served triple duty: beaming telemetry across 1.4 billion km to Earth, bouncing microwave radar beams through Titan's thick orange smog to map methane seas, and shielding the spacecraft from ring dust.",
       },
       {
         part: "Cosmic Dust & Mass Spectrometers (CDA & INMS)",
         what: "Chemical 'sniffing' and dust-tasting analyzers mounted on the NASA Cassini orbiter.",
-        why: "Allowed Cassini to fly directly through the icy plumes erupting from Saturn's moon Enceladus and detect water, salt, organic molecules, and hydrothermal hydrogen!"
+        why: "Allowed Cassini to fly directly through the icy plumes erupting from Saturn's moon Enceladus and detect water, salt, organic molecules, and hydrothermal hydrogen!",
       },
       {
         part: "ESA Huygens Titan Atmospheric Lander",
         what: "A 318-kg, 2.7-meter saucer-shaped lander probe designed and built by the European Space Agency (ESA).",
-        why: "Separated from Cassini on Christmas Day 2004 and parachuted onto Titan on January 14, 2005—achieving the farthest landing from Earth in human history."
-      }
+        why: "Separated from Cassini on Christmas Day 2004 and parachuted onto Titan on January 14, 2005—achieving the farthest landing from Earth in human history.",
+      },
     ],
     sections: [
       {
         code: "A",
         title: "Opening Scene",
-        content: "On September 15, 2017, after 13 years of orbiting Saturn, the school-bus-sized Cassini spacecraft dove into Saturn's golden upper atmosphere at 113,000 kilometers per hour, firing its thrusters to keep its antenna pointed at Earth until friction vaporized it completely—protecting the potentially habitable moons it had discovered."
+        content:
+          "On September 15, 2017, after 13 years of orbiting Saturn, the school-bus-sized Cassini spacecraft dove into Saturn's golden upper atmosphere at 113,000 kilometers per hour, firing its thrusters to keep its antenna pointed at Earth until friction vaporized it completely—protecting the potentially habitable moons it had discovered.",
       },
       {
         code: "B",
         title: "The Beginning",
-        content: "Voyager 1 and 2 had flown past Saturn in 1980–1981, leaving mysteries hidden beneath Titan's opaque haze. NASA, ESA, and ASI partnered to build a massive 5,712-kilogram orbiter-and-lander duo. Launched October 15, 1997, Cassini-Huygens used four gravity assists (Venus twice, Earth once, Jupiter once) over nearly 7 years before entering Saturn orbit on July 1, 2004."
+        content:
+          "Voyager 1 and 2 had flown past Saturn in 1980–1981, leaving mysteries hidden beneath Titan's opaque haze. NASA, ESA, and ASI partnered to build a massive 5,712-kilogram orbiter-and-lander duo. Launched October 15, 1997, Cassini-Huygens used four gravity assists (Venus twice, Earth once, Jupiter once) over nearly 7 years before entering Saturn orbit on July 1, 2004.",
       },
       {
         code: "C",
         title: "Inside the Machine (International Partnership)",
-        content: "Standing 6.7 meters tall and powered by three plutonium RTGs, Cassini-Huygens combined two separable spacecraft built by three space agencies: the NASA Cassini Orbiter (12 instruments), the ESA Huygens Titan Lander (6 instruments), and the ASI High-Gain Radar Antenna. Click each component below."
+        content:
+          "Standing 6.7 meters tall and powered by three plutonium RTGs, Cassini-Huygens combined two separable spacecraft built by three space agencies: the NASA Cassini Orbiter (12 instruments), the ESA Huygens Titan Lander (6 instruments), and the ASI High-Gain Radar Antenna. Click each component below.",
       },
       {
         code: "D",
         title: "The Mission",
-        content: "On January 14, 2005, ESA's Huygens probe parachuted for 2 hours and 27 minutes through Titan's nitrogen-methane haze, landing on a plain of frozen water-ice pebbles and transmitting from the surface for 72 minutes. Meanwhile, the Cassini orbiter completed 294 orbits of Saturn and 162 targeted moon flybys over 13 years."
+        content:
+          "On January 14, 2005, ESA's Huygens probe parachuted for 2 hours and 27 minutes through Titan's nitrogen-methane haze, landing on a plain of frozen water-ice pebbles and transmitting from the surface for 72 minutes. Meanwhile, the Cassini orbiter completed 294 orbits of Saturn and 162 targeted moon flybys over 13 years.",
       },
       {
         code: "E",
         title: "The Discoveries",
-        content: "Cassini discovered giant geysers erupting from warm fractures ('Tiger Stripes') at the south pole of icy moon Enceladus—proving it hides a global liquid saltwater ocean with hydrothermal vents! At Titan, Cassini's radar mapped liquid methane and ethane seas (Kraken Mare and Ligeia Mare), and during its final orbits, it revealed Saturn's rings are surprisingly young (10 to 100 million years old)."
+        content:
+          "Cassini discovered giant geysers erupting from warm fractures ('Tiger Stripes') at the south pole of icy moon Enceladus—proving it hides a global liquid saltwater ocean with hydrothermal vents! At Titan, Cassini's radar mapped liquid methane and ethane seas (Kraken Mare and Ligeia Mare), and during its final orbits, it revealed Saturn's rings are surprisingly young (10 to 100 million years old).",
       },
       {
         code: "F",
         title: "The Final Chapter: The Grand Finale",
-        content: "By 2017, Cassini's propellant was nearly gone. Because Enceladus and Titan hold environments that could support life, Planetary Protection rules forbade leaving an unsteerable spacecraft that might someday crash into and contaminate those moons with Earth microbes. After 22 daring dives between Saturn and its innermost rings ('The Grand Finale'), NASA deliberately plunged Cassini into Saturn on September 15, 2017. Classification: An orbiter deliberately destroyed for planetary protection (while its partner ESA Huygens lander remains intact on Titan)."
+        content:
+          "By 2017, Cassini's propellant was nearly gone. Because Enceladus and Titan hold environments that could support life, Planetary Protection rules forbade leaving an unsteerable spacecraft that might someday crash into and contaminate those moons with Earth microbes. After 22 daring dives between Saturn and its innermost rings ('The Grand Finale'), NASA deliberately plunged Cassini into Saturn on September 15, 2017. Classification: An orbiter deliberately destroyed for planetary protection (while its partner ESA Huygens lander remains intact on Titan).",
       },
       {
         code: "G",
         title: "Where It Is Now",
-        content: "The NASA Cassini orbiter no longer exists as a solid object; its vaporized atoms are forever part of Saturn's atmosphere. Meanwhile, the ESA Huygens lander sits intact and silent on the dark, pebble-strewn floodplain of Adiri on Titan (10.25°S, 192.32°W) alongside its discarded heat shield and parachutes."
+        content:
+          "The NASA Cassini orbiter no longer exists as a solid object; its vaporized atoms are forever part of Saturn's atmosphere. Meanwhile, the ESA Huygens lander sits intact and silent on the dark, pebble-strewn floodplain of Adiri on Titan (10.25°S, 192.32°W) alongside its discarded heat shield and parachutes.",
       },
       {
         code: "H",
         title: "Its Legacy",
-        content: "Cassini proved that habitable ocean worlds can exist far outside the traditional sunlit 'Goldilocks Zone'—directly inspiring NASA's Europa Clipper mission to Jupiter's moon Europa and the Dragonfly rotorcraft mission to Titan. Primary Source: NASA/ESA NSSDCA ID 1997-061A & 1997-061C."
-      }
+        content:
+          "Cassini proved that habitable ocean worlds can exist far outside the traditional sunlit 'Goldilocks Zone'—directly inspiring NASA's Europa Clipper mission to Jupiter's moon Europa and the Dragonfly rotorcraft mission to Titan. Primary Source: NASA/ESA NSSDCA ID 1997-061A & 1997-061C.",
+      },
     ],
     quiz: {
-      question: "Why did NASA deliberately plunge the Cassini orbiter into Saturn's atmosphere on September 15, 2017, instead of leaving it in orbit?",
+      question:
+        "Why did NASA deliberately plunge the Cassini orbiter into Saturn's atmosphere on September 15, 2017, instead of leaving it in orbit?",
       options: [
         "To prevent an out-of-fuel Cassini from accidentally crashing into and contaminating the potentially habitable moons Enceladus or Titan",
         "To test whether Cassini could land on a solid surface inside Saturn",
-        "Because Saturn's rings were about to explode"
+        "Because Saturn's rings were about to explode",
       ],
       correctIndex: 0,
-      explanation: "Correct! Because Cassini discovered a subsurface ocean on Enceladus and rich prebiotic chemistry on Titan, NASA destroyed the orbiter in Saturn's atmosphere to uphold Planetary Protection."
+      explanation:
+        "Correct! Because Cassini discovered a subsurface ocean on Enceladus and rich prebiotic chemistry on Titan, NASA destroyed the orbiter in Saturn's atmosphere to uphold Planetary Protection.",
     },
     mythCheck: {
-      claim: "Both Cassini and the Huygens probe burned up inside Saturn's atmosphere in 2017.",
+      claim:
+        "Both Cassini and the Huygens probe burned up inside Saturn's atmosphere in 2017.",
       isTrue: false,
-      truthExplanation: "FALSE! Only the NASA Cassini orbiter plunged into Saturn in 2017; the European Space Agency's Huygens probe landed intact on Saturn's moon Titan back in January 2005 and still rests on Titan's surface today!"
-    }
-  }
+      truthExplanation:
+        "FALSE! Only the NASA Cassini orbiter plunged into Saturn in 2017; the European Space Agency's Huygens probe landed intact on Saturn's moon Titan back in January 2005 and still rests on Titan's surface today!",
+    },
+  },
 ];
 
 /* Cross-Mission Echo Threads (Unlocked when paired artifacts are completed) */
@@ -681,7 +774,7 @@ const ECHO_THREADS_DATA = [
     requiredArtifacts: [3, 4],
     fromTo: "Sojourner (1997) → Opportunity (2004)",
     description:
-      "Sojourner's 11.5-kg, 104-meter test drive in Ares Vallis validated the springless six-wheel rocker-bogie suspension and autonomous hazard avoidance—allowing engineers to scale the exact same suspension architecture up to Opportunity's 185-kg, 45.16-kilometer geological marathon across Meridiani Planum."
+      "Sojourner's 11.5-kg, 104-meter test drive in Ares Vallis validated the springless six-wheel rocker-bogie suspension and autonomous hazard avoidance—allowing engineers to scale the exact same suspension architecture up to Opportunity's 185-kg, 45.16-kilometer geological marathon across Meridiani Planum.",
   },
   {
     id: "thread-titan",
@@ -689,7 +782,7 @@ const ECHO_THREADS_DATA = [
     requiredArtifacts: [6, 7],
     fromTo: "Voyager 1 (1980) → Cassini-Huygens (2004–2017)",
     description:
-      "When Voyager 1 flew within 6,490 km of Saturn's moon Titan in November 1980, its optical cameras saw an opaque orange nitrogen-methane smog hiding the surface. That mystery directly inspired engineers to equip Cassini with cloud-piercing radar and the ESA Huygens atmospheric lander."
+      "When Voyager 1 flew within 6,490 km of Saturn's moon Titan in November 1980, its optical cameras saw an opaque orange nitrogen-methane smog hiding the surface. That mystery directly inspired engineers to equip Cassini with cloud-piercing radar and the ESA Huygens atmospheric lander.",
   },
   {
     id: "thread-flight",
@@ -697,8 +790,8 @@ const ECHO_THREADS_DATA = [
     requiredArtifacts: [5, 7],
     fromTo: "Ingenuity (2021–2024) + Cassini-Huygens → Dragonfly",
     description:
-      "Ingenuity proved that autonomous computer-guided rotorcraft can fly across another world, while Cassini-Huygens revealed Titan's dense nitrogen air and organic dunes—combining directly to make NASA's nuclear-powered Dragonfly octocopter mission to Titan possible."
-  }
+      "Ingenuity proved that autonomous computer-guided rotorcraft can fly across another world, while Cassini-Huygens revealed Titan's dense nitrogen air and organic dunes—combining directly to make NASA's nuclear-powered Dragonfly octocopter mission to Titan possible.",
+  },
 ];
 
 /* Hardware Status Sort Items for the Final Mission Interactive Activity */
@@ -707,38 +800,43 @@ const FINAL_SORT_ITEMS = [
     id: "sort-voyager",
     hardware: "Voyager 1",
     correctCategory: "active_interstellar",
-    hint: "Launched 1977; ~1 light-day away in Nov 2026 with MAG & PWS online."
+    hint: "Launched 1977; ~1 light-day away in Nov 2026 with MAG & PWS online.",
   },
   {
     id: "sort-lrrr",
     hardware: "Apollo Lunar Laser Retroreflector",
     correctCategory: "passive_optical",
-    hint: "Placed 1969–1971; uses corner-cube quartz prisms with zero batteries."
+    hint: "Placed 1969–1971; uses corner-cube quartz prisms with zero batteries.",
   },
   {
     id: "sort-ingenuity",
     hardware: "Ingenuity Mars Helicopter",
     correctCategory: "grounded_logging",
-    hint: "Rotor blade damaged on Flight 72 (Jan 2024), but solar panel & computer still log daily telemetry."
+    hint: "Rotor blade damaged on Flight 72 (Jan 2024), but solar panel & computer still log daily telemetry.",
   },
   {
     id: "sort-cassini",
     hardware: "NASA Cassini Orbiter",
     correctCategory: "vaporized_protection",
-    hint: "Deliberately plunged into Saturn on Sept 15, 2017 to protect Enceladus and Titan."
+    hint: "Deliberately plunged into Saturn on Sept 15, 2017 to protect Enceladus and Titan.",
   },
   {
     id: "sort-surveyor",
     hardware: "Surveyor 3 & Opportunity & ESA Huygens",
     correctCategory: "inactive_surface",
-    hint: "Intact hardware resting silently on the surfaces of the Moon, Mars, and Titan."
-  }
+    hint: "Intact hardware resting silently on the surfaces of the Moon, Mars, and Titan.",
+  },
 ];
 
 /* =========================================================================
    APPLICATION STATE & LOCALSTORAGE AUTOSAVE
    ========================================================================= */
-const PRE_OCCUPIED_USERNAMES = ["captainnova", "apollo11", "explorer1", "archivistprime"];
+const PRE_OCCUPIED_USERNAMES = [
+  "captainnova",
+  "apollo11",
+  "explorer1",
+  "archivistprime",
+];
 
 let appState = {
   currentView: "home",
@@ -755,7 +853,7 @@ let appState = {
   finalMissionCompleted: false,
   xp: 0,
   voiceMuted: false,
-  lastNovaText: CAPTAIN_NOVA_OPENING
+  lastNovaText: CAPTAIN_NOVA_OPENING,
 };
 
 /* Load existing accounts dictionary from localStorage */
@@ -770,7 +868,10 @@ function getStoredAccounts() {
 
 function saveStoredAccounts(accounts) {
   try {
-    localStorage.setItem("mission_echoes_accounts_v2", JSON.stringify(accounts));
+    localStorage.setItem(
+      "mission_echoes_accounts_v2",
+      JSON.stringify(accounts),
+    );
   } catch (e) {
     console.warn("Storage warning:", e);
   }
@@ -788,7 +889,7 @@ function autosaveProgress() {
       quizCompleted: appState.quizCompleted,
       visitedBeatsByArtifact: appState.visitedBeatsByArtifact,
       finalMissionCompleted: appState.finalMissionCompleted,
-      xp: appState.xp
+      xp: appState.xp,
     };
     saveStoredAccounts(accounts);
     const indicator = document.getElementById("autosave-indicator");
@@ -810,7 +911,9 @@ function navigateTo(viewName) {
   const target = document.getElementById(`view-${viewName}`);
   if (target) target.classList.add("active-view");
 
-  document.querySelectorAll(".nav-btn").forEach((btn) => btn.classList.remove("active"));
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach((btn) => btn.classList.remove("active"));
   const navBtn = document.getElementById(`nav-${viewName}`);
   if (navBtn) navBtn.classList.add("active");
 
@@ -827,7 +930,8 @@ function navigateTo(viewName) {
 }
 
 function updateTopHud() {
-  const totalBadges = appState.quizCompleted.length + (appState.finalMissionCompleted ? 1 : 0);
+  const totalBadges =
+    appState.quizCompleted.length + (appState.finalMissionCompleted ? 1 : 0);
   const badgeCountEl = document.getElementById("nav-badge-count");
   if (badgeCountEl) badgeCountEl.textContent = `${totalBadges}/8`;
 
@@ -859,15 +963,18 @@ function toggleUnlockAll() {
   appState.unlockAllMode = !appState.unlockAllMode;
   const btn = document.getElementById("btn-unlock-all");
   if (btn) {
-    btn.textContent = appState.unlockAllMode ? "🔓 Unlock All: ON" : "🔓 Unlock All: OFF";
+    btn.textContent = appState.unlockAllMode
+      ? "🔓 Unlock All: ON"
+      : "🔓 Unlock All: OFF";
     btn.classList.toggle("unlocked-active", appState.unlockAllMode);
   }
   if (appState.currentView === "map") renderSolarSystemMap();
-  if (appState.currentView === "artifact") renderArtifactView(appState.selectedArtifactId);
+  if (appState.currentView === "artifact")
+    renderArtifactView(appState.selectedArtifactId);
   speakNova(
     appState.unlockAllMode
       ? "Archivist Override active! All 7 hardware stories, verification challenges, and the Final Mission are now unlocked for direct exploration."
-      : "Standard progression restored. Complete each artifact's story and challenge in order!"
+      : "Standard progression restored. Complete each artifact's story and challenge in order!",
   );
 }
 
@@ -991,7 +1098,7 @@ function renderSolarSystemMap() {
 function handleArtifactNodeClick(artifactId) {
   if (!isArtifactUnlocked(artifactId)) {
     speakNova(
-      `Artifact 0${artifactId} is still encrypted! Complete Artifact 0${artifactId - 1}'s story and verification challenge first—or click "Unlock All" in the top navigation bar to jump right in.`
+      `Artifact 0${artifactId} is still encrypted! Complete Artifact 0${artifactId - 1}'s story and verification challenge first—or click "Unlock All" in the top navigation bar to jump right in.`,
     );
     return;
   }
@@ -1001,13 +1108,13 @@ function handleArtifactNodeClick(artifactId) {
 function handleFinalMissionClick() {
   if (!isFinalMissionUnlocked()) {
     speakNova(
-      `You have restored ${appState.quizCompleted.length} of 7 artifact files. Complete all 7 challenges to unlock the Final Mission, or click "Unlock All: OFF" in the top bar to test the Final Mission right now!`
+      `You have restored ${appState.quizCompleted.length} of 7 artifact files. Complete all 7 challenges to unlock the Final Mission, or click "Unlock All: OFF" in the top bar to test the Final Mission right now!`,
     );
     return;
   }
   navigateTo("final");
   speakNova(
-    "Welcome to the Final Mission: The Legacy of Space Exploration! Let's bring all seven hardware stories together."
+    "Welcome to the Final Mission: The Legacy of Space Exploration! Let's bring all seven hardware stories together.",
   );
 }
 
@@ -1038,9 +1145,11 @@ function renderArtifactView(artifactId) {
   if (!art) return;
   const chap = CHAPTERS_META.find((c) => c.id === art.chapterId);
 
-  document.getElementById("artifact-crumb-label").textContent = `${chap.roman} • ${chap.title.toUpperCase()}`;
+  document.getElementById("artifact-crumb-label").textContent =
+    `${chap.roman} • ${chap.title.toUpperCase()}`;
 
-  const learnDone = appState.learnCompleted.includes(art.id) || appState.unlockAllMode;
+  const learnDone =
+    appState.learnCompleted.includes(art.id) || appState.unlockAllMode;
   const lockIcon = document.getElementById("challenge-tab-lock-icon");
   if (lockIcon) lockIcon.textContent = learnDone ? "🔓" : "🔒";
 
@@ -1084,8 +1193,12 @@ function renderArtifactView(artifactId) {
 
 function setStoryDisplayMode(mode) {
   appState.storyDisplayMode = mode;
-  document.getElementById("btn-mode-beats").classList.toggle("active", mode === "beats");
-  document.getElementById("btn-mode-scroll").classList.toggle("active", mode === "scroll");
+  document
+    .getElementById("btn-mode-beats")
+    .classList.toggle("active", mode === "beats");
+  document
+    .getElementById("btn-mode-scroll")
+    .classList.toggle("active", mode === "scroll");
   const art = ARTIFACTS_DATA.find((a) => a.id === appState.selectedArtifactId);
   if (art) renderStorySections(art);
 }
@@ -1111,7 +1224,8 @@ function selectHotspot(index) {
 }
 
 function buildHotspotInspectorHtml(art) {
-  const currentHotspot = art.hotspots[appState.selectedHotspotIndex] || art.hotspots[0];
+  const currentHotspot =
+    art.hotspots[appState.selectedHotspotIndex] || art.hotspots[0];
   const buttons = art.hotspots
     .map(
       (h, idx) => `
@@ -1121,7 +1235,7 @@ function buildHotspotInspectorHtml(art) {
       >
         🔧 ${h.part}
       </button>
-    `
+    `,
     )
     .join("");
 
@@ -1144,7 +1258,9 @@ function renderStorySections(art) {
   const dotsContainer = document.getElementById("story-step-dots");
   dotsContainer.innerHTML = art.sections
     .map((sec, idx) => {
-      const isCurrent = appState.storyDisplayMode === "beats" && idx === appState.currentBeatIndex;
+      const isCurrent =
+        appState.storyDisplayMode === "beats" &&
+        idx === appState.currentBeatIndex;
       const isVisited = visited.includes(idx);
       return `
         <button
@@ -1214,7 +1330,7 @@ function renderStorySections(art) {
           </div>
           ${sec.code === "C" ? buildHotspotInspectorHtml(art) : ""}
         </article>
-      `
+      `,
       )
       .join("");
   }
@@ -1257,19 +1373,31 @@ function switchArtifactTab(tabName) {
   const art = ARTIFACTS_DATA.find((a) => a.id === appState.selectedArtifactId);
   if (!art) return;
 
-  if (tabName === "challenge" && !appState.learnCompleted.includes(art.id) && !appState.unlockAllMode) {
+  if (
+    tabName === "challenge" &&
+    !appState.learnCompleted.includes(art.id) &&
+    !appState.unlockAllMode
+  ) {
     speakNova(
-      `Hold on, Explorer! Complete ${art.name}'s Story & Hardware Archive first (click "Complete Story & Unlock Challenge" at the bottom) before entering the Verification Challenge!`
+      `Hold on, Explorer! Complete ${art.name}'s Story & Hardware Archive first (click "Complete Story & Unlock Challenge" at the bottom) before entering the Verification Challenge!`,
     );
     return;
   }
 
   appState.activeArtifactTab = tabName;
-  document.getElementById("tab-btn-learn").classList.toggle("active", tabName === "learn");
-  document.getElementById("tab-btn-challenge").classList.toggle("active", tabName === "challenge");
+  document
+    .getElementById("tab-btn-learn")
+    .classList.toggle("active", tabName === "learn");
+  document
+    .getElementById("tab-btn-challenge")
+    .classList.toggle("active", tabName === "challenge");
 
-  document.getElementById("panel-artifact-learn").classList.toggle("hidden", tabName !== "learn");
-  document.getElementById("panel-artifact-challenge").classList.toggle("hidden", tabName !== "challenge");
+  document
+    .getElementById("panel-artifact-learn")
+    .classList.toggle("hidden", tabName !== "learn");
+  document
+    .getElementById("panel-artifact-challenge")
+    .classList.toggle("hidden", tabName !== "challenge");
 }
 
 /* =========================================================================
@@ -1289,7 +1417,7 @@ function renderChallengePanel(art) {
       >
         <strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}
       </button>
-    `
+    `,
     )
     .join("");
 
@@ -1336,7 +1464,9 @@ function submitArtifactQuiz(artifactId, chosenIndex) {
     if (btn) btn.classList.remove("correct-choice", "wrong-choice");
   });
 
-  const chosenBtn = document.getElementById(`quiz-opt-${artifactId}-${chosenIndex}`);
+  const chosenBtn = document.getElementById(
+    `quiz-opt-${artifactId}-${chosenIndex}`,
+  );
 
   if (chosenIndex === art.quiz.correctIndex) {
     if (chosenBtn) chosenBtn.classList.add("correct-choice");
@@ -1360,11 +1490,13 @@ function submitArtifactQuiz(artifactId, chosenIndex) {
     `;
 
     const chap = CHAPTERS_META.find((c) => c.id === art.chapterId);
-    const isLastInChapter = ARTIFACTS_DATA.filter((a) => a.chapterId === art.chapterId).slice(-1)[0].id === artifactId;
+    const isLastInChapter =
+      ARTIFACTS_DATA.filter((a) => a.chapterId === art.chapterId).slice(-1)[0]
+        .id === artifactId;
     speakNova(
       isLastInChapter
         ? `${art.quiz.explanation} ${chap.transitionOut}`
-        : `${art.quiz.explanation} Badge unlocked: ${art.badgeTitle}!`
+        : `${art.quiz.explanation} Badge unlocked: ${art.badgeTitle}!`,
     );
   } else {
     if (chosenBtn) chosenBtn.classList.add("wrong-choice");
@@ -1376,7 +1508,9 @@ function submitArtifactQuiz(artifactId, chosenIndex) {
         Review the verified NASA record in the Story tab and try another answer.
       </p>
     `;
-    speakNova("Not quite! Check the verified hardware record and try another option.");
+    speakNova(
+      "Not quite! Check the verified hardware record and try another option.",
+    );
   }
 }
 
@@ -1416,7 +1550,7 @@ function renderFinalMissionView() {
           <option value="vaporized_protection">Deliberately Vaporized in Saturn for Planetary Protection</option>
         </select>
       </div>
-    `
+    `,
   ).join("");
 
   container.innerHTML = `
@@ -1490,7 +1624,7 @@ function verifyFinalMissionSort() {
       </button>
     `;
     speakNova(
-      "Congratulations, Master Archivist! You sorted every piece of Solar System hardware accurately and earned the Final Legacy of Space Exploration Medal!"
+      "Congratulations, Master Archivist! You sorted every piece of Solar System hardware accurately and earned the Final Legacy of Space Exploration Medal!",
     );
   } else {
     feedback.style.background = "rgba(245, 158, 11, 0.18)";
@@ -1501,7 +1635,9 @@ function verifyFinalMissionSort() {
         Check the boxes highlighted in red using the hints on each card and click Verify again.
       </p>
     `;
-    speakNova(`You matched ${correctCount} out of 5 hardware classifications. Check the red boxes and try again!`);
+    speakNova(
+      `You matched ${correctCount} out of 5 hardware classifications. Check the red boxes and try again!`,
+    );
   }
 }
 
@@ -1514,7 +1650,8 @@ function renderBadgesVault() {
   if (!badgesGrid || !threadsGrid) return;
 
   const earnedArtifacts = appState.quizCompleted.length;
-  const totalBadges = earnedArtifacts + (appState.finalMissionCompleted ? 1 : 0);
+  const totalBadges =
+    earnedArtifacts + (appState.finalMissionCompleted ? 1 : 0);
 
   let rankTitle = "Cadet Archivist";
   if (totalBadges >= 8) rankTitle = "Master Solar System Archivist";
@@ -1522,12 +1659,16 @@ function renderBadgesVault() {
   else if (totalBadges >= 2) rankTitle = "Planetary Field Specialist";
 
   document.getElementById("vault-rank-title").textContent = rankTitle;
-  document.getElementById("vault-badges-ratio").textContent = `${totalBadges} / 8`;
+  document.getElementById("vault-badges-ratio").textContent =
+    `${totalBadges} / 8`;
 
   const unlockedThreadsCount = ECHO_THREADS_DATA.filter((t) =>
-    t.requiredArtifacts.every((reqId) => appState.quizCompleted.includes(reqId))
+    t.requiredArtifacts.every((reqId) =>
+      appState.quizCompleted.includes(reqId),
+    ),
   ).length;
-  document.getElementById("vault-threads-ratio").textContent = `${unlockedThreadsCount} / 3`;
+  document.getElementById("vault-threads-ratio").textContent =
+    `${unlockedThreadsCount} / 3`;
 
   /* 7 Artifact Badges + 1 Final Legacy Medal */
   const artifactBadgeCards = ARTIFACTS_DATA.map((art) => {
@@ -1561,7 +1702,9 @@ function renderBadgesVault() {
 
   /* 3 Echo Threads Cards */
   threadsGrid.innerHTML = ECHO_THREADS_DATA.map((thread) => {
-    const unlocked = thread.requiredArtifacts.every((id) => appState.quizCompleted.includes(id));
+    const unlocked = thread.requiredArtifacts.every((id) =>
+      appState.quizCompleted.includes(id),
+    );
     return `
       <div class="echo-thread-card ${unlocked ? "" : "locked"}">
         <span class="layer-badge-creative">${unlocked ? "🔗 ECHO THREAD UNLOCKED" : "🔒 COMPLETE LINKED MISSIONS"}</span>
@@ -1595,8 +1738,12 @@ function closeAuthModal() {
 
 function switchAuthMode(mode) {
   currentAuthMode = mode;
-  document.getElementById("tab-signin").classList.toggle("active", mode === "signin");
-  document.getElementById("tab-signup").classList.toggle("active", mode === "signup");
+  document
+    .getElementById("tab-signin")
+    .classList.toggle("active", mode === "signin");
+  document
+    .getElementById("tab-signup")
+    .classList.toggle("active", mode === "signup");
 
   document.getElementById("auth-modal-title").textContent =
     mode === "signin" ? "Sign In to Mission Echoes" : "Create New Archivist ID";
@@ -1605,7 +1752,9 @@ function switchAuthMode(mode) {
       ? "Enter your registered username and password. Unregistered accounts will not be logged in."
       : "Choose a unique username (1–20 chars) and strong password (8–20 chars) to enable Autosave.";
   document.getElementById("btn-auth-submit").textContent =
-    mode === "signin" ? "Sign In & Load Archive" : "Register & Autosave Progress";
+    mode === "signin"
+      ? "Sign In & Load Archive"
+      : "Register & Autosave Progress";
 
   hideAuthAlert();
   document.getElementById("username-suggestions-box").classList.add("hidden");
@@ -1632,12 +1781,13 @@ function isUsernameOccupied(usernameRaw) {
 }
 
 function generateAvailableSuggestions(baseName) {
-  const cleanBase = baseName.replace(/[^a-zA-Z0-9_]/g, "").slice(0, 13) || "Explorer";
+  const cleanBase =
+    baseName.replace(/[^a-zA-Z0-9_]/g, "").slice(0, 13) || "Explorer";
   const candidates = [
     `${cleanBase}_2026`,
     `${cleanBase}Nova`,
     `Astro_${cleanBase}`,
-    `${cleanBase}_77`
+    `${cleanBase}_77`,
   ];
   return candidates
     .map((c) => c.slice(0, 20))
@@ -1658,7 +1808,7 @@ function validatePasswordConstraints(pw) {
     len: pw.length >= 8 && pw.length <= 20,
     upper: /[A-Z]/.test(pw),
     num: /[0-9]/.test(pw),
-    sym: /[^A-Za-z0-9]/.test(pw)
+    sym: /[^A-Za-z0-9]/.test(pw),
   };
 }
 
@@ -1670,8 +1820,10 @@ function validateAuthInputsLive() {
   const uVal = userEl.value;
   const pVal = passEl.value;
 
-  document.getElementById("username-char-count").textContent = `${uVal.length} / 20`;
-  document.getElementById("password-char-count").textContent = `${pVal.length} / 20`;
+  document.getElementById("username-char-count").textContent =
+    `${uVal.length} / 20`;
+  document.getElementById("password-char-count").textContent =
+    `${pVal.length} / 20`;
 
   const rules = validatePasswordConstraints(pVal);
   const updateRuleRow = (id, met, label) => {
@@ -1695,11 +1847,13 @@ function validateAuthInputsLive() {
       chipsEl.innerHTML = suggestions
         .map(
           (s) =>
-            `<button type="button" class="suggestion-chip" onclick="applySuggestedUsername('${s}')">${s}</button>`
+            `<button type="button" class="suggestion-chip" onclick="applySuggestedUsername('${s}')">${s}</button>`,
         )
         .join("");
     } else {
-      document.getElementById("username-suggestions-box").classList.add("hidden");
+      document
+        .getElementById("username-suggestions-box")
+        .classList.add("hidden");
     }
   }
 }
@@ -1721,7 +1875,7 @@ function handleAuthSubmit(event) {
   const pwRules = validatePasswordConstraints(password);
   if (!pwRules.len || !pwRules.upper || !pwRules.num || !pwRules.sym) {
     showAuthAlert(
-      "Password must be 8–20 characters and include at least 1 uppercase letter, 1 number, and 1 symbol."
+      "Password must be 8–20 characters and include at least 1 uppercase letter, 1 number, and 1 symbol.",
     );
     return;
   }
@@ -1738,10 +1892,12 @@ function handleAuthSubmit(event) {
       chipsEl.innerHTML = suggestions
         .map(
           (s) =>
-            `<button type="button" class="suggestion-chip" onclick="applySuggestedUsername('${s}')">${s}</button>`
+            `<button type="button" class="suggestion-chip" onclick="applySuggestedUsername('${s}')">${s}</button>`,
         )
         .join("");
-      showAuthAlert(`Username "${username}" is already occupied! Please pick one of the suggested available IDs.`);
+      showAuthAlert(
+        `Username "${username}" is already occupied! Please pick one of the suggested available IDs.`,
+      );
       return;
     }
 
@@ -1754,8 +1910,8 @@ function handleAuthSubmit(event) {
         quizCompleted: appState.quizCompleted,
         visitedBeatsByArtifact: appState.visitedBeatsByArtifact,
         finalMissionCompleted: appState.finalMissionCompleted,
-        xp: appState.xp
-      }
+        xp: appState.xp,
+      },
     };
     saveStoredAccounts(accounts);
     completeLoginSession(username);
@@ -1763,12 +1919,14 @@ function handleAuthSubmit(event) {
     /* SIGN IN MODE: Strictly reject fake/unregistered accounts and STAY inside modal */
     if (!accounts[key]) {
       showAuthAlert(
-        `Account "${username}" not found! Fake or unregistered logins are blocked. Please check your spelling or switch to "Create Archivist ID" to sign up first.`
+        `Account "${username}" not found! Fake or unregistered logins are blocked. Please check your spelling or switch to "Create Archivist ID" to sign up first.`,
       );
       return;
     }
     if (accounts[key].password !== password) {
-      showAuthAlert("Incorrect security passcode for this Archivist ID. Please try again.");
+      showAuthAlert(
+        "Incorrect security passcode for this Archivist ID. Please try again.",
+      );
       return;
     }
 
@@ -1795,7 +1953,9 @@ function completeLoginSession(displayName) {
   if (appState.currentView === "map") renderSolarSystemMap();
   if (appState.currentView === "badges") renderBadgesVault();
 
-  speakNova(`Welcome aboard, Archivist ${displayName}! Your Mission Echoes profile and autosave link are online.`);
+  speakNova(
+    `Welcome aboard, Archivist ${displayName}! Your Mission Echoes profile and autosave link are online.`,
+  );
 }
 
 function handleLogout() {
@@ -1803,7 +1963,9 @@ function handleLogout() {
   appState.currentUser = null;
   document.getElementById("auth-guest-zone").classList.remove("hidden");
   document.getElementById("auth-user-zone").classList.add("hidden");
-  speakNova("You have signed out safely. Your progress has been saved to your Archivist ID.");
+  speakNova(
+    "You have signed out safely. Your progress has been saved to your Archivist ID.",
+  );
 }
 
 /* =========================================================================
@@ -1860,7 +2022,9 @@ function toggleNovaVoice() {
   if (btn) btn.textContent = appState.voiceMuted ? "🔇" : "🔊";
   if (appState.voiceMuted && "speechSynthesis" in window) {
     window.speechSynthesis.cancel();
-    document.querySelector(".nova-companion-dock")?.classList.remove("is-speaking");
+    document
+      .querySelector(".nova-companion-dock")
+      ?.classList.remove("is-speaking");
     document.getElementById("nova-equalizer")?.classList.remove("speaking");
   } else {
     replayNovaSpeech();
@@ -1901,7 +2065,12 @@ function initCosmosCanvas() {
     r: Math.random() * 1.8 + 0.4,
     alpha: Math.random(),
     dAlpha: (Math.random() * 0.015 + 0.004) * (Math.random() < 0.5 ? 1 : -1),
-    hue: Math.random() < 0.25 ? "#38bdf8" : Math.random() < 0.4 ? "#fde68a" : "#ffffff"
+    hue:
+      Math.random() < 0.25
+        ? "#38bdf8"
+        : Math.random() < 0.4
+          ? "#fde68a"
+          : "#ffffff",
   }));
 
   let shootingStar = null;
@@ -1913,7 +2082,7 @@ function initCosmosCanvas() {
       vx: 9 + Math.random() * 5,
       vy: 4 + Math.random() * 3,
       len: 85,
-      life: 1.0
+      life: 1.0,
     };
   }
 
@@ -1923,14 +2092,28 @@ function initCosmosCanvas() {
     ctx.clearRect(0, 0, width, height);
 
     /* 1. Deep Nebula Gradients */
-    const neb1 = ctx.createRadialGradient(width * 0.18, height * 0.25, 20, width * 0.18, height * 0.25, width * 0.42);
+    const neb1 = ctx.createRadialGradient(
+      width * 0.18,
+      height * 0.25,
+      20,
+      width * 0.18,
+      height * 0.25,
+      width * 0.42,
+    );
     neb1.addColorStop(0, "rgba(56, 189, 248, 0.11)");
     neb1.addColorStop(0.5, "rgba(88, 28, 135, 0.07)");
     neb1.addColorStop(1, "transparent");
     ctx.fillStyle = neb1;
     ctx.fillRect(0, 0, width, height);
 
-    const neb2 = ctx.createRadialGradient(width * 0.82, height * 0.72, 20, width * 0.82, height * 0.72, width * 0.38);
+    const neb2 = ctx.createRadialGradient(
+      width * 0.82,
+      height * 0.72,
+      20,
+      width * 0.82,
+      height * 0.72,
+      width * 0.38,
+    );
     neb2.addColorStop(0, "rgba(245, 158, 11, 0.08)");
     neb2.addColorStop(0.6, "rgba(30, 58, 138, 0.08)");
     neb2.addColorStop(1, "transparent");
@@ -1953,7 +2136,14 @@ function initCosmosCanvas() {
     // The Moon (top-left)
     const moonX = width * 0.08 + Math.sin(tick) * 8;
     const moonY = height * 0.18 + Math.cos(tick) * 6;
-    const moonGrad = ctx.createRadialGradient(moonX - 8, moonY - 8, 4, moonX, moonY, 26);
+    const moonGrad = ctx.createRadialGradient(
+      moonX - 8,
+      moonY - 8,
+      4,
+      moonX,
+      moonY,
+      26,
+    );
     moonGrad.addColorStop(0, "#e2e8f0");
     moonGrad.addColorStop(1, "#334155");
     ctx.fillStyle = moonGrad;
@@ -1964,7 +2154,14 @@ function initCosmosCanvas() {
     // Mars (bottom-left)
     const marsX = width * 0.12 + Math.cos(tick * 0.8) * 10;
     const marsY = height * 0.82 + Math.sin(tick * 0.8) * 8;
-    const marsGrad = ctx.createRadialGradient(marsX - 6, marsY - 6, 3, marsX, marsY, 22);
+    const marsGrad = ctx.createRadialGradient(
+      marsX - 6,
+      marsY - 6,
+      3,
+      marsX,
+      marsY,
+      22,
+    );
     marsGrad.addColorStop(0, "#fb923c");
     marsGrad.addColorStop(1, "#7c2d12");
     ctx.fillStyle = marsGrad;
@@ -2001,7 +2198,10 @@ function initCosmosCanvas() {
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(shootingStar.x, shootingStar.y);
-      ctx.lineTo(shootingStar.x - shootingStar.len, shootingStar.y - shootingStar.len * 0.45);
+      ctx.lineTo(
+        shootingStar.x - shootingStar.len,
+        shootingStar.y - shootingStar.len * 0.45,
+      );
       ctx.stroke();
       shootingStar.x += shootingStar.vx;
       shootingStar.y += shootingStar.vy;
