@@ -1,400 +1,1701 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NASA: Lost in the Solar System | Interactive Space Adventure</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    <meta charset="utf-8" />
+    <title>AstroQuest</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <!-- Google Fonts: Fredoka (Friendly Display) & Quicksand (Clean School-Age Body) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
       rel="stylesheet"
     />
-    <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="styles_gudez.css" />
-
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Quicksand", "sans-serif"],
-              display: ["Fredoka", "sans-serif"],
-            },
-            colors: {
-              nasa: {
-                blue: "#0B3D91",
-                red: "#FC3D21",
-                cyan: "#38BDF8",
-                gold: "#FBBF24",
-                dark: "#070B19",
-                card: "#111936",
-              },
-            },
-            animation: {
-              float: "float 4s ease-in-out infinite",
-              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-              orbit: "orbit 14s linear infinite",
-            },
-            keyframes: {
-              float: {
-                "0%, 100%": { transform: "translateY(0px)" },
-                "50%": { transform: "translateY(-8px)" },
-              },
-              orbit: {
-                "0%": { transform: "rotate(0deg)" },
-                "100%": { transform: "rotate(360deg)" },
-              },
-            },
-          },
-        },
-      };
-    </script>
+    <style>
+      :root {
+        --bg: #05060f;
+        --pn: rgba(10, 13, 34, 0.88);
+        --ink: #eaf2ff;
+        --ac: #4fd8ff;
+        --hi: #ffd23f;
+        --mu: #8fa0c8;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        color-scheme: dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #03040b;
+          --pn: rgba(6, 8, 24, 0.92);
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #03040b;
+        --pn: rgba(6, 8, 24, 0.92);
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          21px/1.15 VT323,
+          ui-monospace,
+          Menlo,
+          monospace;
+      }
+      canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+        touch-action: none;
+      }
+      .f,
+      .lb,
+      .pb,
+      .tl,
+      .lk {
+        font-family: Silkscreen, ui-monospace, monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .px {
+        background: var(--pn);
+        box-shadow:
+          -4px 0 0 var(--ac),
+          4px 0 0 var(--ac),
+          0 -4px 0 var(--ac),
+          0 4px 0 var(--ac),
+          inset 0 0 0 2px rgba(79, 216, 255, 0.16);
+      }
+      .pb {
+        font-size: 12px;
+        background: var(--hi);
+        color: #1a1630;
+        border: 0;
+        padding: 10px 14px;
+        margin: 4px;
+        cursor: pointer;
+        box-shadow:
+          -3px 0 #000,
+          3px 0 #000,
+          0 -3px #000,
+          0 3px #000;
+      }
+      .pb:hover {
+        filter: brightness(1.15);
+      }
+      .pb:active {
+        transform: translateY(2px);
+      }
+      .pb.alt {
+        background: #2c3a6e;
+        color: var(--ink);
+      }
+      button:focus-visible {
+        outline: 3px dashed var(--hi);
+        outline-offset: 3px;
+      }
+      #top {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        z-index: 3;
+        pointer-events: none;
+      }
+      #top > * {
+        pointer-events: auto;
+      }
+      #cr {
+        padding: 8px 12px;
+        font-size: 20px;
+      }
+      .lk {
+        font-size: 11px;
+        background: none;
+        border: 0;
+        color: var(--ac);
+        cursor: pointer;
+        padding: 2px;
+      }
+      #cr b {
+        font-family: Silkscreen, monospace;
+        font-size: 11px;
+        color: var(--hi);
+      }
+      #rt {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      #ct {
+        padding: 8px 10px;
+        font-size: 11px;
+        color: var(--hi);
+      }
+      #tr {
+        position: fixed;
+        left: 16px;
+        top: calc(76px + env(safe-area-inset-top, 0px));
+        z-index: 3;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: 210px;
+      }
+      #tr.off {
+        display: none;
+      }
+      .tl {
+        font-size: 10px;
+        background: none;
+        border: 0;
+        color: var(--ink);
+        padding: 5px 4px;
+        cursor: pointer;
+        text-align: left;
+      }
+      .tl.on {
+        color: #1a1630;
+        background: var(--hi);
+      }
+      #lbs {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2;
+      }
+      .lb {
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: auto;
+        background: none;
+        border: 0;
+        color: var(--hi);
+        font-size: 12px;
+        cursor: pointer;
+        white-space: nowrap;
+        text-shadow:
+          2px 0 #000,
+          -2px 0 #000,
+          0 2px #000,
+          0 -2px #000;
+        padding: 6px 8px;
+      }
+      .lb:after {
+        content: "\25BC";
+        display: block;
+        text-align: center;
+        font-size: 10px;
+      }
+      #ms {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 20%;
+        text-align: center;
+        z-index: 4;
+        pointer-events: none;
+        font-size: clamp(14px, 3.4vw, 24px);
+        color: var(--hi);
+        text-shadow:
+          3px 0 #000,
+          -3px 0 #000,
+          0 3px #000,
+          0 -3px #000;
+        min-height: 1em;
+      }
+      #pn {
+        position: fixed;
+        right: 18px;
+        bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+        width: min(410px, calc(100% - 36px));
+        max-height: 64vh;
+        overflow: auto;
+        z-index: 5;
+        padding: 14px 16px;
+        transform: translateY(130%);
+        transition: transform 0.35s steps(6);
+        box-sizing: border-box;
+      }
+      #pn.open {
+        transform: none;
+      }
+      #pn h2 {
+        font-size: 15px;
+        margin: 6px 0 8px;
+        line-height: 1.35;
+      }
+      #pn p {
+        margin: 7px 0;
+        line-height: 1.1;
+      }
+      #pn p b {
+        font-family: Silkscreen, monospace;
+        font-size: 10px;
+        color: var(--ac);
+        display: block;
+        font-weight: 400;
+      }
+      .sl {
+        height: 5px;
+        margin: 0 0 6px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--ac) 0 6px,
+          transparent 6px 12px
+        );
+        animation: sl 0.8s steps(6) infinite;
+      }
+      @keyframes sl {
+        to {
+          background-position: 12px 0;
+        }
+      }
+      .st {
+        font-size: 10px;
+        color: var(--hi);
+      }
+      #ti {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        pointer-events: none;
+        z-index: 6;
+        opacity: 0;
+      }
+      #ti.show {
+        animation: ti 2.6s steps(12) forwards;
+      }
+      @keyframes ti {
+        0% {
+          opacity: 0;
+          transform: scale(1.5);
+        }
+        12% {
+          opacity: 1;
+          transform: none;
+        }
+        80% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      #ti h3 {
+        margin: 0;
+        font-size: 13px;
+        color: var(--ac);
+      }
+      #ti h1 {
+        margin: 8px 0;
+        font-size: clamp(26px, 7vw, 56px);
+        color: var(--hi);
+        text-shadow:
+          4px 0 #000,
+          -4px 0 #000,
+          0 4px #000,
+          0 -4px #000;
+      }
+      #ti p {
+        margin: 0;
+        font-size: 26px;
+      }
+      #fx {
+        position: fixed;
+        inset: 0;
+        background: #fff;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 4;
+      }
+      #mn {
+        position: fixed;
+        inset: 0;
+        z-index: 8;
+        overflow: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+        background: rgba(3, 4, 12, 0.55);
+      }
+      #mn[hidden] {
+        display: none;
+      }
+      #mb {
+        max-width: 760px;
+        width: 100%;
+        padding: 18px 20px;
+        margin: auto;
+      }
+      #mb h1 {
+        font-size: clamp(24px, 6vw, 44px);
+        margin: 0;
+        color: var(--hi);
+        text-shadow:
+          4px 0 #000,
+          -4px 0 #000,
+          0 4px #000,
+          0 -4px #000;
+      }
+      #mb > p {
+        margin: 8px 0 14px;
+        color: var(--mu);
+      }
+      #cl {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 14px;
+        margin: 8px 4px 12px;
+      }
+      .cd {
+        font: inherit;
+        text-align: left;
+        color: var(--ink);
+        background: rgba(44, 58, 110, 0.5);
+        border: 0;
+        padding: 10px 12px;
+        cursor: pointer;
+        box-shadow:
+          -3px 0 var(--ac),
+          3px 0 var(--ac),
+          0 -3px var(--ac),
+          0 3px var(--ac);
+      }
+      .cd:hover:not(:disabled) {
+        background: rgba(79, 216, 255, 0.22);
+      }
+      .cd:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .cd i {
+        display: block;
+        font-family: Silkscreen, monospace;
+        font-style: normal;
+        font-size: 10px;
+        color: var(--ac);
+      }
+      .cd b {
+        display: block;
+        font-family: Silkscreen, monospace;
+        font-size: 15px;
+        color: var(--hi);
+        margin: 3px 0 5px;
+        font-weight: 400;
+      }
+      .cd small {
+        font-size: 18px;
+        color: var(--mu);
+        line-height: 1;
+      }
+      @media (max-width: 700px) {
+        #tr {
+          max-width: 170px;
+        }
+        #pn {
+          left: 18px;
+          width: auto;
+        }
+        .lb {
+          font-size: 10px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .sl {
+          animation: none;
+        }
+      }
+    </style>
   </head>
-  <body
-    class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white"
-  >
-    <!-- NASA-STYLE INTRODUCTORY SPLASH SCREEN (Auto-transitions to Guest Mode Home) -->
-    <div
-      id="nasa-splash-screen"
-      class="fixed inset-0 z-50 bg-[#050814] flex flex-col items-center justify-center p-6 text-center select-none"
-    >
-      <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full bg-nasa-blue/35 blur-3xl"
-        ></div>
-        <div
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full bg-sky-500/15 blur-2xl"
-        ></div>
-      </div>
-
-      <div
-        class="relative z-10 max-w-md w-full flex flex-col items-center space-y-6"
-      >
-        <div
-          id="nasa-intro-video-slot"
-          class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center"
-        >
-          <div
-            class="absolute inset-0 rounded-full border-2 border-dashed border-sky-400/35 animate-orbit"
-          >
-            <div
-              class="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-lg shadow-amber-400/80 -mt-1.5 mx-auto"
-            ></div>
-          </div>
-
-          <div
-            class="w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-[#0B3D91] to-[#061F4A] border-4 border-sky-300/30 shadow-2xl flex flex-col items-center justify-center relative overflow-hidden animate-float"
-          >
-            <span
-              class="w-1.5 h-1.5 rounded-full bg-white absolute top-6 left-9"
-            ></span>
-            <span
-              class="w-1 h-1 rounded-full bg-sky-200 absolute top-8 right-8"
-            ></span>
-            <span
-              class="w-1.5 h-1.5 rounded-full bg-white absolute bottom-7 left-10"
-            ></span>
-            <svg viewBox="0 0 120 120" class="w-full h-full absolute inset-0">
-              <path d="M 18 78 Q 60 22 104 42 Q 62 46 28 86 Z" fill="#FC3D21" />
-              <ellipse
-                cx="60"
-                cy="60"
-                rx="46"
-                ry="16"
-                transform="rotate(-28 60 60)"
-                stroke="#F8FAFC"
-                stroke-width="2.5"
-                fill="none"
-                stroke-dasharray="120"
-              />
-            </svg>
-            <span
-              class="relative z-10 font-display font-bold text-3xl sm:text-4xl tracking-wider text-white drop-shadow"
-              >NASA</span
-            >
-            <span
-              class="relative z-10 text-[10px] uppercase tracking-widest text-sky-200 font-bold mt-0.5"
-              >Space Explorer</span
-            >
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <div
-            class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-bold tracking-wide uppercase"
-          >
-            <i class="fa-solid fa-satellite-dish animate-pulse"></i>
-            Initializing Mission Control
-          </div>
-          <h1
-            class="font-display font-bold text-2xl sm:text-4xl text-white tracking-wide"
-          >
-            Lost in the Solar System
-          </h1>
-          <p class="text-sm text-slate-300 max-w-sm mx-auto">
-            Get ready to explore the Moon, Mars, and Deep Space with your robot
-            guide, <strong>A.R.I.</strong>!
-          </p>
-        </div>
-
-        <div class="w-64 sm:w-72 space-y-2">
-          <div
-            class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-slate-700/80 p-0.5"
-          >
-            <div
-              id="splash-progress-bar"
-              class="h-full bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 rounded-full transition-all duration-150"
-              style="width: 5%"
-            ></div>
-          </div>
-          <div class="flex items-center justify-center text-xs text-slate-400">
-            <span id="splash-status-text">Loading Solar System Map...</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FRIENDLY GUEST STATUS PILL BAR -->
-    <div
-      id="guest-banner"
-      class="hidden bg-gradient-to-r from-indigo-950/90 via-slate-900/90 to-sky-950/90 border-b border-sky-500/25 px-4 py-2 text-xs sm:text-sm"
-    >
-      <div
-        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2"
-      >
-        <div class="flex items-center gap-2 text-sky-100">
-          <span
-            class="w-6 h-6 rounded-full bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300"
-          >
-            <i class="fa-solid fa-user-astronaut text-xs"></i>
-          </span>
-          <span
-            ><strong>Explorer Guest Mode:</strong> You can play right away!
-            Create a free account anytime to save your badges.</span
-          >
-        </div>
-        <button
-          onclick="window.app.openAuthModal('register')"
-          class="px-3.5 py-1 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-display font-bold text-xs transition shadow-sm"
-        >
-          <i class="fa-solid fa-floppy-disk mr-1"></i> Save My Progress
+  <body>
+    <div id="top">
+      <div id="cr" class="px"></div>
+      <div id="rt">
+        <div id="ct" class="px f"></div>
+        <button class="pb" data-a="tg" aria-label="Toggle map">Map</button
+        ><button class="pb alt" data-a="menu">Worlds</button
+        ><button class="pb alt" data-a="mute" id="mu" aria-label="Sound">
+          Snd
         </button>
       </div>
     </div>
-
-    <!-- TOP NAVIGATION BAR -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
-      <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-2.5 flex items-center justify-between gap-3"
-      >
-        <button
-          onclick="window.app.navigate('landing')"
-          class="flex items-center gap-3 text-left group focus:outline-none"
-        >
-          <div
-            class="w-11 h-11 rounded-2xl bg-gradient-to-br from-nasa-blue to-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/20 border-2 border-sky-300/40 group-hover:scale-105 transition"
-          >
-            <i class="fa-solid fa-rocket text-white text-lg"></i>
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span
-                class="font-display font-bold text-lg sm:text-xl tracking-wide text-white"
-                >NASA: Solar System Explorer</span
-              >
-            </div>
-            <p class="text-xs text-sky-300/90 hidden sm:block">
-              Interactive Space Hardware Adventure
-            </p>
-          </div>
-        </button>
-
-        <nav
-          class="hidden md:flex items-center gap-1.5 bg-slate-950/90 p-1.5 rounded-2xl border border-slate-800"
-        >
-          <button
-            onclick="window.app.navigate('landing')"
-            id="nav-landing"
-            class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition"
-          >
-            <i class="fa-solid fa-house mr-1.5"></i>Home
-          </button>
-          <button
-            onclick="window.app.navigate('map')"
-            id="nav-map"
-            class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition"
-          >
-            <i class="fa-solid fa-earth-americas mr-1.5"></i>Space Map
-          </button>
-          <button
-            onclick="window.app.navigate('archive')"
-            id="nav-archive"
-            class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition"
-          >
-            <i class="fa-solid fa-layer-group mr-1.5"></i>Fact Cards
-            <span
-              id="nav-facts-count"
-              class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-sky-300 text-xs"
-              >0</span
-            >
-          </button>
-          <button
-            onclick="window.app.navigate('badges')"
-            id="nav-badges"
-            class="nav-tab px-4 py-2 rounded-xl text-sm font-display font-semibold transition"
-          >
-            <i class="fa-solid fa-medal mr-1.5"></i>My Badges
-            <span
-              id="nav-badges-count"
-              class="ml-1 px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 text-xs"
-              >0</span
-            >
-          </button>
-        </nav>
-
-        <div class="flex items-center gap-2">
-          <div id="auth-header-area" class="flex items-center gap-2"></div>
-        </div>
+    <div id="tr" class="px"></div>
+    <div id="lbs"></div>
+    <div id="ms" class="f"></div>
+    <div id="pn" class="px" role="dialog" aria-live="polite"></div>
+    <div id="ti">
+      <div>
+        <h3 class="f"></h3>
+        <h1 class="f"></h1>
+        <p></p>
       </div>
-
-      <div
-        class="md:hidden flex items-center justify-around border-t border-slate-800/80 bg-slate-950/95 py-2 px-2"
-      >
-        <button
-          onclick="window.app.navigate('landing')"
-          id="mob-nav-landing"
-          class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5"
-        >
-          <i class="fa-solid fa-house"></i><span>Home</span>
-        </button>
-        <button
-          onclick="window.app.navigate('map')"
-          id="mob-nav-map"
-          class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5"
-        >
-          <i class="fa-solid fa-earth-americas"></i><span>Space Map</span>
-        </button>
-        <button
-          onclick="window.app.navigate('archive')"
-          id="mob-nav-archive"
-          class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5"
-        >
-          <i class="fa-solid fa-layer-group"></i><span>Fact Cards</span>
-        </button>
-        <button
-          onclick="window.app.navigate('badges')"
-          id="mob-nav-badges"
-          class="px-3 py-1.5 rounded-xl text-xs font-display font-bold text-slate-300 flex items-center gap-1.5"
-        >
-          <i class="fa-solid fa-medal"></i><span>Badges</span>
-        </button>
-      </div>
-    </header>
-
-    <main
-      id="app-viewport"
-      class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
-    ></main>
-
-    <!-- PERSISTENT ROBOT GUIDE ("A.R.I.") COMPANION BAR -->
-    <aside class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-      <div
-        class="glass-panel rounded-3xl p-4 sm:p-5 border-2 border-sky-400/35 shadow-xl flex flex-col sm:flex-row items-center gap-4"
-      >
-        <div class="relative flex-shrink-0">
-          <div
-            id="robot-avatar-box"
-            class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-sky-400 flex items-center justify-center animate-float shadow-lg shadow-sky-500/15"
-          ></div>
-          <span
-            id="robot-mood-badge"
-            class="absolute -bottom-1 -right-1 px-2 py-0.5 text-[10px] font-display font-bold uppercase rounded-full bg-sky-400 text-slate-950 shadow"
-            >FRIEND</span
-          >
-        </div>
-        <div class="flex-1 text-center sm:text-left">
-          <div
-            class="flex items-center justify-center sm:justify-start gap-2 mb-1"
-          >
-            <span
-              class="text-sm font-display font-bold tracking-wide text-sky-300"
-              >A.R.I. — Your Robot Space Buddy</span
-            >
-          </div>
-          <p
-            id="robot-dialogue-text"
-            class="text-sm sm:text-base text-white leading-relaxed"
-          >
-            Hi Explorer! I'm A.R.I.! Let's travel across the solar system, meet
-            real NASA spacecraft, and collect awesome space badges!
-          </p>
-        </div>
-        <div class="flex-shrink-0">
-          <button
-            onclick="window.app.triggerRobotTip()"
-            class="btn-tactile px-4 py-2.5 rounded-2xl bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/40 text-xs sm:text-sm font-display font-bold transition flex items-center gap-2"
-          >
-            <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Space
-            Tip!
-          </button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- FOOTER -->
-    <footer
-      class="border-t border-slate-800/80 bg-slate-950/70 py-5 px-4 text-xs text-slate-400"
-    >
-      <div
-        class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3"
-      >
-        <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-          <span><strong>NASA: Lost in the Solar System</strong></span>
-        </div>
-        <div class="flex flex-wrap items-center gap-4">
-          <button
-            onclick="window.app.openHowToPlayModal()"
-            class="hover:text-sky-300 transition font-bold"
-          >
-            <i class="fa-regular fa-circle-question mr-1"></i>How to Play
-          </button>
-          <button
-            onclick="window.app.resetCurrentProgressPrompt()"
-            class="hover:text-rose-400 transition"
-          >
-            <i class="fa-solid fa-rotate-left mr-1"></i>Start Over
-          </button>
-        </div>
-      </div>
-    </footer>
-
-    <!-- MODAL CONTAINER -->
-    <div
-      id="modal-backdrop"
-      class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto"
-    >
-      <div
-        id="modal-content"
-        class="glass-panel rounded-2xl max-w-2xl w-full p-6 border border-slate-700 shadow-2xl my-8"
-      ></div>
     </div>
-
-    <!-- TOAST NOTIFICATION CONTAINER -->
-    <div
-      id="toast-container"
-      class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"
-    ></div>
-
-    <!-- Main JS Module -->
-    <script type="module" src="app_gudez.js"></script>
+    <div id="fx"></div>
+    <div id="mn">
+      <div id="mb" class="px">
+        <h1 class="f">AstroQuest</h1>
+        <p>
+          A pixel-space museum. Pick a world, drive the rover, scan what
+          humanity left behind. Drag to look around.
+        </p>
+        <div id="cl"></div>
+        <button class="pb alt" data-a="mx" id="mx" hidden>Close</button>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+      const $ = (i) => document.getElementById(i),
+        sm = (x) => {
+          x = Math.max(0, Math.min(1, x));
+          return x * x * (3 - 2 * x);
+        };
+      /* ---------- world data ---------- */
+      const C = [
+        {
+          n: "MOON",
+          t: "THE MOON",
+          q: "Earth’s closest neighbor.",
+          sky: 0x070a1a,
+          gr: [0xa4a4b0, 0x8c8c9a],
+          mt: 0x707080,
+          rk: 0x6a6a78,
+          tr: 0x5a5a68,
+          hs: 0xdde4ff,
+          hg: 0x444458,
+          sc: 0xffffff,
+          lt: 1.15,
+          amp: 0.3,
+          mh: 1,
+          cr: [
+            [4, -26, 7],
+            [-8, -8, 4],
+            [14, -10, 4],
+            [-22, 10, 5],
+          ],
+          st: 1,
+          es: 1,
+          v: [0.1, 0.5, 0xffffff],
+          subs: [
+            {
+              id: "1.1",
+              sn: "LRO",
+              b: "lro",
+              p: [-12, -18],
+              fl: 9,
+              full: "Lunar Reconnaissance Orbiter",
+              stt: "ACTIVE",
+              loc: "Moon orbit",
+              rows: [
+                [
+                  "Purpose",
+                  "Maps the Moon in fine detail to help plan safe landings and find resources.",
+                ],
+                [
+                  "Design",
+                  "Seven science instruments, two solar arrays and a steerable dish for sending data to Earth.",
+                ],
+                [
+                  "Mission",
+                  "Launched in June 2009 into a polar orbit that passes over both poles.",
+                ],
+                [
+                  "Discovery",
+                  "Its data helped reveal ice-rich patches in permanently shadowed craters and photographed the Apollo landing sites.",
+                ],
+              ],
+            },
+            {
+              id: "1.2",
+              sn: "Apollo rover",
+              b: "lrv",
+              p: [11, -14],
+              full: "Apollo Lunar Roving Vehicle",
+              stt: "Retired 1972",
+              loc: "Moon surface",
+              rows: [
+                [
+                  "Purpose",
+                  "Let astronauts travel farther from the lander and carry tools and samples.",
+                ],
+                [
+                  "Design",
+                  "Wheels woven from zinc-coated steel wire, because rubber would not survive the cold and dust.",
+                ],
+                [
+                  "Mission",
+                  "Apollo 15 in 1971 was the first to carry one. Its crew drove about 28 kilometers.",
+                ],
+                [
+                  "Fact",
+                  "Three of these rovers (Apollo 15, 16 and 17) were left behind on the Moon.",
+                ],
+              ],
+            },
+            {
+              id: "1.3",
+              sn: "Lunar equipment",
+              b: "eq",
+              p: [-17, -3],
+              full: "Apollo Surface Equipment",
+              stt: "Silent",
+              loc: "Landing sites",
+              rows: [
+                [
+                  "Stations",
+                  "Experiment packages left by Apollo 12 to 17 ran on a small nuclear generator and sent data to Earth until 1977.",
+                ],
+                [
+                  "Mirrors",
+                  "The Apollo 11, 14 and 15 crews left reflectors that scientists still bounce lasers off to measure the Moon’s distance.",
+                ],
+                [
+                  "Flags",
+                  "A flag was planted at each of the six crewed landing sites.",
+                ],
+              ],
+            },
+            {
+              id: "1.4",
+              sn: "Discoveries",
+              b: "ice",
+              p: [4, -26],
+              full: "Water Ice in the Shadows",
+              stt: "Confirmed",
+              loc: "Polar craters",
+              rows: [
+                [
+                  "Ice",
+                  "In 2009 NASA’s LCROSS probe hit the crater Cabeus, and the debris plume contained water.",
+                ],
+                [
+                  "Cold traps",
+                  "Some polar craters never see sunlight and are among the coldest places measured in the solar system.",
+                ],
+                [
+                  "Samples",
+                  "Apollo crews brought back about 382 kilograms of Moon rock and soil.",
+                ],
+              ],
+            },
+            {
+              id: "1.5",
+              sn: "Timeline",
+              b: "term",
+              p: [17, 3],
+              full: "Moon Mission Timeline",
+              stt: "Archive",
+              loc: "Mission log",
+              rows: [
+                [
+                  "1959",
+                  "Luna 2 becomes the first spacecraft to reach the Moon.",
+                ],
+                [
+                  "1969",
+                  "Apollo 11 makes the first crewed landing on July 20.",
+                ],
+                ["1971", "Apollo 15 drives the first Moon rover."],
+                ["1972", "Apollo 17 is the last crewed landing."],
+                ["2009", "LRO launches and LCROSS finds water."],
+              ],
+            },
+          ],
+        },
+        {
+          n: "MARS",
+          t: "MARS",
+          q: "Rust, dust and silent rovers.",
+          sky: 0xd9915c,
+          gr: [0xc4552a, 0xae4521],
+          mt: 0x93401f,
+          rk: 0x7d3419,
+          tr: 0x7a3418,
+          hs: 0xffe0c0,
+          hg: 0x6a2e18,
+          sc: 0xffd9b0,
+          lt: 1.2,
+          amp: 0.8,
+          mh: 1.5,
+          cr: [
+            [-4, -26, 5],
+            [18, -8, 4],
+          ],
+          st: 0,
+          es: 0.1,
+          v: [-6, 0.3, 0xffb070],
+          subs: [
+            {
+              id: "2.1",
+              sn: "Opportunity",
+              b: "opp",
+              p: [-12, -15],
+              full: "Opportunity Rover",
+              stt: "Mission ended 2019",
+              loc: "Meridiani Planum",
+              rows: [
+                [
+                  "Purpose",
+                  "Find rocks that show whether ancient Mars had liquid water.",
+                ],
+                [
+                  "Design",
+                  "Six wheels on a rocker-bogie suspension, solar panels, and Pancam cameras on a mast.",
+                ],
+                [
+                  "Mission",
+                  "Landed in January 2004 for a planned 90 Martian days and kept working until 2018.",
+                ],
+                [
+                  "Discovery",
+                  "Found layered rock and iron-rich spheres that point to long-lasting watery conditions.",
+                ],
+              ],
+            },
+            {
+              id: "2.2",
+              sn: "Viking 1",
+              b: "vk",
+              p: [12, -16],
+              full: "Viking 1 Lander",
+              stt: "Retired 1982",
+              loc: "Chryse Planitia",
+              rows: [
+                [
+                  "Purpose",
+                  "Study the surface and test the soil for signs of life.",
+                ],
+                [
+                  "Design",
+                  "Three legs, a robotic arm for scooping soil, and cameras that sent back some of the first clear surface pictures.",
+                ],
+                ["Mission", "Landed on July 20, 1976 and worked until 1982."],
+              ],
+            },
+            {
+              id: "2.3",
+              sn: "Discoveries",
+              b: "blue",
+              p: [-4, -26],
+              full: "Surface Discoveries",
+              stt: "Evidence",
+              loc: "Meridiani Planum",
+              rows: [
+                [
+                  "Blueberries",
+                  "Opportunity found tiny round iron-rich pebbles nicknamed blueberries.",
+                ],
+                [
+                  "Meaning",
+                  "They formed in water-soaked rock, a sign of past groundwater.",
+                ],
+                [
+                  "Quakes",
+                  "InSight’s seismometer detected hundreds of marsquakes before the mission ended in 2022.",
+                ],
+              ],
+            },
+            {
+              id: "2.4",
+              sn: "Timeline",
+              b: "term",
+              p: [17, 2],
+              full: "Mars Mission Timeline",
+              stt: "Archive",
+              loc: "Mission log",
+              rows: [
+                [
+                  "1965",
+                  "Mariner 4 sends the first close-up pictures of Mars.",
+                ],
+                ["1976", "Viking 1 and 2 land."],
+                ["1997", "Sojourner becomes the first Mars rover."],
+                ["2004", "Spirit and Opportunity land."],
+                ["2012", "Curiosity lands."],
+                ["2021", "Perseverance lands with the Ingenuity helicopter."],
+              ],
+            },
+          ],
+        },
+        {
+          n: "DEEP SPACE",
+          t: "DEEP SPACE",
+          lock: 1,
+          subs: [
+            { id: "3.1", sn: "Voyager" },
+            { id: "3.2", sn: "Deep Space Comms" },
+            { id: "3.3", sn: "Discoveries" },
+            { id: "3.4", sn: "Mission Status" },
+          ],
+        },
+        { n: "OUTER SOLAR SYSTEM", t: "OUTER SOLAR SYSTEM", lock: 1, subs: [] },
+      ];
+      /* ---------- renderer ---------- */
+      const R = new THREE.WebGLRenderer({ antialias: false });
+      document.body.prepend(R.domElement);
+      R.shadowMap.enabled = true;
+      R.shadowMap.type = THREE.BasicShadowMap;
+      const sc = new THREE.Scene(),
+        cam = new THREE.PerspectiveCamera(60, 1, 0.1, 500),
+        BLK = new THREE.Color(0x03040a),
+        sky = new THREE.Color(0x03040a);
+      sc.fog = new THREE.Fog(0x03040a, 30, 95);
+      sc.background = new THREE.Color(0x03040a);
+      function rs() {
+        const p = Math.max(2, Math.round(innerHeight / 260));
+        R.setSize(Math.ceil(innerWidth / p), Math.ceil(innerHeight / p), false);
+        cam.aspect = innerWidth / innerHeight;
+        cam.updateProjectionMatrix();
+      }
+      addEventListener("resize", rs);
+      rs();
+      const amb = new THREE.HemisphereLight(0xffffff, 0x555566, 0.8),
+        sun = new THREE.DirectionalLight(0xffffff, 1);
+      sun.castShadow = true;
+      sun.shadow.mapSize.set(1024, 1024);
+      {
+        const s = sun.shadow.camera;
+        s.left = s.bottom = -24;
+        s.right = s.top = 24;
+        s.near = 1;
+        s.far = 90;
+      }
+      sc.add(amb, sun, sun.target);
+      const W = new THREE.Group(),
+        mts = new THREE.Group(),
+        rocks = new THREE.Group(),
+        props = new THREE.Group();
+      W.add(mts, rocks, props);
+      sc.add(W);
+      /* ---------- voxel helpers ---------- */
+      const UB = new THREE.BoxGeometry(1, 1, 1),
+        UE = new THREE.EdgesGeometry(UB),
+        OL = new THREE.LineBasicMaterial({ color: 0x0a0a14 }),
+        MC = {};
+      const L = (c, e) =>
+        MC[c + "_" + (e | 0)] ||
+        (MC[c + "_" + (e | 0)] = new THREE.MeshLambertMaterial({
+          color: c,
+          emissive: e ? c : 0,
+        }));
+      const shade = (h, f) => new THREE.Color(h).multiplyScalar(f).getHex();
+      function V(g, l) {
+        for (const [w, h, d, x, y, z, c, e] of l) {
+          const m = new THREE.Mesh(UB, L(c, e));
+          m.scale.set(w, h, d);
+          m.position.set(x, y, z);
+          m.castShadow = true;
+          m.add(new THREE.LineSegments(UE, OL));
+          g.add(m);
+        }
+        return g;
+      }
+      const G = () => new THREE.Group();
+      function pt(cols, w = 16, h = 16) {
+        const c = document.createElement("canvas");
+        c.width = w;
+        c.height = h;
+        const x = c.getContext("2d");
+        for (let i = 0; i < w; i++)
+          for (let j = 0; j < h; j++) {
+            x.fillStyle = cols[(Math.random() * cols.length) | 0];
+            x.fillRect(i, j, 1, 1);
+          }
+        const t = new THREE.CanvasTexture(c);
+        t.magFilter = t.minFilter = THREE.NearestFilter;
+        return t;
+      }
+      function planet(r, cols) {
+        const m = new THREE.Mesh(
+          new THREE.SphereGeometry(r, 12, 8),
+          new THREE.MeshBasicMaterial({ map: pt(cols, 32, 16), fog: false }),
+        );
+        m.visible = false;
+        sc.add(m);
+        return m;
+      }
+      const moonP = planet(1, ["#a9a9b4", "#8f8f9c", "#7a7a88", "#bdbdc8"]),
+        marsP = planet(1, ["#c1532a", "#a8431f", "#d9703a", "#8a3418"]),
+        earth = planet(14, [
+          "#1d63b8",
+          "#1d63b8",
+          "#1a4f9e",
+          "#2c7a3f",
+          "#2c7a3f",
+          "#ffffff",
+        ]);
+      moonP.scale.setScalar(14);
+      marsP.scale.setScalar(16);
+      /* ---------- terrain ---------- */
+      const N = 51,
+        HF = 25,
+        S = 2,
+        HT = new Float32Array(N * N),
+        gm = new THREE.BoxGeometry(S, 1, S);
+      gm.translate(0, 0.5, 0);
+      const tm = new THREE.InstancedMesh(
+        gm,
+        new THREE.MeshLambertMaterial({
+          map: pt(["#ffffff", "#f0f0f0", "#e0e0e0", "#fafafa"]),
+        }),
+        N * N,
+      );
+      tm.receiveShadow = true;
+      tm.frustumCulled = false;
+      W.add(tm);
+      const gy = (x, z) =>
+        HT[
+          Math.max(0, Math.min(N - 1, Math.round(x / S) + HF)) * N +
+            Math.max(0, Math.min(N - 1, Math.round(z / S) + HF))
+        ];
+      function terr(c) {
+        const m = new THREE.Matrix4(),
+          col = new THREE.Color(),
+          q = new THREE.Quaternion(),
+          v = new THREE.Vector3(),
+          s = new THREE.Vector3();
+        for (let i = 0; i < N; i++)
+          for (let j = 0; j < N; j++) {
+            const x = (i - HF) * S,
+              z = (j - HF) * S;
+            let h =
+              (Math.sin(i * 0.5) +
+                Math.sin(j * 0.43 + 1) +
+                Math.sin((i + j) * 0.27) +
+                Math.sin((i - j) * 0.19)) *
+              c.amp;
+            for (const k of c.cr) {
+              const d = Math.hypot(x - k[0], z - k[1]) / k[2];
+              if (d < 1) h -= (1 - d * d) * 3.2;
+              else if (d < 1.35) h += (0.9 * (1.35 - d)) / 0.35;
+            }
+            h *=
+              Math.min(1, Math.hypot(x, z) / 7) *
+              Math.max(0, Math.min(1, (46 - Math.hypot(x, z)) / 8));
+            h = Math.round(h * 2) / 2;
+            HT[i * N + j] = h;
+            v.set(x, -6, z);
+            s.set(1, h + 6, 1);
+            m.compose(v, q, s);
+            tm.setMatrixAt(i * N + j, m);
+            col
+              .setHex(c.gr[(i + j) % 2])
+              .multiplyScalar(
+                [0.78, 0.9, 1, 1.08][(i * 7 + j * 13 + (i ^ j)) % 4] *
+                  (h < -1 ? 0.7 : 1),
+              );
+            tm.setColorAt(i * N + j, col);
+          }
+        tm.instanceMatrix.needsUpdate = tm.instanceColor.needsUpdate = true;
+      }
+      /* ---------- props ---------- */
+      function rover(o) {
+        const g = G(),
+          ws = [];
+        V(g, [
+          [1.5, 0.5, 2.2, 0, 1.1, 0, o.b],
+          [1.9, 0.12, 2.4, 0, 1.45, -0.05, o.s],
+          [1.55, 0.2, 2.25, 0, 0.82, 0, o.a],
+          [0.14, 1, 0.14, 0.5, 2, 0.7, 0xaaaab4],
+          [0.06, 1.5, 0.06, -0.85, 2.1, -0.9, 0xdddddd],
+          [0.14, 0.14, 2, -1.15, 0.85, 0, 0x8a8e9a],
+          [0.14, 0.14, 2, 1.15, 0.85, 0, 0x8a8e9a],
+        ]);
+        for (const x of [-1.15, 1.15])
+          for (const z of [-0.95, 0, 0.95]) {
+            const w = V(G(), [
+              [0.4, 0.9, 0.9, 0, 0, 0, 0x2c2f3a],
+              [0.42, 0.25, 0.25, 0, 0.38, 0, o.a],
+            ]);
+            w.position.set(x, 0.45, z);
+            g.add(w);
+            ws.push(w);
+          }
+        const hd = V(G(), [
+          [0.75, 0.35, 0.4, 0, 0, 0, 0xe6e9f0],
+          [0.18, 0.18, 0.1, -0.2, 0, 0.25, 0x4fd8ff, 1],
+          [0.18, 0.18, 0.1, 0.2, 0, 0.25, 0x4fd8ff, 1],
+        ]);
+        hd.position.set(0.5, 2.6, 0.7);
+        g.add(hd);
+        const dh = V(G(), [
+          [0.12, 0.7, 0.12, 0, -0.35, 0, 0xaaaab4],
+          [1, 1, 0.12, 0, 0.1, 0, 0xf4f4f8],
+        ]);
+        dh.position.set(-0.55, 2, -0.6);
+        dh.rotation.x = -0.5;
+        g.add(dh);
+        const led = V(G(), [[0.2, 0.2, 0.2, 0.7, 1.6, -0.9, 0xff3030, 1]]);
+        g.add(led);
+        g.userData = { ws, hd, led };
+        return g;
+      }
+      const B = {
+        lro: () =>
+          V(G(), [
+            [1.6, 1.2, 2, 0, 0, 0, 0xc9ccd6],
+            [1.7, 0.4, 2.1, 0, -0.6, 0, 0xe8b830],
+            [4.2, 0.1, 1.6, 3.1, 0.2, 0, 0x2b46b8],
+            [4.2, 0.1, 1.6, -3.1, 0.2, 0, 0x2b46b8],
+            [0.15, 0.15, 1.5, 0, 0.9, -0.9, 0xaaaab4],
+            [1.1, 1.1, 0.15, 0, 1.5, -1.7, 0xffffff],
+            [0.3, 0.3, 0.3, 0, 0.6, 1.1, 0xff3030, 1],
+          ]),
+        lrv: () => {
+          const l = [
+            [1.6, 0.25, 3.2, 0, 0.75, 0, 0xcfd2da],
+            [0.5, 0.9, 0.4, -0.4, 1.35, 0.3, 0xe8e8ee],
+            [0.5, 0.9, 0.4, 0.4, 1.35, 0.3, 0xe8e8ee],
+            [0.1, 1.6, 0.1, 0, 1.7, -1.3, 0xaaaab4],
+            [1.2, 1.2, 0.1, 0, 2.7, -1.3, 0xdddddd],
+            [0.3, 0.15, 0.9, 0, 1.1, 1, 0xff8a2a],
+          ];
+          for (const x of [-1, 1])
+            for (const z of [-1.1, 1.1])
+              l.push(
+                [0.3, 0.75, 0.75, x, 0.4, z, 0x8a8d96],
+                [0.32, 0.2, 0.2, x, 0.6, z, 0x555a66],
+              );
+          return V(G(), l);
+        },
+        eq: () =>
+          V(G(), [
+            [0.1, 4, 0.1, 0, 2, 0, 0xeeeeee],
+            [1.8, 1.1, 0.05, 0.95, 3.4, 0, 0xf4f4f4],
+            [0.7, 0.6, 0.06, 0.35, 3.65, 0, 0x2a3a9a],
+            [1.8, 0.18, 0.06, 0.95, 3.25, 0, 0xc42626],
+            [1.1, 0.18, 0.06, 1.4, 3.7, 0, 0xc42626],
+            [1.4, 0.9, 1.4, 3.2, 0.45, 0, 0x8d8d95],
+            [1.5, 0.2, 1.5, 3.2, 0.95, 0, 0xe8b830],
+            [0.1, 1.2, 0.1, 3.2, 1.6, 0, 0xaaaab4],
+            [0.8, 0.8, 0.1, 3.2, 2.3, 0, 0xdddddd],
+          ]),
+        ice: () =>
+          V(G(), [
+            [2.6, 0.3, 2.6, 0, 0.15, 0, 0x6e6e7e],
+            [0.8, 1.6, 0.8, 0, 0.8, 0, 0x9fe8ff, 1],
+            [0.6, 1, 0.6, 0.9, 0.5, 0.3, 0x7fd0ff, 1],
+            [0.5, 0.8, 0.5, -0.8, 0.4, 0.4, 0xcff4ff, 1],
+          ]),
+        term: () =>
+          V(G(), [
+            [2.4, 0.3, 1.2, 0, 0.15, 0, 0x555a6a],
+            [1.5, 2.6, 0.5, 0, 1.5, 0, 0x20243a],
+            [1.1, 1.8, 0.1, 0, 1.6, 0.3, 0x4fd8ff, 1],
+            [1.1, 0.2, 0.1, 0, 2.4, 0.3, 0xffd23f, 1],
+          ]),
+        opp: () => {
+          const g = rover({ b: 0xd8d8e0, s: 0x2a3f9e, a: 0xd9a63a });
+          V(g, [[1.9, 0.14, 2.4, 0, 1.55, 0, 0xc9744a]]);
+          g.userData.led.visible = false;
+          return g;
+        },
+        vk: () => {
+          const l = [
+            [1.8, 0.7, 1.8, 0, 1.3, 0, 0xd6d0c4],
+            [0.9, 0.4, 0.9, 0, 1.85, 0, 0x6a7280],
+            [0.1, 1.3, 0.1, 0.6, 2.3, 0.6, 0xaaaab4],
+            [0.9, 0.9, 0.1, 0.6, 3, 0.6, 0xdddddd],
+          ];
+          for (const [x, z] of [
+            [-0.9, -0.9],
+            [0.9, -0.9],
+            [0, 1.1],
+          ])
+            l.push(
+              [0.2, 1, 0.2, x, 0.6, z, 0x999aa6],
+              [0.6, 0.15, 0.6, x, 0.07, z, 0x777777],
+            );
+          return V(G(), l);
+        },
+        blue: () =>
+          V(G(), [
+            [2.2, 0.8, 1.8, 0, 0.4, 0, 0x8a3a22],
+            [1.2, 0.6, 1.2, 0.3, 1.1, 0, 0x7a3018],
+            [0.3, 0.3, 0.3, -0.7, 0.95, 0.5, 0x5a7fff, 1],
+            [0.3, 0.3, 0.3, 0.2, 1.5, 0.5, 0x5a7fff, 1],
+            [0.3, 0.3, 0.3, 0.8, 0.95, -0.5, 0x5a7fff, 1],
+            [0.3, 0.3, 0.3, -0.3, 1.5, -0.4, 0x5a7fff, 1],
+          ]),
+      };
+      const rv = rover({ b: 0xeef0f6, s: 0x2b46b8, a: 0xff8a2a });
+      W.add(rv);
+      const tk = new THREE.InstancedMesh(
+        UB,
+        new THREE.MeshLambertMaterial({ color: 0x555566 }),
+        160,
+      );
+      tk.frustumCulled = false;
+      tk.receiveShadow = true;
+      W.add(tk);
+      let tki = 0,
+        lastT = new THREE.Vector3();
+      const ZM = new THREE.Matrix4().makeScale(0, 0, 0),
+        bm = new THREE.Mesh(
+          UB,
+          new THREE.MeshBasicMaterial({
+            color: 0x4fd8ff,
+            transparent: true,
+            opacity: 0.5,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+          }),
+        );
+      bm.visible = false;
+      W.add(bm);
+      /* ---------- sky, stars, streaks, dust ---------- */
+      const sp = [];
+      for (let i = 0; i < 500; i++) {
+        const a = Math.random() * 6.283,
+          b = Math.acos(Math.random() * 2 - 1);
+        sp.push(
+          250 * Math.sin(b) * Math.cos(a),
+          250 * Math.cos(b),
+          250 * Math.sin(b) * Math.sin(a),
+        );
+      }
+      const sg = new THREE.BufferGeometry();
+      sg.setAttribute("position", new THREE.Float32BufferAttribute(sp, 3));
+      const stm = new THREE.PointsMaterial({
+          size: 2,
+          sizeAttenuation: false,
+          transparent: true,
+          fog: false,
+        }),
+        stars = new THREE.Points(sg, stm);
+      stars.frustumCulled = false;
+      sc.add(stars);
+      const SN = 260,
+        sx = [],
+        stp = new Float32Array(SN * 6),
+        stg = new THREE.BufferGeometry();
+      for (let i = 0; i < SN; i++) {
+        const a = Math.random() * 6.283,
+          r = 3 + Math.random() * 40;
+        sx.push([Math.cos(a) * r, Math.sin(a) * r, -Math.random() * 120]);
+      }
+      stg.setAttribute("position", new THREE.BufferAttribute(stp, 3));
+      const stl = new THREE.LineSegments(
+        stg,
+        new THREE.LineBasicMaterial({
+          color: 0xbfe8ff,
+          transparent: true,
+          fog: false,
+        }),
+      );
+      stl.frustumCulled = false;
+      stl.visible = false;
+      sc.add(stl);
+      const PN = 140,
+        pp = new Float32Array(PN * 3),
+        pg = new THREE.BufferGeometry();
+      for (let i = 0; i < PN * 3; i++)
+        pp[i] = i % 3 === 1 ? Math.random() * 10 : (Math.random() - 0.5) * 40;
+      pg.setAttribute("position", new THREE.BufferAttribute(pp, 3));
+      const pm = new THREE.PointsMaterial({
+          size: 3,
+          sizeAttenuation: false,
+          transparent: true,
+          opacity: 0.8,
+          depthWrite: false,
+        }),
+        pts = new THREE.Points(pg, pm);
+      pts.frustumCulled = false;
+      W.add(pts);
+      /* ---------- state ---------- */
+      let cur = -1,
+        sub = -1,
+        st = "menu",
+        tr = null,
+        OB = [],
+        ang = 0,
+        zoom = 1,
+        dimf = 1,
+        sph = 0,
+        sct = 0,
+        muted = false;
+      const found = new Set(),
+        dest = new THREE.Vector3(),
+        lk = new THREE.Vector3(0, 0, -50),
+        cd = new THREE.Vector3(),
+        cl = new THREE.Vector3();
+      W.visible = false;
+      function bg(c) {
+        sc.background.copy(c);
+        sc.fog.color.copy(c);
+      }
+      function setWorld(i) {
+        const c = C[i];
+        cur = i;
+        sub = -1;
+        sky.set(c.sky);
+        bg(sky);
+        amb.color.set(c.hs);
+        amb.groundColor.set(c.hg);
+        sun.color.set(c.sc);
+        terr(c);
+        mts.clear();
+        for (let k = 0; k < 24; k++) {
+          const a = (k / 24) * 6.283,
+            r = 47 + Math.random() * 3,
+            hh = (6 + Math.random() * 6) * c.mh,
+            w = 15 + Math.random() * 4,
+            g = G();
+          [
+            [w, hh * 0.5, -2, 1],
+            [w * 0.6, hh * 0.3, hh * 0.5 - 2, 1.15],
+            [w * 0.3, hh * 0.2, hh * 0.8 - 2, 1.3],
+          ].forEach(([ww, h, y, f]) => {
+            const m = new THREE.Mesh(UB, L(shade(c.mt, f)));
+            m.scale.set(ww, h, ww);
+            m.position.y = y + h / 2;
+            g.add(m);
+          });
+          g.position.set(Math.cos(a) * r, 0, Math.sin(a) * r);
+          g.rotation.y = Math.random();
+          mts.add(g);
+        }
+        rocks.clear();
+        for (let k = 0; k < 40; k++) {
+          const x = (Math.random() - 0.5) * 80,
+            z = (Math.random() - 0.5) * 80;
+          if (Math.hypot(x, z) < 6) continue;
+          const s = 0.6 + Math.random() * 1.4,
+            m = new THREE.Mesh(UB, L(c.rk));
+          m.scale.set(s, s * (0.5 + Math.random() * 0.6), s);
+          m.position.set(x, gy(x, z) + m.scale.y / 2 - 0.05, z);
+          m.rotation.y = Math.random() * 1.5;
+          m.castShadow = true;
+          m.add(new THREE.LineSegments(UE, OL));
+          rocks.add(m);
+        }
+        props.clear();
+        $("lbs").innerHTML = "";
+        OB = c.subs.map((s, k) => {
+          const g = B[s.b](),
+            bb = new THREE.Box3().setFromObject(g);
+          g.add(new THREE.Box3Helper(bb, 0xffd23f));
+          if (s.fl) {
+            const b = new THREE.Mesh(
+              UB,
+              new THREE.MeshBasicMaterial({
+                color: 0x4fd8ff,
+                transparent: true,
+                opacity: 0.3,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+              }),
+            );
+            b.scale.set(0.15, s.fl, 0.15);
+            b.position.y = -s.fl / 2 - 0.6;
+            g.add(b);
+          }
+          g.position.set(s.p[0], gy(s.p[0], s.p[1]) + (s.fl || 0), s.p[1]);
+          props.add(g);
+          const b = document.createElement("button");
+          b.className = "lb";
+          b.dataset.s = k;
+          $("lbs").append(b);
+          return {
+            g,
+            b,
+            top: bb.max.y + 0.8,
+            by: g.position.y,
+            bx: s.p[0],
+            bz: s.p[1],
+            hl: g.children[g.children.length - (s.fl ? 2 : 1)],
+          };
+        });
+        rv.position.set(0, gy(0, 0), 0);
+        rv.rotation.y = Math.PI;
+        tk.material.color.set(c.tr);
+        for (let k = 0; k < 160; k++) tk.setMatrixAt(k, ZM);
+        tk.instanceMatrix.needsUpdate = true;
+        tki = 0;
+        lastT.copy(rv.position);
+        stm.opacity = c.st;
+        pm.color.set(c.v[2]);
+        ang = 0;
+        zoom = 1;
+        hud();
+      }
+      /* ---------- audio ---------- */
+      let A = null;
+      function blip(f1, f2, d, ty = "square", v = 0.08) {
+        if (muted) return;
+        try {
+          A = A || new (window.AudioContext || window.webkitAudioContext)();
+          const o = A.createOscillator(),
+            g = A.createGain();
+          o.type = ty;
+          o.frequency.setValueAtTime(f1, A.currentTime);
+          o.frequency.exponentialRampToValueAtTime(f2, A.currentTime + d);
+          g.gain.setValueAtTime(v, A.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, A.currentTime + d + 0.1);
+          o.connect(g);
+          g.connect(A.destination);
+          o.start();
+          o.stop(A.currentTime + d + 0.15);
+        } catch (e) {}
+      }
+      /* ---------- UI ---------- */
+      const lab = (k) =>
+        C[cur].subs[k].id +
+        " " +
+        C[cur].subs[k].sn +
+        (found.has(C[cur].subs[k].id) ? " ✔" : "");
+      function hud() {
+        const c = C[cur];
+        $("cr").innerHTML =
+          '<button class="lk" data-a="menu">AstroQuest</button>' +
+          (c
+            ? ' › <button class="lk" data-a="back">Ch.' +
+              (cur + 1) +
+              " " +
+              c.n +
+              "</button>"
+            : "") +
+          (sub >= 0
+            ? " › <b>" + c.subs[sub].id + " " + c.subs[sub].sn + "</b>"
+            : "");
+        $("tr").innerHTML = c
+          ? '<button class="tl" data-a="back">' +
+            (cur + 1) +
+            " — " +
+            c.n +
+            "</button>" +
+            c.subs
+              .map(
+                (s, k) =>
+                  '<button class="tl' +
+                  (k === sub ? " on" : "") +
+                  '" data-s="' +
+                  k +
+                  '">' +
+                  (k < c.subs.length - 1 ? "├" : "└") +
+                  " " +
+                  lab(k) +
+                  "</button>",
+              )
+              .join("")
+          : "";
+        $("tr").style.display = c ? "" : "none";
+        $("ct").textContent = "Data " + found.size + "/9";
+        if (c) OB.forEach((o, k) => (o.b.textContent = lab(k)));
+      }
+      function menu() {
+        $("cl").innerHTML = C.map(
+          (c, i) =>
+            '<button class="cd" data-c="' +
+            i +
+            '"' +
+            (c.lock ? " disabled" : "") +
+            "><i>Chapter " +
+            (i + 1) +
+            (c.lock ? " · locked" : "") +
+            "</i><b>" +
+            c.t +
+            "</b><small>" +
+            (c.subs.length
+              ? c.subs
+                  .map(
+                    (s, k) =>
+                      (k < c.subs.length - 1 ? "├ " : "└ ") + s.id + " " + s.sn,
+                  )
+                  .join("<br>")
+              : "Coming soon") +
+            "</small></button>",
+        ).join("");
+      }
+      menu();
+      hud();
+      function panel(k) {
+        const s = C[cur].subs[k];
+        $("pn").innerHTML =
+          '<div class="sl"></div><div class="f st">' +
+          s.id +
+          " · Ch." +
+          (cur + 1) +
+          " " +
+          C[cur].n +
+          '</div><h2 class="f">' +
+          s.full +
+          '</h2><div class="f st">Status: ' +
+          s.stt +
+          " · Location: " +
+          s.loc +
+          "</div>" +
+          s.rows.map((r) => "<p><b>" + r[0] + "</b>" + r[1] + "</p>").join("") +
+          '<button class="pb" data-a="back">◀ Back to ' +
+          C[cur].n +
+          '</button><button class="pb alt" data-a="next">Next ▶</button>';
+        $("pn").scrollTop = 0;
+        $("pn").classList.add("open");
+      }
+      function goSub(k) {
+        if (!(st === "chap" || st === "sub") || (st === "sub" && k === sub))
+          return;
+        sub = k;
+        st = "drive";
+        $("pn").classList.remove("open");
+        const g = OB[k].g.position,
+          p = rv.position,
+          dx = g.x - p.x,
+          dz = g.z - p.z,
+          d = Math.hypot(dx, dz) || 1;
+        dest.set(
+          d > 6 ? g.x - (dx / d) * 5.5 : p.x,
+          0,
+          d > 6 ? g.z - (dz / d) * 5.5 : p.z,
+        );
+        blip(300, 600, 0.12);
+        hud();
+      }
+      function back() {
+        if (st === "drive" || st === "scan" || st === "sub") {
+          sub = -1;
+          st = "chap";
+          $("pn").classList.remove("open");
+          bm.visible = false;
+          $("ms").textContent = "";
+          hud();
+        }
+      }
+      function openMenu() {
+        $("mn").hidden = false;
+        $("mx").hidden = cur < 0;
+      }
+      function go(i) {
+        if (tr || C[i].lock) return;
+        $("mn").hidden = true;
+        if (i === cur) return;
+        back();
+        $("pn").classList.remove("open");
+        tr = { t: 0, to: i, sw: 0, ti: 0 };
+        st = "trans";
+        $("lbs").style.display = "none";
+        blip(120, 900, 0.9, "sawtooth", 0.06);
+      }
+      document.body.addEventListener("click", (e) => {
+        const t = e.target.closest("[data-a],[data-s],[data-c]");
+        if (!t) return;
+        const a = t.dataset.a;
+        if (a === "menu") openMenu();
+        else if (a === "mx") $("mn").hidden = true;
+        else if (a === "back") back();
+        else if (a === "next") goSub((sub + 1) % C[cur].subs.length);
+        else if (a === "tg") $("tr").classList.toggle("off");
+        else if (a === "mute") {
+          muted = !muted;
+          t.textContent = muted ? "Mute" : "Snd";
+        } else if (t.dataset.s !== undefined) goSub(+t.dataset.s);
+        else if (t.dataset.c !== undefined) go(+t.dataset.c);
+      });
+      addEventListener("keydown", (e) => {
+        if (e.key === "Escape") back();
+      });
+      if (innerWidth < 700) $("tr").classList.add("off");
+      let dg = null;
+      R.domElement.addEventListener("pointerdown", (e) => (dg = e.clientX));
+      addEventListener("pointerup", () => (dg = null));
+      addEventListener("pointermove", (e) => {
+        if (dg !== null) {
+          ang -= (e.clientX - dg) * 0.006;
+          dg = e.clientX;
+        }
+      });
+      R.domElement.addEventListener(
+        "wheel",
+        (e) => {
+          zoom = Math.max(0.7, Math.min(1.6, zoom + e.deltaY * 0.001));
+        },
+        { passive: true },
+      );
+      /* ---------- loop ---------- */
+      const clk = new THREE.Clock(),
+        V3 = new THREE.Vector3(),
+        q3 = new THREE.Quaternion(),
+        M4 = new THREE.Matrix4(),
+        EU = new THREE.Euler();
+      function pose() {
+        const p = rv.position;
+        if (sub >= 0 && (st === "scan" || st === "sub")) {
+          const g = OB[sub].g.position,
+            dx = g.x - p.x,
+            dz = g.z - p.z,
+            d = Math.hypot(dx, dz) || 1,
+            x = dx / d,
+            z = dz / d;
+          cd.set(p.x - x * 4 + z * 4, p.y + 4.2, p.z - z * 4 - x * 4);
+          cl.set(g.x, p.y + (g.y - p.y) * 0.6 + 1, g.z);
+        } else {
+          cd.set(
+            p.x + Math.sin(ang) * 11 * zoom,
+            p.y + 6.5 * zoom,
+            p.z + Math.cos(ang) * 11 * zoom,
+          );
+          cl.set(p.x, p.y + 1.5, p.z - 3);
+        }
+      }
+      function stamp(p, h) {
+        for (const s of [-1.15, 1.15]) {
+          const x = p.x + Math.cos(h) * s,
+            z = p.z - Math.sin(h) * s;
+          V3.set(x, gy(x, z) + 0.05, z);
+          EU.set(0, h, 0);
+          q3.setFromEuler(EU);
+          M4.compose(V3, q3, new THREE.Vector3(0.45, 0.1, 1));
+          tk.setMatrixAt(tki++ % 160, M4);
+        }
+        tk.instanceMatrix.needsUpdate = true;
+      }
+      function loop() {
+        requestAnimationFrame(loop);
+        const dt = Math.min(clk.getDelta(), 0.05),
+          t = clk.elapsedTime,
+          p = rv.position;
+        let warp = 0;
+        const e = tr ? (tr.t += dt) : 0;
+        if (tr) {
+          if (e < 0.5) {
+            if (W.visible) {
+              const q = sm(e / 0.5);
+              dimf = 1 - 0.85 * q;
+              bg(new THREE.Color().copy(sky).lerp(BLK, q));
+              cam.position.set(p.x, 5 + q * 40, p.z + 11 + q * 14);
+              lk.set(p.x, 2 + q * 50, p.z - 5);
+            }
+          } else if (e < 1.5) {
+            W.visible = false;
+            dimf = 1;
+            stm.opacity = 1;
+            if (e >= 1 && !tr.sw) {
+              tr.sw = 1;
+              setWorld(tr.to);
+              bg(BLK);
+              W.visible = false;
+              stm.opacity = 1;
+            }
+            cam.position.set(0, 0, 0);
+            lk.set(0, 0, -10);
+            warp = e < 1 ? sm((e - 0.5) / 0.4) : 1 - 0.65 * sm((e - 1) / 0.5);
+          } else {
+            if (!tr.ti) {
+              tr.ti = 1;
+              W.visible = true;
+              bg(sky);
+              stm.opacity = C[cur].st;
+              dimf = 1;
+              $("ti").querySelector("h3").textContent = "Chapter " + (cur + 1);
+              $("ti").querySelector("h1").textContent = C[cur].t;
+              $("ti").querySelector("p").textContent = C[cur].q;
+              $("ti").classList.remove("show");
+              void $("ti").offsetWidth;
+              $("ti").classList.add("show");
+            }
+            const q = sm((e - 1.5) / 0.5);
+            pose();
+            cam.position.set(
+              p.x + (cd.x - p.x) * q,
+              p.y + 45 + (cd.y - p.y - 45) * q,
+              p.z + 30 + (cd.z - p.z - 30) * q,
+            );
+            lk.set(p.x, p.y * q + 1.5 - (1 - q) * 10, p.z - 3 - (1 - q) * 8);
+            $("fx").style.opacity =
+              e < 1.8 ? 0.9 * (1 - (e - 1.5) / 0.3) * (cur === 1 ? 0.7 : 1) : 0;
+            if (e >= 2) {
+              tr = null;
+              st = "chap";
+              $("lbs").style.display = "block";
+              hud();
+            }
+          }
+          cam.lookAt(lk);
+        } else if (!W.visible) {
+          cam.position.set(Math.sin(t * 0.1) * 3, Math.sin(t * 0.2), 0);
+          cam.lookAt(0, 0, -50);
+        } else {
+          if (st === "drive") {
+            const dx = dest.x - p.x,
+              dz = dest.z - p.z,
+              d = Math.hypot(dx, dz);
+            if (d < 0.08) {
+              st = "scan";
+              sct = 0;
+              sph = 0;
+              bm.visible = true;
+            } else {
+              const s = Math.min(d, 24 * dt);
+              p.x += (dx / d) * s;
+              p.z += (dz / d) * s;
+              turn(Math.atan2(dx, dz), dt);
+              rv.userData.ws.forEach((w) => (w.rotation.x += s / 0.45));
+              if (p.distanceTo(lastT) > 1.1) {
+                stamp(p, rv.rotation.y);
+                lastT.copy(p);
+              }
+            }
+          }
+          if (st === "scan") {
+            const o = OB[sub],
+              g = o.g.position;
+            turn(Math.atan2(g.x - p.x, g.z - p.z), dt);
+            sct += dt;
+            const k = found.has(C[cur].subs[sub].id) ? 3 : 0,
+              ms = $("ms"),
+              ph = sct < 0.6 ? 1 : sct < 1.1 ? 2 : sct < 1.7 ? 3 : 4;
+            if (ph !== sph && !k) {
+              sph = ph;
+              ms.textContent = [
+                "",
+                "Scanning…",
+                "Signal detected",
+                "Discovery: " + C[cur].subs[sub].full,
+                "",
+              ][ph];
+              if (ph < 4) blip(500 + ph * 250, 900 + ph * 300, 0.15);
+            }
+            V3.set(p.x, p.y + 2.6, p.z);
+            bm.position.copy(V3).lerp(g, 0.5);
+            bm.scale.set(0.1 + 0.05 * Math.sin(t * 30), 0.1, V3.distanceTo(g));
+            bm.lookAt(g);
+            if (k ? sct > 0.3 : sct > 1.7) {
+              st = "sub";
+              bm.visible = false;
+              ms.textContent = "";
+              found.add(C[cur].subs[sub].id);
+              panel(sub);
+              hud();
+            }
+          }
+          p.y += (gy(p.x, p.z) - p.y) * Math.min(1, dt * 14);
+          const u = rv.userData;
+          u.hd.rotation.y = Math.sin(t * 0.8) * 0.35;
+          u.led.visible = ((t * 2) | 0) % 2 === 0;
+          pose();
+          const k = 1 - Math.exp(-dt * 5.5);
+          cam.position.lerp(cd, k);
+          lk.lerp(cl, k);
+          cam.lookAt(lk);
+          OB.forEach((o, i) => {
+            const g = o.g,
+              s = C[cur].subs[i];
+            if (s.fl) {
+              g.position.set(
+                o.bx + Math.sin(t * 0.35) * 2.5,
+                o.by + Math.sin(t * 1.2) * 0.4,
+                o.bz + Math.cos(t * 0.35) * 1.5,
+              );
+              g.rotation.y = t * 0.3;
+            }
+            o.hl.visible = i === sub ? true : ((t * 2.5) | 0) % 2 === 0;
+            if (st === "chap" || st === "sub") {
+              V3.set(g.position.x, g.position.y + o.top, g.position.z).project(
+                cam,
+              );
+              o.b.style.display = V3.z < 1 ? "" : "none";
+              o.b.style.transform =
+                "translate(" +
+                (V3.x * 0.5 + 0.5) * innerWidth +
+                "px," +
+                (-V3.y * 0.5 + 0.5) * innerHeight +
+                "px) translate(-50%,-100%)";
+            }
+          });
+          sun.position.set(p.x - 22, 17, p.z - 6);
+          sun.target.position.copy(p);
+          const c = C[cur],
+            P = pg.attributes.position;
+          pm.opacity = 0.8;
+          for (let i = 0; i < PN; i++) {
+            let x = P.getX(i) + c.v[0] * dt,
+              y = P.getY(i) + c.v[1] * dt * (0.6 + (i % 5) * 0.2),
+              z = P.getZ(i);
+            if (x - p.x > 20) x -= 40;
+            if (x - p.x < -20) x += 40;
+            if (y > 10) y = 0;
+            if (z - p.z > 20) z -= 40;
+            if (z - p.z < -20) z += 40;
+            P.setXYZ(i, x, y, z);
+          }
+          P.needsUpdate = true;
+        }
+        /* lighting, sky bodies */
+        const c = C[cur] || C[0];
+        amb.intensity = 0.8 * dimf;
+        sun.intensity = c.lt * dimf;
+        const space = !W.visible && !tr;
+        moonP.visible = marsP.visible = earth.visible = false;
+        if (space) {
+          moonP.visible = marsP.visible = earth.visible = true;
+          moonP.position.set(-32, 4, -100);
+          marsP.position.set(38, -3, -120);
+          earth.position.set(0, 26, -175);
+          earth.scale.setScalar(1.7);
+          moonP.rotation.y = t * 0.05;
+          marsP.rotation.y = t * 0.04;
+          earth.rotation.y = t * 0.03;
+        } else if (tr && e >= 1 && e < 1.5) {
+          const q = sm((e - 1) / 0.5),
+            d = tr.to === 0 ? moonP : marsP;
+          d.visible = true;
+          d.position.set(0, 0, -170 + q * 80);
+          d.scale.setScalar((tr.to === 0 ? 14 : 16) * (0.4 + q * 1.6));
+          d.rotation.y = t * 0.2;
+        } else if (W.visible && cur >= 0) {
+          earth.visible = c.es > 0;
+          earth.scale.setScalar(c.es);
+          earth.position.set(
+            cur === 0 ? -60 + Math.sin(t * 0.05) * 6 : 70,
+            cur === 0 ? 42 : 50,
+            -130,
+          );
+          earth.rotation.y = t * 0.03;
+        }
+        stars.position.copy(cam.position);
+        stl.visible = warp > 0;
+        if (warp > 0) {
+          const a = stg.attributes.position;
+          stl.material.opacity = Math.min(1, warp * 1.2);
+          for (let i = 0; i < SN; i++) {
+            const s = sx[i];
+            s[2] += warp * 160 * dt;
+            if (s[2] > 5) s[2] = -120;
+            a.setXYZ(i * 2, s[0], s[1], s[2]);
+            a.setXYZ(i * 2 + 1, s[0], s[1], s[2] - warp * 14);
+          }
+          a.needsUpdate = true;
+        }
+        R.render(sc, cam);
+      }
+      function turn(h, dt) {
+        let d =
+          ((((h - rv.rotation.y + Math.PI) % (2 * Math.PI)) + 2 * Math.PI) %
+            (2 * Math.PI)) -
+          Math.PI;
+        rv.rotation.y += d * Math.min(1, dt * 10);
+      }
+      loop();
+    </script>
   </body>
 </html>
