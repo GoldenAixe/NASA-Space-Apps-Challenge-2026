@@ -64,9 +64,10 @@
         z-index: 3;
       }
       .box {
-        background: rgba(8, 10, 24, 0.6);
-        backdrop-filter: blur(6px);
-        border-radius: 14px;
+        background: rgba(24, 20, 56, 0.86);
+        border: 3px solid #ffd166;
+        border-radius: 4px;
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
         padding: 8px 12px;
       }
       #act {
@@ -257,7 +258,8 @@
         transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.3, 1);
         background: var(--panel);
         color: var(--ink);
-        border-radius: 26px 26px 0 0;
+        border-radius: 6px 6px 0 0;
+        border-top: 6px solid var(--accent);
         padding: 22px 24px calc(24px + env(safe-area-inset-bottom, 0px));
         z-index: 7;
         box-sizing: border-box;
@@ -294,7 +296,7 @@
       .chips span {
         display: inline-block;
         background: var(--chip);
-        border-radius: 20px;
+        border-radius: 4px;
         padding: 4px 12px;
         margin: 4px 6px 0 0;
         font-weight: 600;
@@ -311,7 +313,8 @@
         font-size: 16px;
         font-weight: 600;
         border: 0;
-        border-radius: 24px;
+        border-radius: 6px;
+        box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
         padding: 11px 22px;
         cursor: pointer;
         background: var(--accent);
@@ -496,8 +499,8 @@
       <div id="endBox">
         <h1>Mission Complete!</h1>
         <p>
-          Kite has finally reached Mars and restored its systems. Choose Kite’s
-          next chapter — or keep exploring at your own pace.
+          Kite is whole again, carrying a gift from every machine it met. Choose
+          Kite’s next chapter — or keep exploring at your own pace.
         </p>
         <button class="b ch" data-c="0">
           🌍 Return to Earth and share the discoveries
@@ -554,23 +557,28 @@
         x = Math.max(0, Math.min(1, x));
         return x * x * (3 - 2 * x);
       };
-      const yOff = (z) => 60 * sm((z - 125) / 22) - 60 * sm((z - 262) / 28);
+      const yOff = (z) =>
+        60 * sm((z - 125) / 22) -
+        60 * sm((z - 262) / 28) +
+        60 * sm((z - 405) / 22);
 
       const ITEMS = [
         {
           id: "surveyor",
           s: 30,
           name: "Surveyor 3 — The Robot That Was Visited by Humans",
-          st: [8, 0, 12],
+          st: [10, 0, 10],
           who: "surveyor",
-          kite: "Whoa, a three-legged lander with a scoop! Let's hear its Echo Log.",
+          kite: "Ow... my head. Hello? Is somebody there? Wait... is that a robot with a scoop?",
+          react:
+            "You bounced too? We have so much in common! Thank you, Surveyor. I'll borrow your sturdy legs.",
           body: "Moon",
           loc: "Surveyor Crater, Oceanus Procellarum",
           co: "2.99° S, 23.34° W",
           ctx: "Earth–Moon: about 384,400 km on average. A radio signal takes about 1.28 s one way.",
           mono: [
-            "Imagine sitting alone in a silent, airless gray crater for two and a half years. My solar panel had gone cold. My batteries were frozen solid.",
-            "And then, on a bright lunar morning in November 1969, I felt the ground tremble. Out of the glare walked two humans in white spacesuits, and they unbolted my camera so I could go back home to Earth.",
+            "Oh my, a little robot! Easy now, you took quite a tumble. I know the feeling. I'm Surveyor 3. I landed right here in 1967, and I bounced twice before I finally stopped.",
+            "I was sent to find out one thing: is the Moon's ground firm enough for people to stand on? So I dug into the dust with my little scoop arm and studied it through my camera. It was packed like damp beach sand. Safe enough! And two and a half years later, two astronauts walked right up to say hello.",
           ],
           facts: [
             "Surveyor 3 launched on April 17, 1967, and reached the Moon on April 20, 1967. It bounced twice on landing because its radar was confused by reflective rocks.",
@@ -583,16 +591,18 @@
           id: "retro",
           s: 78,
           name: "Apollo Lunar Laser Retroreflector — The Machine That Never Needed a Battery",
-          st: [0, 0, 14],
+          st: [0, 0, 25],
           who: "retro",
-          kite: "A panel full of little glass cubes. Shiny! Let's listen.",
+          kite: "A panel full of tiny glass cubes! Shiny! Hello?",
+          react:
+            "You just send the light back where it came from? That's so clever! Maybe I can find my way home the same way.",
           body: "Moon",
           loc: "Mare Tranquillitatis (Apollo 11), Fra Mauro (Apollo 14), Hadley Rille (Apollo 15)",
           co: "",
           ctx: "Laser round trip to the Moon takes about 2.5 seconds. Earth–Moon: about 384,400 km.",
           mono: [
-            "Every other experiment my astronauts brought to the Moon had a countdown clock. Not me. I don't have a computer, a radio, or a single wire.",
-            "Whenever astronomers on Earth fire a pulse of green laser light at me, I catch it and bounce it straight back to the telescope it came from, for more than half a century and counting.",
+            "Hello, Kite. Don't worry, you're safe here. I'm the Apollo Retroreflector, and I have a secret: I have never needed a battery, a radio, or even a single wire.",
+            "Astronomers on Earth aim a laser at me, and my little glass cubes send every flash straight back to where it came from. They time the trip to measure how far away the Moon is. Sometimes the cleverest help is simply sending the light home.",
           ],
           facts: [
             "Apollo 11 placed the first array on July 21, 1969. Apollo 14 and Apollo 15 added more in 1971.",
@@ -605,16 +615,18 @@
           id: "sojourner",
           s: 312,
           name: "Sojourner — The Little Rover That Opened Mars",
-          st: [20, 0, 0],
+          st: [25, 0, 0],
           who: "sojourner",
-          kite: "Mars! And a tiny six-wheeled rover. Hi, Sojourner!",
+          kite: "Mars! We made it! And look, a teeny tiny rover!",
+          react:
+            "Six wheels! Whoa, whoa, whoa! My wheels work again! Thank you, Sojourner!",
           body: "Mars",
           loc: "Ares Vallis, with the Carl Sagan Memorial Station",
           co: "19.13° N, 33.22° W",
           ctx: "Earth–Mars distance changes a lot with orbital positions, from roughly 55 to over 400 million km.",
           mono: [
-            "Before July 1997, every robot that survived a landing on Mars was bolted to one spot for life.",
-            "Then my lander unfolded its petals like a metal flower, and my six cleated wheels touched the rusty red dirt of Ares Vallis. I wasn't much bigger than a microwave oven, but for the first time in history, humanity had wheels on Mars.",
+            "Whoa, you're a rover too! I'm Sojourner! I'm about the size of a microwave oven, and I was the very first wheeled robot ever to roll around on another planet!",
+            "I was only supposed to work for seven days, but I kept going for 83! My six wheels twist and bend over the rocks, and my little spectrometer sniffs rocks to find out what they're made of. Want to borrow my wheels?",
           ],
           facts: [
             "Sojourner rode on the Mars Pathfinder mission, which launched December 4, 1996, and landed July 4, 1997.",
@@ -627,17 +639,19 @@
           id: "opportunity",
           s: 346,
           name: "Opportunity — The Rover That Refused to Give Up",
-          st: [0, 14, 8],
+          st: [10, 20, 10],
           who: "opportunity",
-          kite: "A big rover with solar wings and a camera mast. Opportunity, I presume?",
+          kite: "Wow, that one is big. And it looks like it has been everywhere.",
+          react:
+            "Ninety days turned into fourteen years! If you never gave up, then neither will I.",
           body: "Mars",
           loc: "Perseverance Valley, rim of Endeavour Crater, Meridiani Planum",
           co: "2.80° S, 5.43° W",
           ctx: "",
           geo: [19.13, -33.22],
           mono: [
-            "My designers gave me a warranty of 90 Martian days. Instead, I rolled out of Eagle Crater and kept driving, across rippled dunes and along the rim of a gigantic crater, for 5,111 sols.",
-            "Whenever dust dimmed my panels, the Martian wind swept me clean again. Until one June afternoon in 2018, when the sky turned darker than midnight.",
+            "Welcome to Mars, Kite. I'm Opportunity. My engineers gave me a ninety-day warranty, and I decided to keep going. Fourteen years, about forty-five kilometers.",
+            "Whenever dust covered my solar panels, the Martian wind swept me clean again. My arm and camera found tiny mineral spheres that told us water once soaked this land. Even when the great dust storm came, I did what I was built to do: look, learn, and keep trying.",
           ],
           facts: [
             "Opportunity launched July 7, 2003, and landed January 25, 2004 (UTC) in Meridiani Planum. It had wing-like solar arrays, a panoramic camera mast and an instrument arm.",
@@ -652,14 +666,16 @@
           name: "Ingenuity — The Little Helicopter That Changed Mars Exploration",
           st: [10, 0, 10],
           who: "ingenuity",
-          kite: "A helicopter on Mars?! I love it! Play the Echo Log!",
+          kite: "Is that a helicopter? On MARS? I've gotta meet this one!",
+          react:
+            "You flew on MARS? That's the coolest thing in the whole solar system! Spinning up my rotors!",
           body: "Mars",
           loc: "Neretva Vallis, Jezero Crater",
           co: "",
           ctx: "Mars's air is less than 1 percent as thick as Earth's at sea level.",
           mono: [
-            "Try swimming upward by flapping your hands in an almost empty vacuum. That is what flying on Mars feels like.",
-            "To lift my tiny body, I had to spin my two carbon-fiber rotor blades at 2,400 revolutions per minute. On April 19, 2021, I rose three meters into the butterscotch Martian sky.",
+            "Hey hey, Kite! Up here! I'm Ingenuity, and yes, I'm a helicopter on Mars! Can you believe the air here is thin as a whisper?",
+            "So I had to spin my two blades about 2,400 times a minute just to lift off. On April 19, 2021, I rose three meters and hovered, the first powered flight on another planet! They planned five flights. I flew seventy-two! Whoosh!",
           ],
           facts: [
             "Ingenuity launched with Perseverance on July 30, 2020, and landed in Jezero Crater on February 18, 2021.",
@@ -669,19 +685,45 @@
           ],
         },
         {
+          id: "pioneer10",
+          s: 430,
+          name: "Pioneer 10 — The First Scout to Jupiter",
+          st: [5, 15, 0],
+          who: "pioneer10",
+          kite: "Mars is behind me and the stars are all around. Something old and quiet is drifting over there...",
+          react:
+            "You went first, with nobody to follow? That's really brave. Thank you, Pioneer.",
+          mono: [
+            "Hello, little one. I'm Pioneer 10. I left Earth in 1972, when nobody knew if a spacecraft could even cross the asteroid belt. I went first, so the others would know the way.",
+            "In 1973 I reached Jupiter and measured its huge magnetic field and its fierce radiation. My last signal reached Earth in January 2003. I'm quiet now, but I'm still drifting outward, toward the star Aldebaran. And I carry a little plaque, a hello for anyone who finds me.",
+          ],
+          body: "Deep space (Archive record)",
+          loc: "Heading out of the Solar System, toward Aldebaran in Taurus",
+          co: "",
+          ctx: "Last signal received January 2003, when it was roughly 80 AU from the Sun. It has not been tracked since.",
+          facts: [
+            "Pioneer 10 launched in March 1972 and was among the first spacecraft to explore the outer Solar System.",
+            "It crossed the asteroid belt and became the first spacecraft to fly past Jupiter, in December 1973, studying its atmosphere and magnetic field.",
+            "Its last signal was received in January 2003. It continues outward, generally toward the direction of Aldebaran in Taurus.",
+            "It carries the Pioneer plaque, a message from humanity for anyone who might find it.",
+          ],
+        },
+        {
           id: "voyager",
-          s: 412,
+          s: 466,
           name: "Voyager 1 — The Messenger Between the Stars",
-          st: [0, 10, 10],
+          st: [0, 15, 10],
           who: "voyager",
-          kite: "That huge dish and long boom... It's Voyager. Everyone listen.",
+          kite: "That huge dish and that long boom... is that Voyager?",
+          react:
+            "A message in a bottle, but for the stars! Hello, whoever you are! I'm Kite!",
           body: "Deep space (Archive record, not on Mars)",
           loc: "Interstellar space, far beyond the heliopause",
           co: "",
           ctx: "VOYAGER",
           mono: [
-            "When I launched from Florida in September 1977, computers still used magnetic tape. Today I am more than 25 billion kilometers from home, and I have left the Sun's bubble of wind behind.",
-            "Bolted to my side is a gold-plated copper record that will still be playable a billion years from now.",
+            "Hello there, little explorer! I'm Voyager 1. I was launched long before you began your journey. I flew past Jupiter and Saturn and kept going, farther than almost anyone ever expected.",
+            "My signal is faint now. It takes almost a full day to reach Earth, so I talk to home slowly, but I still talk. And I carry a gold record with sounds and pictures of Earth, in case someone out there ever wants to say hello.",
           ],
           facts: [
             "Voyager 1 launched on September 5, 1977, and flew past Jupiter in March 1979 and Saturn in November 1980.",
@@ -691,19 +733,46 @@
           ],
         },
         {
+          id: "voyager2",
+          s: 502,
+          name: "Voyager 2 — The Explorer of the Giant Planets",
+          st: [10, 10, 15],
+          who: "voyager2",
+          kite: "Wait... two of them? They look like twins!",
+          react:
+            "Four giant planets on one trip? You must have so many pictures! Can I see them? Please?",
+          mono: [
+            "Hi Kite! I'm Voyager 2, Voyager 1's twin. I launched a few weeks before my brother, but on a different road. I'm the only spacecraft that has ever visited Uranus and Neptune!",
+            "At Uranus I found a tilted, lopsided magnetic field. At Neptune I saw great dark storms, and I watched icy geysers on its moon Triton. In 2018 I crossed into interstellar space too. I never expected to see so much.",
+          ],
+          body: "Deep space (Archive record)",
+          loc: "Interstellar space, south of the plane of the planets",
+          co: "",
+          ctx: "It crossed the heliopause in November 2018 at about 119 AU from the Sun. Distance changes constantly, so check NASA for today's value.",
+          facts: [
+            "Voyager 2 launched on August 20, 1977, 16 days before Voyager 1, on a slower trajectory.",
+            "It flew past Jupiter (1979), Saturn (1981), Uranus (1986) and Neptune (1989), and is the only spacecraft to have visited Uranus and Neptune.",
+            "It used the giant planets' gravity for a gravity-assisted path, and entered interstellar space on November 5, 2018.",
+            "It shares Voyager 1's design, with a high-gain dish, a magnetometer boom and a Golden Record. For its current status, check NASA's latest updates.",
+          ],
+        },
+        {
           id: "cassini",
-          s: 446,
-          name: "Cassini-Huygens — The Explorer of Saturn",
-          st: [0, 12, 12],
+          s: 538,
+          name: "Cassini Spacecraft — The Explorer of Saturn",
+          st: [5, 15, 10],
           who: "cassini",
-          kite: "Last one! Cassini, with Huygens still attached. Wow.",
-          body: "Saturn orbit and Titan (Archive record, not on Mars)",
+          echo: true,
+          kite: "I hear a calm voice, and I see rings made of light. Who is out there?",
+          react:
+            "That's a little sad... but also so brave! You protected them. I'll protect everything I find too.",
+          body: "Saturn orbit and Titan (Archive Echo)",
           loc: "Orbiter: dispersed in Saturn's atmosphere. Huygens: Adiri region, Titan",
           co: "Huygens: 10.25° S, 192.32° W",
           ctx: "Saturn is about 1.4 billion km from the Sun. Its distance from Earth changes with orbital positions.",
           mono: [
-            "For thirteen years, Saturn was my home. I wove through its glittering ice rings and dropped my passenger probe onto the plains of Titan.",
-            "Then I flew through icy geysers on Enceladus and tasted an underground ocean. And that is why, on September 15, 2017, I made one final dive, to protect the living worlds I discovered.",
+            "Greetings, young Kite. I'm Cassini, or rather the echo of my story. I'm an Archive Echo, because I no longer exist as a spacecraft. For thirteen years I orbited Saturn, weaving through its glittering rings.",
+            "I carried a passenger named Huygens, which landed on Titan and is still sitting there. Then I found geysers on Enceladus that hint at an ocean beneath the ice. Those worlds might have the right ingredients for life, so on September 15, 2017, I dove into Saturn on purpose, to keep them clean. It was the best goodbye I could give.",
           ],
           facts: [
             "Cassini-Huygens was a NASA, ESA and ASI mission that launched October 15, 1997, and orbited Saturn from July 1, 2004, to September 15, 2017.",
@@ -712,7 +781,55 @@
             "The orbiter no longer exists, but Huygens remains intact and silent on Titan.",
           ],
         },
+        {
+          id: "newhorizons",
+          s: 574,
+          name: "New Horizons — The Explorer of Pluto and Beyond",
+          st: [15, 10, 5],
+          who: "newhorizons",
+          kite: "One more machine, so far from home! I can see it speeding along!",
+          react:
+            "Heart-shaped plains and snowman rocks! I want to see everything! Thank you, everyone. I'm ready!",
+          mono: [
+            "Kite! Finally! I'm New Horizons, and I'm still on the move, and I am fast! I launched in 2006, and in 2015 I zoomed past Pluto and saw it up close for the first time ever, with icy mountains and a giant heart-shaped plain!",
+            "Then I kept going and visited a snowman-shaped space rock called Arrokoth in 2019. Now I'm out in the Kuiper Belt, still exploring. The adventure isn't over until we decide it is!",
+          ],
+          body: "Deep space (Archive record)",
+          loc: "The Kuiper Belt, beyond Pluto's orbit",
+          co: "",
+          ctx: "About 65 AU from the Sun as of July 2026 (NASA/New Horizons team), not a live measurement. It is expected to leave the Kuiper Belt around 2028 to 2029.",
+          facts: [
+            "New Horizons launched on January 19, 2006, and flew past Pluto on July 14, 2015, at about 12,500 km.",
+            "It carried instruments including the LORRI camera, Ralph, Alice and the Student Dust Counter, and showed Pluto's icy mountains and heart-shaped plain.",
+            "On January 1, 2019, it visited the Kuiper Belt object Arrokoth.",
+            "It is still traveling through the Kuiper Belt region beyond Pluto. NASA has extended its mission until it exits the belt.",
+          ],
+        },
       ];
+
+      const TIES = {
+        surveyor:
+          "My hardest moment was landing. My radar got confused by shiny rocks and I bounced twice! So don't feel bad about your own bumpy arrival, Kite. Bouncing is just how Moon explorers say hello.",
+        retro:
+          "My engineers built me from one hundred glass corner cubes and nothing that could break. Kite, you're proof that a few simple parts, working together, can always find their way home.",
+        sojourner:
+          "My tricky part was talking. I could only chat with Earth through my lander, so I never wandered far from it. Kite, little explorers go far as long as they stay connected.",
+        opportunity:
+          "Dust kept covering my solar panels, and then the wind cleaned them off, which nobody had planned! Kite, sometimes help comes from surprising places. Today, I'm one of them.",
+        ingenuity:
+          "The air here is so thin that my blades had to spin like crazy and my body had to be featherlight. Kite, if anyone says it can't be done, say: let's try one flight first!",
+        pioneer10:
+          "Nobody knew if I'd survive the asteroid belt. Going first is scary, Kite, but someone has to leave the footprints for the others to follow.",
+        voyager:
+          "My radio whispers now, and Earth's giant antennas have to listen very carefully. Kite, when someone far away speaks softly, lean in and listen.",
+        voyager2:
+          "My secret was gravity. Each giant planet gave me a push toward the next one. Kite, every machine you met today did the same for you.",
+        cassini:
+          "My hardest moment was goodbye. But keeping Enceladus and Titan safe mattered more than keeping me. Kite, caring for the places you explore is the best upgrade of all.",
+        newhorizons:
+          "Pluto is so far away that my signals take hours to reach home, and my camera had to snap pictures while I zoomed past at full speed. Kite, you're ready. Your turn to go beyond the familiar!",
+      };
+      ITEMS.forEach((it) => TIES[it.id] && it.mono.push(TIES[it.id]));
 
       let nvKey = "";
       const greatCircleKm = (a, b, R0 = 3389.5) => {
@@ -737,7 +854,7 @@
             (Date.UTC(2026, 10, 18, 10, 16, 7) - Date.now()) / 864e5,
           );
           return days > 0
-            ? `about 173 AU from the Sun (NASA.txt). It reaches one light-day (about 25.9 billion km) from Earth on Nov 18, 2026, in about ${days} day${days > 1 ? "s" : ""}.`
+            ? `about 173 AU from the Sun (NASA reference). It reaches one light-day (about 25.9 billion km) from Earth on Nov 18, 2026, in about ${days} day${days > 1 ? "s" : ""}.`
             : "it has reached about one light-day (about 25.9 billion km) from Earth, so a radio signal takes about 24 hours (reference: Nov 18, 2026).";
         }
         if (it.geo)
@@ -745,17 +862,24 @@
         return it.ctx;
       }
       const N = ITEMS.length,
-        END = 478,
+        END = 610,
         RANGE = 6.5;
 
       const ACTS = [
         [
-          "🌕 Chapter 1 · Unexpected Landing",
-          "The Moon was never the destination",
+          "🌕 Chapter 1 · The Moon: An Unexpected Detour",
+          "Kite crash-lands far from its destination",
         ],
-        ["🌌 Chapter 2 · Back on Course", "Repairing the way to Mars"],
-        ["🔴 Chapter 3 · The Red Planet", "Kite finally reaches Mars"],
-        ["✨ Chapter 4 · Mission Complete", "A little robot, a big discovery"],
+        ["🌌 Between Worlds", "Finding the way toward Mars"],
+        [
+          "🔴 Chapter 2 · Mars: Finding Its Way Back",
+          "The silent explorers of the Red Planet",
+        ],
+        [
+          "🌠 Chapter 3 · Deep Space: Beyond the Familiar",
+          "Machines that traveled farther than anyone expected",
+        ],
+        ["✨ Mission Complete", "A little robot, a big discovery"],
       ];
 
       const BEATS = [
@@ -819,20 +943,23 @@
           293,
           `Touchdown on Mars! I made it! Now I need to find my remaining parts and finish my mission.`,
         ],
+        [306, `Mars, at last! And look at that tiny rover. Hello, Sojourner!`],
+        [342, `Another rover! This one looks like it has been everywhere.`],
+        [376, `Is that a helicopter? On Mars? I've gotta see this.`],
         [
-          305,
-          `Sojourner, the first wheeled rover on another planet, was waiting near here. What a trailblazer!`,
+          400,
+          `Mars is behind me and the stars are all around. Everything floats out here, even me! Try hopping!`,
         ],
         [
-          372,
-          `A helicopter on Mars! Ingenuity proved flight is possible, even in very thin air.`,
+          426,
+          `Something old and quiet is drifting over there. Let's say hello.`,
         ],
+        [462, `That huge dish... it's one of the Voyagers!`],
+        [498, `Two of them? They must be twins!`],
+        [534, `I hear a calm voice and see rings made of light.`],
+        [570, `One more machine, so far from home. I'm almost whole again!`],
         [
-          404,
-          `Voyager and Cassini took exploration far beyond Mars. Kite is only the beginning!`,
-        ],
-        [
-          470,
+          596,
           `My body is repaired, my memory is back, and my mission is complete. I may have taken a detour, but I finally made it to Mars!`,
         ],
       ];
@@ -907,8 +1034,8 @@
       scene.add(hemi, sun, sun.target);
 
       const E = [
-        { bg: 0x000000, p: 0xcfcfd6, l: 2.6, h: 0.18, fn: 80, ff: 420 },
-        { bg: 0x010103, p: 0xaab4ff, l: 2.2, h: 0.12, fn: 500, ff: 1500 },
+        { bg: 0x000000, p: 0xcfcfd6, l: 2.6, h: 0.4, fn: 80, ff: 420 },
+        { bg: 0x0b0930, p: 0xaab4ff, l: 2.2, h: 0.3, fn: 500, ff: 1500 },
         { bg: 0xd29a74, p: 0xe8a878, l: 1.7, h: 0.75, fn: 8, ff: 190 },
       ];
       E.forEach((e) => {
@@ -988,8 +1115,8 @@
         return [mk(1), mk(0)];
       }
 
-      const [moonT, moonB] = terrain("#8f8e8c", [11, 12]),
-        [marsT, marsB] = terrain("#a85a3a", [11, 13]);
+      const [moonT, moonB] = terrain("#9d94cf", [11, 12]),
+        [marsT, marsB] = terrain("#d0602e", [11, 13]);
 
       const glow = (col) =>
         new THREE.CanvasTexture(
@@ -1076,12 +1203,12 @@
         RG.push(g);
       }
 
-      const rockMoon = M(0x6f6f72, {
+      const rockMoon = M(0x8478c0, {
           roughness: 1,
           metalness: 0,
           flatShading: true,
         }),
-        rockMars = M(0x7b4029, {
+        rockMars = M(0xa8472a, {
           roughness: 1,
           metalness: 0,
           flatShading: true,
@@ -1112,6 +1239,35 @@
 
       scatter(170, 15, -170, rockMoon);
       scatter(200, -235, -480, rockMars);
+      /* chunky block formations (voxel-style scenery) kept clear of the item lanes */
+      function blocks(n, z0, z1, cols) {
+        for (let i = 0; i < n; i++) {
+          const g = new THREE.Group(),
+            c = M(cols[i % cols.length], { roughness: 0.8, metalness: 0.1 });
+          for (let j = 0; j < 1 + (i % 3); j++) {
+            const b = mesh(
+              new THREE.BoxGeometry(1.2 - j * 0.25, 1, 1.2 - j * 0.25),
+              c,
+              0,
+              0.5 + j,
+              0,
+            );
+            b.rotation.y = j * 0.4;
+            g.add(b);
+          }
+          g.position.set(
+            (i % 2 ? -1 : 1) * (7 + Math.random() * 38),
+            0,
+            z0 + Math.random() * (z1 - z0),
+          );
+          g.rotation.y = Math.random() * 6;
+          g.scale.setScalar(0.6 + Math.random() * 0.9);
+          shade(g);
+          scene.add(g);
+        }
+      }
+      blocks(46, 12, -170, [0x7d6bd1, 0x3fc1c9, 0xf2a65a]);
+      blocks(52, -235, -480, [0xe0703a, 0xf2c14e, 0xb8432b]);
 
       /* ---------- sky objects ---------- */
 
@@ -1190,6 +1346,35 @@
           }),
         );
       scene.add(earth, marsP);
+      const saturn = new THREE.Group(),
+        SV = new THREE.Vector3(-0.5, 0.16, -0.85).normalize();
+      saturn.add(
+        mesh(
+          new THREE.SphereGeometry(14, 32, 20),
+          new THREE.MeshStandardMaterial({
+            color: 0xe8c98a,
+            roughness: 1,
+            fog: false,
+            emissive: 0x3a2a10,
+          }),
+        ),
+      );
+      {
+        const rg = mesh(
+          new THREE.RingGeometry(19, 30, 48),
+          new THREE.MeshBasicMaterial({
+            color: 0xd9b77a,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.75,
+            fog: false,
+          }),
+        );
+        rg.rotation.x = -Math.PI / 2 + 0.45;
+        saturn.add(rg);
+      }
+      saturn.visible = false;
+      scene.add(saturn);
 
       const sunS = spr("rgba(255,240,210,1)"),
         neb = [
@@ -1226,7 +1411,9 @@
         stars = new THREE.Points(starG, starM);
       scene.add(stars);
 
-      const glowS = spr("rgba(255,140,50,1)", 0);
+      const glowS = spr("rgba(255,140,50,1)", 0),
+        weld = spr("rgba(255,230,140,1)", 0);
+      let weldT = 1;
 
       /* intro cinematic: doomed descent craft, impact burst, outro dust trail */
 
@@ -1476,6 +1663,178 @@
               0,
               0.06,
               0,
+            ),
+          );
+          return g;
+        },
+        pioneer10() {
+          const g = new THREE.Group(),
+            al = M(0xd8dce2, { metalness: 0.7, roughness: 0.4 }),
+            gd = M(0xd9a52b, { metalness: 1, roughness: 0.25 }),
+            dk = M(0x3a3d46);
+          const dish = mesh(
+            new THREE.SphereGeometry(1.5, 14, 6, 0, 6.283, 0, 0.72),
+            M(0xf2f2f2, { side: THREE.DoubleSide, roughness: 0.5 }),
+            0,
+            1.3,
+            0,
+          );
+          dish.rotation.x = -Math.PI / 2;
+          dish.scale.set(1, 1, 0.55);
+          g.add(
+            dish,
+            mesh(
+              new THREE.CylinderGeometry(0.55, 0.55, 0.45, 6),
+              al,
+              0,
+              1.3,
+              0.6,
+            ).rotateX(Math.PI / 2),
+            mesh(
+              new THREE.ConeGeometry(0.1, 0.25, 6),
+              dk,
+              0,
+              1.3,
+              -0.85,
+            ).rotateX(-Math.PI / 2),
+          );
+          for (const x of [-1, 1]) {
+            const b = mesh(
+              new THREE.CylinderGeometry(0.03, 0.03, 2.6, 6),
+              al,
+              x * 1.5,
+              1.3,
+              0.9,
+            );
+            b.rotation.z = Math.PI / 2;
+            g.add(b);
+            for (const k of [0.6, 1.4]) {
+              const r = mesh(
+                new THREE.CylinderGeometry(0.17, 0.17, 0.55, 8),
+                dk,
+                x * (k + 1.2),
+                1.3,
+                0.9,
+              );
+              r.rotation.z = Math.PI / 2;
+              g.add(r);
+            }
+          }
+          const mb = mesh(
+            new THREE.CylinderGeometry(0.025, 0.025, 2.4, 6),
+            al,
+            0,
+            1.3,
+            2.1,
+          );
+          mb.rotation.x = Math.PI / 2;
+          const st = mesh(
+              new THREE.CylinderGeometry(0.03, 0.03, 1.1, 6),
+              al,
+              0.9,
+              0.7,
+              -0.3,
+            ),
+            pl = mesh(
+              new THREE.BoxGeometry(0.42, 0.3, 0.02),
+              gd,
+              0.9,
+              0.2,
+              -0.3,
+            );
+          g.add(mb, st, pl);
+          g.scale.setScalar(0.9);
+          return g;
+        },
+        voyager2() {
+          const g = B.voyager(),
+            band = mesh(
+              new THREE.CylinderGeometry(0.54, 0.54, 0.1, 10),
+              M(0x2c8fd0, { metalness: 0.5, roughness: 0.4 }),
+              0,
+              0.9,
+              0.5,
+            );
+          g.add(
+            band,
+            mesh(
+              new THREE.SphereGeometry(0.12, 8, 6),
+              M(0xff6b4a, { emissive: 0x802010 }),
+              0.5,
+              0.55,
+              1.15,
+            ),
+          );
+          g.scale.x *= -1;
+          return g;
+        },
+        newhorizons() {
+          const g = new THREE.Group(),
+            fl = M(0xd9a52b, {
+              metalness: 0.9,
+              roughness: 0.3,
+              flatShading: true,
+            }),
+            dk = M(0x3a3d46),
+            wh = M(0xf2f2f2, { side: THREE.DoubleSide });
+          const body = mesh(
+            new THREE.CylinderGeometry(0.9, 0.9, 1.0, 3),
+            fl,
+            0,
+            0.9,
+            0,
+          );
+          body.rotation.x = Math.PI / 2;
+          body.rotation.z = Math.PI;
+          const dish = mesh(
+            new THREE.SphereGeometry(1.05, 14, 6, 0, 6.283, 0, 0.7),
+            wh,
+            0,
+            1.5,
+            0,
+          );
+          dish.scale.set(1, 0.6, 1);
+          const rtg = mesh(
+            new THREE.CylinderGeometry(0.13, 0.13, 1.5, 8),
+            dk,
+            0.6,
+            0.9,
+            1.1,
+          );
+          rtg.rotation.x = Math.PI / 2;
+          const lorri = mesh(
+            new THREE.CylinderGeometry(0.14, 0.18, 0.7, 10),
+            dk,
+            -0.5,
+            0.75,
+            -0.75,
+          );
+          lorri.rotation.x = Math.PI / 2;
+          g.add(
+            body,
+            dish,
+            rtg,
+            lorri,
+            mesh(
+              new THREE.CylinderGeometry(0.03, 0.03, 0.8, 6),
+              dk,
+              0,
+              1.95,
+              0,
+            ),
+            mesh(
+              new THREE.BoxGeometry(0.35, 0.03, 0.25),
+              M(0x6a4cc4),
+              0.55,
+              0.4,
+              -0.6,
+            ),
+            mesh(
+              new THREE.BoxGeometry(0.25, 0.18, 0.25),
+              M(0xf2f2f2, { metalness: 0.4 }),
+              -0.2,
+              0.5,
+              0.3,
             ),
           );
           return g;
@@ -2122,9 +2481,9 @@
 
       const kite = new THREE.Group();
       scene.add(kite);
-      kite.add(
-        mesh(new THREE.BoxGeometry(0.9, 0.5, 1.3), M(0xb9c2cf), 0, 0.55, 0),
-      );
+      const bodyM = M(0x8c919b),
+        body = mesh(new THREE.BoxGeometry(0.9, 0.5, 1.3), bodyM, 0, 0.55, 0);
+      kite.add(body);
 
       const head = new THREE.Group();
       head.position.set(0, 1.05, -0.15);
@@ -2148,12 +2507,15 @@
       kite.add(skids);
 
       const SL = {
-        surveyor: [0.25, 0.8, 0.3, 0.26],
-        retro: [0, 0.82, 0.45, 0.35],
-        opportunity: [0, 0.82, 0, 0.26],
-        ingenuity: [0, 0.8, 0.1, 0.42],
-        voyager: [0.2, 0.85, 0.1, 0.3],
-        cassini: [-0.2, 0.85, 0.2, 0.3],
+        surveyor: [0.3, 0.8, 0.12, 0.2],
+        retro: [0, 0.8, 0.62, 0.3],
+        opportunity: [-0.3, 0.8, 0.12, 0.2],
+        ingenuity: [0, 0.8, 0.3, 0.3],
+        pioneer10: [-0.3, 0.8, -0.42, 0.2],
+        voyager: [0.3, 0.8, -0.42, 0.2],
+        voyager2: [-0.36, 0.8, 0.55, 0.17],
+        cassini: [0.36, 0.8, 0.55, 0.17],
+        newhorizons: [0, 0.82, -0.52, 0.22],
       };
 
       const FS = { sojourner: 0.55 },
@@ -2184,6 +2546,156 @@
         KP[it.id] = p;
       });
       shade(kite);
+
+      /* damage pieces are visible at the start; each artifact restores one (data-driven: id -> piece) */
+      const DMG = {},
+        dmgM = M(0x23252c, { roughness: 1 });
+      const addD = (id, m) => {
+        DMG[id] = m;
+        kite.add(m);
+        return m;
+      };
+      addD(
+        "surveyor",
+        mesh(new THREE.BoxGeometry(0.1, 0.5, 0.1), dmgM, -0.5, 0.35, -0.45),
+      ).rotation.z = 0.9;
+      addD(
+        "retro",
+        mesh(
+          new THREE.CylinderGeometry(0.015, 0.02, 0.4, 6),
+          dmgM,
+          0.2,
+          0.95,
+          0.4,
+        ),
+      ).rotation.z = 0.7;
+      addD(
+        "opportunity",
+        mesh(new THREE.BoxGeometry(0.55, 0.03, 0.45), dmgM, -0.1, 0.83, 0.1),
+      ).rotation.z = 0.25;
+      addD(
+        "ingenuity",
+        mesh(
+          new THREE.CylinderGeometry(0.1, 0.12, 0.08, 8),
+          dmgM,
+          0.25,
+          0.83,
+          0.3,
+        ),
+      );
+      addD(
+        "pioneer10",
+        mesh(
+          new THREE.CylinderGeometry(0.015, 0.015, 0.5, 5),
+          M(0xd24a3a),
+          -0.46,
+          0.4,
+          0.25,
+        ),
+      ).rotation.z = 1.2;
+      addD(
+        "voyager",
+        mesh(
+          new THREE.SphereGeometry(0.2, 8, 3, 0, 6.283, 0, 0.9),
+          dmgM,
+          0.3,
+          0.83,
+          -0.35,
+        ),
+      ).rotation.z = 0.5;
+      addD(
+        "voyager2",
+        mesh(
+          new THREE.CylinderGeometry(0.03, 0.03, 0.22, 6),
+          dmgM,
+          -0.35,
+          0.85,
+          0.55,
+        ),
+      );
+      addD(
+        "cassini",
+        mesh(
+          new THREE.BoxGeometry(0.02, 0.3, 0.45),
+          M(0x0e0e12),
+          0.46,
+          0.55,
+          0.0,
+        ),
+      );
+      const coreD = addD(
+        "newhorizons",
+        mesh(
+          new THREE.BoxGeometry(0.22, 0.06, 0.22),
+          M(0x401010, { emissive: 0xff2010, emissiveIntensity: 0.6 }),
+          0,
+          0.82,
+          -0.5,
+        ),
+      );
+      const crown = new THREE.Group();
+      crown.add(
+        mesh(
+          new THREE.TorusGeometry(0.72, 0.04, 6, 14),
+          M(0xf0b429, { metalness: 0.9, roughness: 0.25, emissive: 0x553300 }),
+          0,
+          0.34,
+          0,
+        ).rotateX(Math.PI / 2),
+        mesh(
+          new THREE.CylinderGeometry(0.02, 0.02, 0.5, 6),
+          M(0xf0b429, { metalness: 0.9 }),
+          0,
+          1.5,
+          0.1,
+        ),
+        mesh(
+          new THREE.SphereGeometry(0.06, 8, 6),
+          new THREE.MeshBasicMaterial({ color: 0xffe08a }),
+          0,
+          1.78,
+          0.1,
+        ),
+      );
+      crown.visible = false;
+      kite.add(crown);
+      const mast =
+        new THREE.Group(); /* Chapter 2 milestone: a sensor mast with a camera head */
+      mast.add(
+        mesh(
+          new THREE.CylinderGeometry(0.03, 0.03, 0.7, 6),
+          M(0xcfd6e2),
+          0.35,
+          1.15,
+          0.45,
+        ),
+        mesh(
+          new THREE.BoxGeometry(0.22, 0.14, 0.14),
+          M(0x2c8fd0, { emissive: 0x0a2a40 }),
+          0.35,
+          1.55,
+          0.45,
+        ),
+      );
+      mast.visible = false;
+      kite.add(mast);
+      /* chapter milestones: body colour and finish change as the repairs add up */
+      function milestone() {
+        const c =
+          got >= N
+            ? 0xf5efe0
+            : got >= 5
+              ? 0xd3e4ff
+              : got >= 2
+                ? 0xb9c2cf
+                : 0x8c919b;
+        bodyM.color.setHex(c);
+        bodyM.emissive.setHex(got >= N ? 0x332200 : got >= 5 ? 0x0a1a30 : 0);
+        crown.visible = got >= N;
+        kite.userData.sc = got >= N ? 1.12 : 1;
+        kite.scale.setScalar(kite.userData.sc);
+        mast.visible = got >= 5;
+      }
 
       /* raft */
 
@@ -2418,15 +2930,18 @@
       let narrOn = true;
 
       const SP = {
-        kite: [1.3, 1.1],
-        surveyor: [0.6, 0.92],
-        retro: [0.85, 0.85],
-        sojourner: [1.6, 1.15],
-        opportunity: [1.0, 1.0],
-        ingenuity: [1.9, 1.25],
-        voyager: [0.5, 0.82],
-        cassini: [0.8, 1.05],
-      };
+        kite: [1.65, 1.12],
+        surveyor: [0.7, 0.9],
+        retro: [1.0, 0.93],
+        sojourner: [1.5, 1.15],
+        opportunity: [0.92, 1.05],
+        ingenuity: [1.35, 1.22],
+        pioneer10: [0.62, 0.88],
+        voyager: [0.88, 0.82],
+        voyager2: [1.18, 1.0],
+        cassini: [0.78, 0.76],
+        newhorizons: [1.3, 1.3],
+      }; /* [pitch, rate]; the voice itself is assigned once per id */
       let Q = [],
         busy = false,
         gen = 0,
@@ -2499,8 +3014,12 @@
         try {
           const u = new SpeechSynthesisUtterance(j.t);
           if (pr.v) u.voice = pr.v;
-          u.pitch = pr.p;
-          u.rate = pr.r;
+          const ex = /!$/.test(j.t) ? 1 : 0,
+            qu = /\?$/.test(j.t)
+              ? 1
+              : 0; /* livelier delivery on excited and curious lines */
+          u.pitch = Math.min(2, pr.p * (1 + 0.07 * ex + 0.04 * qu));
+          u.rate = pr.r * (1 + 0.05 * ex);
           u.onend = done;
           u.onerror = (ev) => {
             if (my !== gen) return;
@@ -2560,20 +3079,22 @@
         if (!narrOn || muted) return;
         const it = ITEMS[i];
         say(
-          replay ? `Echo Log from ${it.name.split(" — ")[0]}.` : it.kite,
+          replay ? `Let's hear ${it.name.split(" — ")[0]} again!` : it.kite,
           null,
           null,
           "kite",
           "replace",
         );
         say(it.mono.join(" "), null, null, it.who, "queue");
-        say(
-          "Verified NASA record. " + it.facts.join(" "),
-          null,
-          null,
-          "kite",
-          "queue",
-        );
+        say(it.react, null, null, "kite", "queue");
+        if (!replay)
+          say(
+            "Verified NASA record. " + it.facts.slice(0, 2).join(" "),
+            null,
+            null,
+            "kite",
+            "queue",
+          );
       }
 
       /* intro narration: starts by itself, or on the first tap/key if the browser blocks autoplay speech */
@@ -2637,7 +3158,11 @@
         $("dName").textContent = it.name;
         $("dMono").innerHTML =
           `<p><b>[Creative Narrative — Echo Log]</b></p>` +
-          it.mono.map((p) => `<p><i>${p}</i></p>`).join("");
+          it.mono.map((p) => `<p><i>${p}</i></p>`).join("") +
+          `<p><b>Kite:</b> ${it.react}</p>` +
+          (it.echo
+            ? `<p><b>Archive Echo:</b> Cassini no longer exists as an intact spacecraft. This is a reconstruction of its story.</p>`
+            : "");
         $("dFacts").innerHTML =
           `<li><b>[Verified NASA Record]</b></li>` +
           it.facts.map((f) => `<li>${f}</li>`).join("") +
@@ -2865,8 +3390,16 @@
         f.p.visible = true;
         f.p.scale.setScalar(0);
         pops.push({ p: f.p, t: 0 });
+        weldT = 0;
+        f.p.getWorldPosition(
+          weld.position,
+        ); /* glowing connection where the new part attaches */
         if (f.it.id === "opportunity") dimEye.visible = false;
         if (f.it.id === "sojourner") skids.visible = false;
+        if (DMG[f.it.id]) DMG[f.it.id].visible = false;
+        milestone();
+        hv = 2.4; /* Kite hops with joy at every upgrade */
+        blip(880, 1320, 0.25, "triangle", 0.12);
       }
 
       /* ---------- intro cinematic & outro ---------- */
@@ -3025,6 +3558,9 @@
 
       function startOutro(ci) {
         lastChoice = ci;
+        s = 340;
+        vel =
+          dv = 0; /* back on Mars: the environment follows the path position */
         stopNarr();
         $("end").style.display = "none";
         $("credits").style.display = "none";
@@ -3036,13 +3572,13 @@
           t: 0,
           head: 0.8,
           speed: 0,
-          pos: new THREE.Vector3((Math.random() - 0.5) * 8, 0, -END + 6),
+          pos: new THREE.Vector3((Math.random() - 0.5) * 8, 0, -340),
           lines: [
             `“${e[0]}.” Kite’s choice is made.`,
             e[1],
-            "Wheels humming and cameras wide open, Kite rolls out across the red sands… chu-chu! 🚂",
-            "Every crater is a question. Every rock, a clue. Mars is quiet — but Kite is listening.",
-            "From a crash on the Moon to this: a little robot, all patched up, exactly where it was meant to be.",
+            "Kite rolls out across the red sands, wheels humming, ten machines’ gifts shining on its back… chu-chu! 🚂",
+            "Every crater is a question. Every rock, a clue. And Kite has finally learned how to listen.",
+            "From a crash on the Moon to the edge of the Solar System and back: a little robot, patched up, exactly where it was meant to be.",
           ],
           saidIdx: -1,
           lt: -99,
@@ -3152,12 +3688,12 @@
         const e = ENDS[outro.ci];
         $("crTitle").textContent = "🌅 " + e[0];
         $("crText").innerHTML =
-          `<p>${e[1]}</p><p style="font-size:15px;opacity:.85">“I was supposed to reach Mars all along. The Moon was an unexpected stop — but every discovery helped me finish my mission.” — Kite</p><p style="font-size:13px;opacity:.7">Journey log · 7 discoveries · 410 m travelled · 0 wheels left behind</p>`;
+          `<p>${e[1]}</p><p style="font-size:15px;opacity:.85">“I thought I was missing parts. It turns out I was missing friends. Ten of them!” — Kite</p><p style="font-size:13px;opacity:.7">Journey log · ${N} discoveries · ${END} m travelled · 0 wheels left behind</p>`;
         $("credits").style.display = "flex";
         chime();
         if (narrOn && !muted)
           say(
-            "Mission complete! I collected seven repair parts inspired by real NASA missions. The Moon was a detour, but Mars was always the destination. Thank you for exploring with me, Junior Archivist! You can keep exploring in Free Roam.",
+            `Mission complete! ${N} machines told me their stories, and now I am whole again. I thought I was missing parts. It turns out I was missing friends! Thank you for exploring with me, Junior Archivist. You can keep exploring in Free Roam.`,
             null,
             null,
             "kite",
@@ -3233,8 +3769,9 @@
 
         const yk = yOff(s),
           t1 = sm((s - 108) / 35),
-          t2 = sm((s - 250) / 40);
-        w = [1 - t1, t1 - t2, t2];
+          t2 = sm((s - 250) / 40),
+          t3 = sm((s - 398) / 24);
+        w = [1 - t1, t1 - t2 + t3, t2 - t3];
 
         scene.background.copy(mix("bg"));
         scene.fog.color.copy(tc);
@@ -3243,14 +3780,15 @@
         sun.intensity = num("l");
         hemi.intensity = num("h");
 
-        const gf = 1 - sm((yk - 8) / 45);
+        const gf = (1 - sm((yk - 8) / 45)) * (1 - t3);
         gM.material.opacity = gR.material.opacity = gf;
         gM.visible = gR.visible = gf > 0.01;
 
         /* kite & raft */
 
-        const rOn = sm((s - 114) / 6) * (1 - sm((s - 289) / 5)),
-          rz = Math.min(s, 292);
+        const rOn =
+            sm((s - 114) / 6) * (1 - sm((s - 289) / 5)) + sm((s - 400) / 6),
+          rz = s > 340 ? s : Math.min(s, 292);
 
         const g = gNow();
         hv -= g * dt;
@@ -3279,14 +3817,14 @@
 
         if (outro) outroTick(dt, t);
 
-        raft.visible = s > 111 && s < 293;
+        raft.visible = (s > 111 && s < 293) || s > 396;
         raft.scale.setScalar(Math.max(0.01, sm((s - 111) / 6)));
         raft.position.set(0, yOff(rz) + 0.1, -rz);
 
         const thr =
             Math.min(1, Math.abs(yOff(s + 1) - yOff(s - 1)) * 0.5) *
             Math.min(1, Math.abs(dv) / 3 + 0.3) *
-            (s < 292 && s > 118 ? 1 : 0),
+            ((s < 292 && s > 118) || s > 398 ? 1 : 0),
           fk = 0.75 + Math.random() * 0.25;
 
         flame.material.opacity = thr * 0.8 * fk;
@@ -3305,6 +3843,9 @@
           kite.position.z - 8,
         );
         sun.target.position.copy(kite.position);
+        weldT = Math.min(1, weldT + dt / 0.9);
+        weld.material.opacity = weldT < 1 ? 0.9 * Math.sin(Math.PI * weldT) : 0;
+        weld.scale.setScalar(1 + 2.4 * Math.sin(Math.PI * weldT));
 
         /* the outro runs its own orbiting camera */
         if (!outro) {
@@ -3328,6 +3869,10 @@
         marsP.scale.setScalar(0.04 + 16 * Math.pow(ms, 1.7));
         marsP.visible = s > 96 && s < 292;
         marsP.material.opacity = 1 - sm((s - 264) / 18);
+        saturn.visible = s > 470 && s < 600;
+        saturn.position.copy(cam.position).addScaledVector(SV, 300);
+        saturn.scale.setScalar(0.1 + 1.1 * sm((s - 470) / 60));
+        saturn.rotation.y = t * 0.03;
 
         sunS.position.copy(cam.position).addScaledVector(SD, 440);
         sunS.scale.setScalar(130 * (1 - 0.45 * w[2]));
@@ -3376,6 +3921,11 @@
 
         ITEMS.forEach((it, i) => {
           if (it.done || !it.g.visible) return;
+          if (it.echo)
+            setOp(
+              it.g.children[0],
+              0.5 + 0.3 * Math.sin(t * 3) + (i === got ? 0.15 : 0),
+            ); /* Archive Echo shimmer */
           it.g.rotation.y = t * (i === got ? 1.2 : 0.4);
           it.g.position.y = it.g.userData.y0 + Math.sin(t * 1.6 + i) * 0.15;
         });
@@ -3433,7 +3983,15 @@
         /* HUD & story */
 
         const act =
-          got >= N && s > END - 60 ? 3 : s < 125 ? 0 : s < 258 ? 1 : 2;
+          got >= N && s > END - 60
+            ? 4
+            : s < 125
+              ? 0
+              : s < 258
+                ? 1
+                : s < 398
+                  ? 2
+                  : 3;
         $("act").innerHTML = `${ACTS[act][0]}<small>${ACTS[act][1]}</small>`;
 
         if (started && act !== lastAct) {
@@ -3489,7 +4047,7 @@
               : "MISSION COMPLETE";
             $("nvB").innerHTML = it
               ? `<b>Destination:</b> ${it.body}<br><b>Real location:</b> ${it.loc}${it.co ? "<br><b>Coordinates:</b> " + it.co : ""}<br><b>Astronomical context:</b> ${astro(it)}`
-              : "All seven Archive records collected.";
+              : "All ten Archive records collected.";
             $("nvG").innerHTML = `<b>Gravity here:</b> ${env}`;
           }
           $("nvD").innerHTML =
@@ -3541,6 +4099,16 @@
       kite.visible = false;
       beam.visible = ring.visible = false;
       $("hud").style.opacity = 0;
+      scene.traverse((o) => {
+        if (o.isMesh && o.material && !o.material.isMeshBasicMaterial)
+          [].concat(o.material).forEach((mm) => {
+            if ("flatShading" in mm) {
+              mm.flatShading = true;
+              mm.needsUpdate = true;
+            }
+          });
+      });
+      milestone();
       $("stats").style.opacity = 0;
       placeSky();
 
