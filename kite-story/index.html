@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#06132b"><title>KITE · A Little Robot with a Big Dream</title><link rel="stylesheet" href="style.css"></head>
+<body class="intro-mode">
+<div id="loading" role="status"><h1>KITE</h1><p id="loadText">Preparing your adventure…</p><progress id="loadProgress" max="4" value="0"></progress></div>
+<div id="failure" hidden role="alert"><h1>The adventure couldn’t load</h1><p id="errorText"></p><button onclick="location.reload()" class="pb">Try loading again</button></div>
+<div id="vg"></div><div id="fl"></div>
+<header id="hud"><div id="lt"><div id="chp" class="px f"></div><div id="cmp" class="px"><div class="f yl">Current chapter</div><div id="cm"></div><progress id="storyProgress" value="0" max="22" aria-label="Story progress"></progress><div id="storyCount"></div></div></div>
+<div id="rt"><button id="ap" class="yb" data-a="auto" aria-pressed="true">Auto Play: ON</button><button class="bb" data-a="pause">Menu</button><div id="tools"><button class="bb" id="sound" data-a="sound" aria-pressed="true">Voice: ON</button><label for="volume">Volume</label><input id="volume" type="range" min="0" max="1" step=".05" value=".9"><button class="bb" id="captions" data-a="captions" aria-pressed="true">Subtitles: ON</button></div></div></header>
+<div id="mmw" class="px"><canvas id="mm" width="132" height="132" aria-label="Local story map"></canvas></div><div id="lbs"></div><div id="hw"><div id="hwn" class="f"></div></div>
+<section id="pn" class="px" role="dialog" aria-modal="true" aria-label="Hardware information" hidden></section><div id="parts" hidden></div><div id="sceneNote"></div><div id="hint">Drag or swipe to look around. Auto Play OFF: scroll or pinch to explore the current scene. E: learn about the nearby hardware.</div>
+<div id="nb" aria-live="polite" hidden><div id="rbw">        <svg id="rb" viewBox="0 0 16 16" shape-rendering="crispEdges">
+          <rect x="7" y="0" width="2" height="2" fill="#ffd23f" />
+          <rect
+            x="2"
+            y="2"
+            width="12"
+            height="9"
+            fill="#e9eef8"
+            stroke="#0a1030"
+          />
+          <rect x="4" y="4" width="8" height="5" fill="#0b1a4a" />
+          <rect x="5" y="5" width="2" height="2" fill="#4fd8ff" />
+          <rect x="9" y="5" width="2" height="2" fill="#4fd8ff" />
+          <rect x="5" y="8" width="6" height="1" fill="#27d3f5" />
+          <rect
+            x="4"
+            y="11"
+            width="8"
+            height="4"
+            fill="#9fb0d0"
+            stroke="#0a1030"
+          />
+          <rect x="1" y="11" width="3" height="3" fill="#3a58d0" />
+          <rect x="12" y="11" width="3" height="3" fill="#3a58d0" />
+        </svg>
+</div><div id="nbt" class="px"><div id="sn" class="f yl"></div><div id="nt"></div><span id="badge"></span><button id="advance" data-a="continue" class="pb" hidden>Continue</button></div></div>
+<div id="intro" class="ov"><div class="px"><div class="eyebrow">AN EDUCATIONAL SPACE ADVENTURE</div><h1>KITE</h1><h2>A Little Robot<br>with a Big Dream</h2><p>Once upon a time, there was a little robot named Kite.<br>He was curious, cheerful, and always dreaming of exploring distant planets.</p><button class="pb" data-a="start">Start Adventure</button><button class="pb alt" id="rs" data-a="resume" hidden>Continue</button><p class="note">A fictional adventure with real space exploration history. Talking machines and shared repair parts are story elements. The historical hardware is retired.</p></div></div>
+<div id="pm" class="ov" role="dialog" aria-modal="true" aria-label="Paused" hidden><div class="px"><h1>Paused</h1><button class="pb" data-a="unpause">Continue</button><button class="pb alt" data-a="exit">Exit</button></div></div>
+<div id="end" class="ov" hidden><div class="px"><div class="eyebrow">THE END</div><h1>Kite’s Own Adventure</h1><p>“Whenever you fall, believe in yourself, get back up on your own two feet, and try again!”</p><p id="endCount"></p><button class="pb" data-a="exit">Exit</button></div></div><div id="toast" role="status" hidden></div>
+<script>
+(function(){const files=['vendor/three.min.js','story.js','scene.js','main.js'];window.kiteFatal=function(message){document.getElementById('loading').hidden=true;document.getElementById('failure').hidden=false;document.getElementById('errorText').textContent=message;};window.addEventListener('error',e=>{if(window.kiteReady&&typeof save==='function')save();kiteFatal('Please check that every project file is present and WebGL is enabled. '+e.message)});function load(i){if(i===files.length)return;const s=document.createElement('script');s.src=files[i];s.onload=()=>{document.getElementById('loadProgress').value=i+1;document.getElementById('loadText').textContent=['Building worlds…','Preparing characters…','Setting the stage…','Ready!'][i];load(i+1)};s.onerror=()=>kiteFatal('Could not load '+files[i]+'. Extract the whole ZIP and open index.html.');document.body.append(s)}load(0)})();
+</script></body></html>
