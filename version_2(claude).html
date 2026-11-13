@@ -613,6 +613,66 @@
           transition: none;
         }
       }
+      #nb {
+        transition:
+          opacity 0.45s,
+          transform 0.45s;
+      }
+      #nb.out {
+        opacity: 0;
+        transform: translateX(-50%) translateY(16px);
+        pointer-events: none;
+      }
+      #spk {
+        margin-left: 8px;
+      }
+      #spk i {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        margin-right: 2px;
+        background: var(--cy);
+        animation: spk 0.7s steps(2) infinite;
+      }
+      #spk i:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      #spk i:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes spk {
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+      .cs0 #nt {
+        font-size: 14px;
+      }
+      .cs2 #nt {
+        font-size: 21px;
+      }
+      .mk .lb {
+        font-size: 14px;
+        background: rgba(0, 0, 0, 0.7);
+        border: 2px solid currentColor;
+      }
+      .hc .px {
+        border-color: #fff;
+        background: #000;
+      }
+      .hc .lb {
+        background: #000;
+      }
+      .rm #spk i {
+        animation: none;
+      }
+      .rm #ti.show {
+        animation-duration: 2.4s;
+      }
+      #ops {
+        display: flex;
+        flex-wrap: wrap;
+      }
     </style>
   </head>
   <body>
@@ -656,33 +716,29 @@
     <div id="nb" aria-live="polite" hidden>
       <div id="rbw">
         <svg id="rb" viewBox="0 0 16 16" shape-rendering="crispEdges">
-          <rect x="7" y="0" width="2" height="2" fill="#ffd23f" />
+          <rect x="7" y="0" width="2" height="3" fill="#e9eef8" />
+          <rect x="6" y="0" width="4" height="1" fill="#ff3030" />
           <rect
             x="2"
-            y="2"
+            y="3"
             width="12"
-            height="9"
-            fill="#e9eef8"
+            height="8"
+            fill="#2f5bd6"
             stroke="#0a1030"
           />
-          <rect x="4" y="4" width="8" height="5" fill="#0b1a4a" />
-          <rect x="5" y="5" width="2" height="2" fill="#4fd8ff" />
-          <rect x="9" y="5" width="2" height="2" fill="#4fd8ff" />
-          <rect x="5" y="8" width="6" height="1" fill="#27d3f5" />
-          <rect
-            x="4"
-            y="11"
-            width="8"
-            height="4"
-            fill="#9fb0d0"
-            stroke="#0a1030"
-          />
-          <rect x="1" y="11" width="3" height="3" fill="#3a58d0" />
-          <rect x="12" y="11" width="3" height="3" fill="#3a58d0" />
+          <rect x="3" y="4" width="10" height="5" fill="#0b1a4a" />
+          <rect x="4" y="5" width="3" height="3" fill="#4fd8ff" />
+          <rect x="9" y="5" width="3" height="3" fill="#4fd8ff" />
+          <rect x="2" y="9" width="12" height="1" fill="#ffb02e" />
+          <rect x="1" y="11" width="4" height="4" fill="#23252e" />
+          <rect x="11" y="11" width="4" height="4" fill="#23252e" />
+          <rect x="6" y="11" width="4" height="3" fill="#9fb0d0" />
         </svg>
       </div>
       <div id="nbt" class="px">
-        <div class="f yl" id="sn">Mission Control</div>
+        <div class="f yl">
+          <span id="sn">Kite</span><span id="spk"><i></i><i></i><i></i></span>
+        </div>
         <div id="nt"></div>
         <button class="mini" data-a="skip">Skip</button
         ><button class="mini" data-a="rep">Replay</button>
@@ -699,57 +755,64 @@
       <div class="px">
         <h1>AstroQuest</h1>
         <p>
-          Once upon a time, a little explorer named <b class="yl">Kite</b> had
-          one big dream: to say hello to the whole solar system. Mission Control
-          gave Kite an Adventure Book with one empty page for every friend out
-          there.
+          I'm <b class="yl">Kite</b>, a little rover with one big dream: to say
+          hello to the whole solar system. I have an Adventure Book with one
+          empty page for every friend out there.
         </p>
         <p>
           Scroll to travel, drag to look around, press <b class="yl">E</b> (or
           click) to meet each friend, and listen: they tell their own stories.
           Turn your sound on!
         </p>
-        <button class="pb" data-a="start">Begin journey</button
-        ><button class="pb alt" data-a="resume" id="rs" hidden>Continue</button>
+        <button class="pb" data-a="start">Start new journey</button
+        ><button class="pb alt" data-a="resume" id="rs" hidden>
+          Resume journey
+        </button>
       </div>
     </div>
     <div class="ov" id="pm" hidden>
       <div class="px">
         <h1>Menu</h1>
         <label
-          >Narration volume<input
+          >Master volume<input
+            type="range"
+            id="vm"
+            min="0"
+            max="1"
+            step=".05"
+            value="1"
+        /></label>
+        <label
+          >Kite voice volume<input
             type="range"
             id="vn"
             min="0"
             max="1"
             step=".05"
-            value=".9" /></label
-        ><label
+            value=".9"
+        /></label>
+        <label
           >Effects volume<input
             type="range"
             id="vs"
             min="0"
             max="1"
             step=".05"
-            value=".6" /></label
-        ><label
-          >Scroll speed<input
-            type="range"
-            id="sp"
-            min=".5"
-            max="2"
-            step=".1"
-            value="1"
+            value=".6"
         /></label>
-        <label><input type="checkbox" id="cn" checked /> Narration voices</label
-        ><label><input type="checkbox" id="cc" checked /> Subtitles</label
-        ><label><input type="checkbox" id="mc" checked /> Minimap</label
-        ><label><input type="checkbox" id="cm2" /> Reduced motion</label
-        ><label><input type="checkbox" id="ch" /> High contrast</label>
-        <button class="pb alt" data-a="gfx">Graphics: High</button
-        ><button class="pb alt" data-a="log">Adventure Book</button
-        ><button class="pb" data-a="unpause">Resume</button
-        ><button class="pb alt" data-a="reset">Restart journey</button>
+        <label><input type="checkbox" id="cn" checked /> Kite voice</label>
+        <label><input type="checkbox" id="cc" checked /> Captions</label>
+        <label><input type="checkbox" id="mc" checked /> Minimap</label>
+        <label><input type="checkbox" id="cm2" /> Reduced motion</label>
+        <label><input type="checkbox" id="ch" /> High UI contrast</label>
+        <div id="ops"></div>
+        <button class="pb" data-a="unpause">Resume</button
+        ><button class="pb alt" data-a="rep">Replay Kite</button
+        ><button class="pb alt" data-a="obj">Objective reminder</button
+        ><button class="pb alt" data-a="rcp">Story recap</button
+        ><button class="pb alt" data-a="gfx">Graphics: High</button
+        ><button class="pb alt" data-a="log">Kite's Journey</button
+        ><button class="pb alt" data-a="reset">Start new journey</button>
         <div id="frm" hidden>
           <p class="f yl" style="font-size: 11px; margin: 10px 0 0">
             Free roam: travel to
@@ -764,7 +827,7 @@
     </div>
     <div class="ov" id="lg" hidden>
       <div class="px">
-        <h1>Adventure Book</h1>
+        <h1>Kite's Journey</h1>
         <div id="ll"></div>
         <button class="pb" data-a="closelog">Close</button>
       </div>
@@ -773,7 +836,7 @@
       <div class="px">
         <h1>Mission complete!</h1>
         <p>
-          Every page in Kite's Adventure Book is full. Every machine you met is
+          Every page in my Adventure Book is full. Every machine you met is
           still out there: in orbit, on the surface, or still traveling.
         </p>
         <p>
@@ -823,14 +886,7 @@
               : (s / 3600).toFixed(1) + " hours";
       };
       /* ---------- story data ---------- */
-      const MC = {
-        name: "Mission Control",
-        g: "f",
-        vi: 0,
-        p: 1.25,
-        r: 1.06,
-        hue: 0,
-      };
+      const MC = { name: "Kite", g: "m", vi: 0, p: 1.12, r: 1.04, hue: 0 };
       const HW = {
         lro: {
           nm: "LRO",
@@ -1579,7 +1635,76 @@
           ],
         },
       ];
+      const KP = {
+        0.1: "We're really doing this. Fuel's loaded and the rocket's ready. I'll hit Launch when I am.",
+        E1: "Whoa... I'm actually in space. Let's scroll and fly to the Moon!",
+        E2: "Look back at that. Earth is getting smaller. Home will be right there when I get back.",
+        E3: "Is that a space station? Somebody inside is waving. I'm waving back!",
+        E4: "There's the Moon, and it's getting bigger every second.",
+        1.1: "We made it... the Moon. It's so quiet here. Time to roll.",
+        1.2: "Wait. I'm picking something up ahead. A signal. Let's follow it.",
+        1.3: "Something's moving above me, and it's waving its solar panels!",
+        1.4: "That's definitely not a rock. Wheels! Somebody parked here a long time ago.",
+        1.5: "More old gear ahead. Flags, antennas, little mirrors.",
+        1.6: "Something's sparkling in that crater. I have to see this.",
+        1.7: "I found them all! Four pages of my Adventure Book are full. The rocket's waiting. Mars is next!",
+        T1: "Rocket's lit. The Moon is falling behind me. Next stop, Mars!",
+        T2: "Whoa! Rock ahead! ...Okay, they're really far apart. I'll just enjoy the swerve.",
+        T3: "A little relay station, passing messages along. Hello, little guy!",
+        T4: "There it is. A little red dot, growing bigger. Mars!",
+        2.1: "We made it to Mars. Cold, red and silent. So many robots have landed here, and I'm about to meet some of them.",
+        2.2: "Rover tracks! Somebody was here before me. I'm following them.",
+        2.3: "There! Half buried in dust. I have to say hello.",
+        2.4: "Wow. A lander, standing completely still.",
+        2.5: "Look at the ground. Tiny blue-gray pebbles!",
+        2.6: "It's so quiet. These machines did their jobs, and now they rest.",
+        2.7: "Mars fades behind me. The rocket's ahead. Ready for the dark between the stars?",
+        3.1: "Okay... this is a lot of empty space. But I'm not alone. There are old travelers out here, still going.",
+        3.2: "Saturn ahead! And something's glowing near its rings.",
+        3.3: "Past Saturn, past Neptune... and here comes a speedy one.",
+        3.4: "Something very old and very quiet is ahead. I'll be gentle.",
+        3.5: "Another Voyager! It's bright out here, in its own way.",
+        3.6: "This is it. The farthest traveler of all.",
+        3.7: "I did it. I said hello to every one of them. There's always more out there.",
+      };
+      const KC = {
+        earth: ["Whenever I'm ready, I press Launch!"],
+        e2m: ["Look at all those stars. Every one of them is a sun!"],
+        moon: [
+          "The Moon drifts away from Earth about as fast as my fingernails would grow, if I had any.",
+          "I can drag to look all around. Nice view!",
+        ],
+        m2m: [
+          "Mars is about two hundred twenty-five million kilometers away on average. I'll get there!",
+        ],
+        mars: [
+          "A Mars day is only about forty minutes longer than one on Earth.",
+          "I can see my own tracks behind me. Maybe somebody will find them someday.",
+        ],
+        deep: [
+          "Voyager 1's radio signal takes about a whole day to reach home.",
+          "Every page in my Adventure Book is a real machine, really out there.",
+          "I can click any friend to hear their story again.",
+        ],
+      };
+      Object.assign(TR, {
+        1: [
+          "Look at that. We're leaving the sky behind. Nothing but stars ahead!",
+        ],
+        2: ["The Moon is right ahead. Seatbelts on, it's landing time!"],
+        3: ["Next stop, Mars! The Moon was great, but Mars is calling."],
+        4: [
+          "There she is. The red planet! Entering the thin Martian air in three, two, one!",
+        ],
+        5: [
+          "Now I go farther than any rover can drive. Past Saturn, past Pluto, and out into the dark.",
+        ],
+      });
       CH.forEach((c) => {
+        c.chat = KC[c.id] || c.chat;
+        c.subs.forEach((q) => {
+          if (KP[q.id]) q.pre = KP[q.id];
+        });
         c.cv = new THREE.CatmullRomCurve3(
           c.pts.map((p) => new THREE.Vector3(p[0], p[1], p[2])),
         );
@@ -1592,11 +1717,11 @@
       });
       R.domElement.id = "cv";
       document.body.prepend(R.domElement);
-      R.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+      R.setPixelRatio(Math.min(devicePixelRatio, 2));
       R.shadowMap.enabled = true;
       R.shadowMap.type = THREE.PCFSoftShadowMap;
       R.toneMapping = THREE.ACESFilmicToneMapping;
-      R.toneMappingExposure = 1.25;
+      R.toneMappingExposure = 1.15;
       const sc = new THREE.Scene(),
         cam = new THREE.PerspectiveCamera(58, 1, 0.1, 1800);
       sc.fog = new THREE.Fog(0, 30, 110);
@@ -1626,6 +1751,8 @@
         sun.shadow.bias = -0.0006;
       }
       sc.add(amb, sun, sun.target);
+      const acc = new THREE.PointLight(0x4fd8ff, 0, 26);
+      sc.add(acc);
       const W = new THREE.Group();
       sc.add(W);
       /* ---------- voxel helpers ---------- */
@@ -1805,6 +1932,27 @@
         g.add(dh);
         const led = V(G(), [[0.2, 0.2, 0.2, 0.7, 1.6, -0.9, 0xff3030, 1]]);
         g.add(led);
+        V(g, [
+          [0.12, 0.9, 0.12, -0.9, 2, 0.9, 0xaaaab4],
+          [0.9, 0.35, 0.06, 0, 1.3, 1.18, 0x111a33],
+          [1.56, 0.1, 0.06, 0, 1.05, 1.12, o.s, 1],
+          [0.2, 0.2, 0.2, -0.75, 1.62, 0.8, 0x4fd8ff, 1],
+          [0.2, 0.2, 0.2, 0.75, 1.62, 0.8, 0x4fd8ff, 1],
+          [0.5, 0.08, 0.9, -0.85, 1.55, -0.7, 0x2a3f9e],
+          [0.5, 0.08, 0.9, 0.85, 1.55, -0.7, 0x2a3f9e],
+          [1.7, 0.18, 0.3, 0, 0.7, 1.25, 0x3a3e4a],
+        ]);
+        const csh = new THREE.Mesh(
+          new THREE.PlaneGeometry(3.6, 4.4),
+          new THREE.MeshBasicMaterial({
+            map: nT("rgba(0,0,0,0.6)"),
+            transparent: true,
+            depthWrite: false,
+          }),
+        );
+        csh.rotation.x = -Math.PI / 2;
+        csh.position.y = 0.06;
+        g.add(csh);
         g.userData = { ws, hd, led };
         return g;
       }
@@ -2003,6 +2151,39 @@
           [4, 1.2, 4, 0, -0.1, 0, 0x33333c],
           [5.2, 0.5, 5.2, 0, 8, 0, 0xd83a28],
         ]);
+      {
+        const _r = B.rocket,
+          _s = B.ship;
+        B.rocket = () => {
+          const g = _r();
+          V(g, [
+            [5.3, 0.4, 5.3, 0, 3, 0, 0x9aa0b4],
+            [5.3, 0.4, 5.3, 0, 12.6, 0, 0xd83a28],
+            [0.9, 0.9, 0.2, -1.3, 9, 2.6, 0x4fd8ff, 1],
+            [0.9, 0.9, 0.2, 1.3, 9, 2.6, 0x4fd8ff, 1],
+            [0.4, 2, 0.4, 0, 18, 0, 0xaaaab4],
+            [0.3, 0.3, 0.3, 0, 19.2, 0, 0xff3030, 1],
+          ]);
+          for (const [x, z] of [
+            [-1.3, -1.3],
+            [1.3, -1.3],
+            [-1.3, 1.3],
+            [1.3, 1.3],
+          ])
+            Cy(g, 0.45, 0.8, 1.4, x, -0.9, z, 0x555a68, 0, 8);
+          return g;
+        };
+        B.ship = () => {
+          const g = _s();
+          V(g, [
+            [3, 0.08, 1.2, -2.9, 0.4, -0.4, 0x2a3f9e],
+            [3, 0.08, 1.2, 2.9, 0.4, -0.4, 0x2a3f9e],
+            [0.2, 0.2, 0.2, -4.3, 0.5, 0.5, 0xff3030, 1],
+            [0.2, 0.2, 0.2, 4.3, 0.5, 0.5, 0x7dff8a, 1],
+          ]);
+          return g;
+        };
+      }
       B.dish = () => {
         const g = V(G(), [
           [3, 0.4, 3, 0, 0.2, 0, 0x555a6a],
@@ -2195,7 +2376,10 @@
           col = new THREE.Color(),
           q = new THREE.Quaternion(),
           v = new THREE.Vector3(),
-          s = new THREE.Vector3();
+          s = new THREE.Vector3(),
+          wsp = c.cv.getSpacedPoints(120),
+          wp = (x, z) =>
+            !c.launch && wsp.some((q) => (q.x - x) ** 2 + (q.z - z) ** 2 < 5);
         for (let i = 0; i < N; i++)
           for (let j = 0; j < N; j++) {
             const x = (i - HF) * SZ,
@@ -2223,8 +2407,10 @@
             col
               .setHex(pth ? 0x8e90a0 : c.gr[(i + j) % 2])
               .multiplyScalar(
-                [0.95, 0.98, 1, 1.03][(i * 7 + j * 13 + (i ^ j)) % 4] *
-                  (h < -1 ? 0.85 : 1),
+                [0.97, 0.99, 1, 1.02][(i * 7 + j * 13 + (i ^ j)) % 4] *
+                  (h < -1 ? 0.8 : 1) *
+                  (1 + h * 0.045) *
+                  (wp(x, z) ? 0.88 : 1),
               );
             tm.setColorAt(i * N + j, col);
           }
@@ -2370,13 +2556,29 @@
         dyn.add(m);
       }
       function rock(x, y, z, s) {
-        const m = V(G(), [
-          [s, s * 0.8, s, 0, 0, 0, 0x7a7488],
-          [s * 0.7, s * 0.7, s * 0.7, s * 0.5, s * 0.3, 0, 0x8d869c],
-          [s * 0.6, s * 0.6, s * 0.6, -s * 0.4, -s * 0.3, s * 0.2, 0x6a6478],
-        ]);
+        const rn = Math.random,
+          m = G(),
+          cs = [0x7a7488, 0x8d869c, 0x6a6478, 0x938ca0];
+        for (let i = 0, n = 3 + ((rn() * 4) | 0); i < n; i++) {
+          const q = s * (i ? 0.35 + rn() * 0.45 : 1),
+            b = new THREE.Mesh(UB, L(cs[(rn() * 4) | 0], 0));
+          b.scale.set(
+            q * (0.7 + rn() * 0.6),
+            q * (0.6 + rn() * 0.6),
+            q * (0.7 + rn() * 0.6),
+          );
+          if (i)
+            b.position.set(
+              (rn() - 0.5) * s * 1.1,
+              (rn() - 0.5) * s * 0.9,
+              (rn() - 0.5) * s * 1.1,
+            );
+          b.rotation.set(rn() * 3, rn() * 3, rn() * 3);
+          b.castShadow = true;
+          m.add(b);
+        }
         m.position.set(x, y, z);
-        m.userData.r = (Math.random() - 0.5) * 0.8;
+        m.userData.r = (rn() - 0.5) * 0.8;
         dyn.add(m);
         ast.push(m);
       }
@@ -2560,10 +2762,18 @@
       const SET = {
         nv: 0.9,
         sv: 0.6,
+        mv: 1,
         narr: 1,
         cap: 1,
         sp: 1,
         rm: matchMedia("(prefers-reduced-motion: reduce)").matches,
+        kg: 0,
+        ks: 0,
+        cs: 1,
+        mk: 0,
+        sn: 1,
+        sd: 0,
+        hc: 0,
       };
       let A = null;
       function blip(f1, f2, d, ty = "square", v = 0.08) {
@@ -2575,7 +2785,7 @@
           o.type = ty;
           o.frequency.setValueAtTime(f1, A.currentTime);
           o.frequency.exponentialRampToValueAtTime(f2, A.currentTime + d);
-          g.gain.setValueAtTime(v * SET.sv * 1.6, A.currentTime);
+          g.gain.setValueAtTime(v * SET.sv * SET.mv * 1.6, A.currentTime);
           g.gain.exponentialRampToValueAtTime(0.001, A.currentTime + d + 0.1);
           o.connect(g);
           g.connect(A.destination);
@@ -2616,7 +2826,7 @@
           pool = a.length ? a : nat.length ? nat : VO;
         return pool[sp.vi % pool.length];
       }
-      function speak(t, sp) {
+      function speak(t, sp, fin) {
         if (!syn) return;
         const sn = t.match(/[^.!?]+[.!?]+["”]?\s*|[^.!?]+$/g) || [t],
           parts = [];
@@ -2628,17 +2838,29 @@
           } else cu += c;
         });
         if (cu) parts.push(cu);
-        const vc = pickVoice(sp);
+        const kt = sp === MC,
+          vc = pickVoice(
+            kt ? Object.assign({}, sp, { g: SET.kg ? "f" : "m" }) : sp,
+          );
         parts.forEach((p, k) => {
           const u = new SpeechSynthesisUtterance(p.trim());
           if (vc) u.voice = vc;
           u.lang = "en-US";
-          u.pitch = cl(sp.p + (/!/.test(p) ? 0.08 : 0), 0.1, 2);
-          u.rate = cl(sp.r + (/!/.test(p) ? 0.03 : 0), 0.5, 2);
-          u.volume = SET.nv;
+          u.pitch = cl(
+            sp.p + (/!/.test(p) ? 0.1 : 0) + (/\?/.test(p) ? 0.05 : 0),
+            0.1,
+            2,
+          );
+          u.rate = cl(
+            sp.r * [1, 0.88, 1.12][SET.ks] + (/!/.test(p) ? 0.04 : 0),
+            0.5,
+            2,
+          );
+          u.volume = cl(SET.nv * SET.mv, 0, 1);
           if (k === parts.length - 1)
             u.onend = () => {
               sayEnd = Math.min(sayEnd, performance.now());
+              fin && fin();
             };
           syn.speak(u);
         });
@@ -2651,17 +2873,32 @@
           }
         }, 9000);
       }
-      function say(t, sp) {
+      let curPri = 0,
+        pend = null;
+      function hideNb() {
+        clearTimeout(nbT);
+        $("nb").classList.add("out");
+        nbT = setTimeout(() => ($("nb").hidden = true), 480);
+      }
+      function say(t, sp, pr) {
         sp = sp || MC;
+        pr = pr || 2;
+        if (performance.now() < sayEnd && pr < curPri) {
+          if (pr >= 2) pend = [t, sp, pr];
+          return;
+        }
+        pend = null;
+        curPri = pr;
         lastSay = [t, sp];
         clearInterval(twT);
         clearTimeout(nbT);
         try {
           syn && syn.cancel();
         } catch (e) {}
-        $("nb").hidden = !SET.cap;
         $("sn").textContent = sp.name;
         $("rb").style.filter = "hue-rotate(" + sp.hue + "deg)";
+        $("nb").classList.remove("out");
+        $("nb").hidden = !SET.cap;
         let i = 0;
         $("nt").textContent = "";
         twT = setInterval(() => {
@@ -2669,17 +2906,16 @@
           $("nt").textContent = t.slice(0, i);
           if (i >= t.length) clearInterval(twT);
         }, 22);
-        sayEnd = performance.now() + t.length * 68 + 800;
-        if (SET.narr && SET.nv > 0)
+        const dur = (t.length * 68) / [1, 0.88, 1.12][SET.ks] + 800,
+          hide = () => {
+            if (lastSay[0] === t) hideNb();
+          };
+        sayEnd = performance.now() + dur;
+        nbT = setTimeout(hide, dur + 500);
+        if (SET.narr && SET.nv * SET.mv > 0)
           setTimeout(() => {
-            if (lastSay[0] === t) speak(t, sp);
+            if (lastSay[0] === t) speak(t, sp, () => setTimeout(hide, 450));
           }, 70);
-        nbT = setTimeout(
-          () => {
-            if (!pn && !free) $("nb").hidden = true;
-          },
-          t.length * 70 + 5000,
-        );
       }
       function msg(t) {
         $("ms").textContent = t;
@@ -3206,7 +3442,7 @@
           d.rows.map((r) => `<p><b>${r[0]}</b>${r[1]}</p>`).join("") +
           `<p><b>Distance from Earth</b>${fk(d.km)}${d.dn || ""}. Light needs ${flt(d.km)} to travel that far.</p><button class="pb" data-a="cont">${free ? "Close" : "Continue story"}</button><button class="pb alt" data-a="rep">Hear again</button>`;
         $("pn").classList.add("open");
-        say(d.say, d.v);
+        say(d.say, d.v, 3);
       }
       function closePn() {
         pn = false;
@@ -3218,7 +3454,10 @@
         refresh();
         tlb();
         const j = idx();
-        if (j >= 0) msg("New objective: " + cur.subs[j].sn);
+        if (j >= 0) msg("◎ New objective: " + cur.subs[j].sn);
+        sayEnd = 0;
+        hideNb();
+        save();
       }
       function title() {
         const t = $("ti");
@@ -3253,13 +3492,13 @@
           t: 0,
           n,
           kind: CH[n].sp ? "leave" : "land",
-          dur: CH[n].sp ? 9 : 13,
+          dur: CH[n].sp ? 2.2 : 2.5,
           sw: 0,
           h: 0,
-          l2: 0,
+          l2: 1,
         };
         tv = v = 0;
-        say(TR[n][0]);
+        say(TR[n][0], 0, 4);
         msg("TRAVELING TO " + CH[n].d);
         blip(120, 900, 2.4, "sawtooth", 0.06);
         $("lbs").style.display = "none";
@@ -3296,15 +3535,19 @@
       /* ---------- input ---------- */
       const ok = () =>
           started && !paused && !pn && !scn && !tr && !lau.ph && !lau.go,
-        GN = () => (cur.sp ? 3.4 : 1) * SET.sp,
-        MX = () => (cur.sp ? (cur.id === "deep" ? 30 : 36) : 6.2) * SET.sp;
+        GN = () => (cur.sp ? 3.4 : 1) * [0.6, 1, 1.5][SET.sn],
+        MX = () => (cur.sp ? (cur.id === "deep" ? 30 : 36) : 6.2);
       addEventListener(
         "wheel",
         (e) => {
           if (e.target.closest && e.target.closest("#pn,.ov")) return;
           e.preventDefault();
           if (!ok() || cur.launch) return;
-          tv = cl(tv - cl(e.deltaY, -120, 120) * 0.012 * GN(), -MX(), MX());
+          tv = cl(
+            tv - (SET.sd ? -1 : 1) * cl(e.deltaY, -120, 120) * 0.012 * GN(),
+            -MX(),
+            MX(),
+          );
         },
         { passive: false },
       );
@@ -3319,7 +3562,11 @@
         (e) => {
           const y = e.touches[0].clientY;
           if (ok() && !cur.launch)
-            tv = cl(tv + (ty - y) * 0.05 * GN(), -MX(), MX());
+            tv = cl(
+              tv + (SET.sd ? -1 : 1) * (ty - y) * 0.05 * GN(),
+              -MX(),
+              MX(),
+            );
           ty = y;
         },
         { passive: true },
@@ -3396,25 +3643,96 @@
           lau.go = 1;
         } else if (e.key === "Enter" && pn) closePn();
       });
-      $("vn").oninput = (e) => (SET.nv = +e.target.value);
-      $("vs").oninput = (e) => (SET.sv = +e.target.value);
-      $("sp").oninput = (e) => (SET.sp = +e.target.value);
-      $("cn").onchange = (e) => {
-        SET.narr = e.target.checked;
-        if (!SET.narr)
-          try {
-            syn.cancel();
-          } catch (x) {}
+      const OPS = [
+        ["kg", "Kite voice", ["Male", "Female"]],
+        ["ks", "Voice speed", ["Normal", "Slightly slow", "Slightly fast"]],
+        ["cs", "Caption size", ["Small", "Normal", "Large"]],
+        ["mk", "Marker visibility", ["Standard", "High"]],
+        ["sn", "Scroll sensitivity", ["Low", "Normal", "High"]],
+        ["sd", "Scroll direction", ["Normal", "Inverted"]],
+      ];
+      function applyS() {
+        const b = document.body;
+        b.classList.toggle("hc", !!SET.hc);
+        b.classList.toggle("mk", !!SET.mk);
+        b.classList.toggle("rm", !!SET.rm);
+        b.classList.remove("cs0", "cs2");
+        if (SET.cs !== 1) b.classList.add("cs" + SET.cs);
+        OPS.forEach(
+          ([k, n, a]) => ($("o_" + k).textContent = n + ": " + a[SET[k]]),
+        );
+        $("vm").value = SET.mv;
+        $("vn").value = SET.nv;
+        $("vs").value = SET.sv;
+        $("cn").checked = !!SET.narr;
+        $("cc").checked = !!SET.cap;
+        $("cm2").checked = !!SET.rm;
+        $("ch").checked = !!SET.hc;
+      }
+      const saveS = () => {
+        try {
+          localStorage.setItem("aqs", JSON.stringify(SET));
+        } catch (e) {}
       };
-      $("cc").onchange = (e) => {
-        SET.cap = e.target.checked;
-        $("nb").hidden = !SET.cap;
-      };
+      try {
+        Object.assign(SET, JSON.parse(localStorage.getItem("aqs")) || {});
+      } catch (e) {}
+      $("ops").innerHTML = OPS.map(
+        (o) =>
+          `<button class="pb alt" id="o_${o[0]}" data-a="opt" data-k="${o[0]}"></button>`,
+      ).join("");
+      applyS();
+      [
+        ["vm", "mv"],
+        ["vn", "nv"],
+        ["vs", "sv"],
+      ].forEach(
+        ([i, k]) =>
+          ($(i).oninput = (e) => {
+            SET[k] = +e.target.value;
+            saveS();
+          }),
+      );
+      [
+        ["cn", "narr"],
+        ["cc", "cap"],
+        ["cm2", "rm"],
+        ["ch", "hc"],
+      ].forEach(
+        ([i, k]) =>
+          ($(i).onchange = (e) => {
+            SET[k] = e.target.checked ? 1 : 0;
+            applyS();
+            saveS();
+            if (k === "narr" && !SET.narr)
+              try {
+                syn.cancel();
+              } catch (x) {}
+            if (k === "cap" && !SET.cap) $("nb").hidden = true;
+          }),
+      );
       $("mc").onchange = (e) => tog("mmw", e.target.checked);
-      $("cm2").checked = SET.rm;
-      $("cm2").onchange = (e) => (SET.rm = e.target.checked);
-      $("ch").onchange = (e) =>
-        document.body.classList.toggle("hc", e.target.checked);
+      const jHTML = () => {
+        const A = free || ended,
+          M = [
+            ["Earth Launch", A || ci >= 1],
+            ["Moon Landing", A || ci >= 2],
+          ],
+          add = (id) =>
+            CH.find((c) => c.id === id)
+              .subs.filter((q) => q.hw)
+              .forEach((q) => M.push([HW[q.hw].full, A || done.has(q.id)]));
+        add("moon");
+        M.push(["Mars Landing", A || ci >= 4]);
+        add("mars");
+        M.push(["Deep Space", A || ci >= 5]);
+        add("deep");
+        let f = 0;
+        return M.map(([n, d]) => {
+          const st = d ? ["✦", "DONE"] : f++ ? ["🔒", "LOCKED"] : ["◎", "NOW"];
+          return `<p><b>${st[0]} ${st[1]}</b>${n}</p>`;
+        }).join("");
+      };
       document.body.addEventListener("click", (e) => {
         const t = e.target.closest("[data-a]");
         if (!t) return;
@@ -3435,9 +3753,38 @@
             syn.cancel();
           } catch (x) {}
           clearInterval(twT);
-          $("nt").textContent = lastSay[0];
-        } else if (a === "rep") say(lastSay[0], lastSay[1]);
-        else if (a === "pause") pauseT(true);
+          sayEnd = 0;
+          hideNb();
+        } else if (a === "rep") {
+          if (paused && !$("pm").hidden) pauseT(false);
+          say(lastSay[0], lastSay[1], 9);
+        } else if (a === "opt") {
+          const o = OPS.find((x) => x[0] === t.dataset.k);
+          SET[o[0]] = (SET[o[0]] + 1) % o[2].length;
+          applyS();
+          saveS();
+        } else if (a === "obj") {
+          pauseT(false);
+          say("Let me check... my mission is: " + $("cm").textContent, 0, 9);
+        } else if (a === "rcp") {
+          pauseT(false);
+          const nm = [];
+          CH.forEach((c) =>
+            c.subs.forEach(
+              (q) => q.hw && done.has(q.id) && nm.push(HW[q.hw].nm),
+            ),
+          );
+          say(
+            nm.length
+              ? "So far I've met " +
+                  nm.join(", ") +
+                  ". Where I'm headed next: " +
+                  $("cm").textContent
+              : "I've only just started. Let's go find some friends!",
+            0,
+            9,
+          );
+        } else if (a === "pause") pauseT(true);
         else if (a === "unpause") pauseT(false);
         else if (a === "launch") {
           lau.go = 1;
@@ -3468,7 +3815,7 @@
           save();
           chatT = 0;
           say(
-            "Free roam, Kite! Every friend is unlocked. Scroll to explore, click anyone to hear their story again, and open the menu to travel anywhere.",
+            "Free roam! Every friend is unlocked. I can scroll to explore, click anyone to hear their story again, and open the menu to travel anywhere.",
           );
         } else if (a === "goto") {
           if (!free) return;
@@ -3482,16 +3829,7 @@
           if (!started || tr || scn) return;
           paused = true;
           tog("pm", 0);
-          $("ll").innerHTML = CH.map((c) =>
-            c.subs
-              .filter((s) => s.hw)
-              .map((s) =>
-                done.has(s.id)
-                  ? `<p><b>${s.id}</b>✓ ${HW[s.hw].full}</p>`
-                  : `<p><b>${s.id}</b>🔒 An empty page, waiting for a friend</p>`,
-              )
-              .join(""),
-          ).join("");
+          $("ll").innerHTML = jHTML();
           tog("lg", 1);
         } else if (a === "closelog") {
           tog("lg", 0);
@@ -3507,13 +3845,13 @@
             lau.ph = 0.5;
             lau.t = 0;
             lau.from = rv.position.clone();
-            say("Climbing aboard, Kite! Strap in!");
+            say("Climbing aboard! Strap in, here we go!", 0, 3);
           } else {
             lau.ph = 1;
             lau.t = 0;
             lau.n = lau.N + 1;
             $("cd").hidden = false;
-            say("Here we go, Kite! Counting down!");
+            say("Here we go. Counting down!", 0, 3);
           }
         }
         if (lau.ph === 0.5) {
@@ -3549,7 +3887,7 @@
             $("cd").textContent = "LIFTOFF!";
             blip(80, 300, 1.6, "sawtooth", 0.12);
             setTimeout(() => ($("cd").hidden = true), 1600);
-            say("Liftoff! Hold on tight, Kite!");
+            say("Liftoff! Hold on tight!", 0, 3);
           }
         }
         if (lau.ph === 2 && rk) {
@@ -3625,12 +3963,38 @@
         const j = idx();
         HWs.forEach((h) => {
           const st = done.has(cur.subs[h.i].id) ? 0 : h.i > j ? 2 : 1;
-          c.fillStyle = st === 0 ? "#7dff8a" : st === 2 ? "#ff6a3a" : "#ffd23f";
-          c.fillRect(h.bx * s - 4, h.bz * s - 4, 8, 8);
+          const X = h.bx * s,
+            Z = h.bz * s;
+          c.lineWidth = 2;
           if (st === 1) {
-            c.strokeStyle = "#ffd23f";
-            c.lineWidth = 2;
-            c.strokeRect(h.bx * s - 7, h.bz * s - 7, 14, 14);
+            c.strokeStyle = c.fillStyle = "#ffd23f";
+            c.beginPath();
+            c.arc(X, Z, 7, 0, 6.3);
+            c.stroke();
+            c.beginPath();
+            c.arc(X, Z, 2.5, 0, 6.3);
+            c.fill();
+          } else if (st === 0) {
+            c.fillStyle = "#7dff8a";
+            c.beginPath();
+            [
+              [0, -7],
+              [2.5, -2.5],
+              [7, 0],
+              [2.5, 2.5],
+              [0, 7],
+              [-2.5, 2.5],
+              [-7, 0],
+              [-2.5, -2.5],
+            ].forEach((q, i) =>
+              i ? c.lineTo(X + q[0], Z + q[1]) : c.moveTo(X + q[0], Z + q[1]),
+            );
+            c.fill();
+          } else {
+            c.strokeStyle = "#ff6a3a";
+            c.setLineDash([3, 3]);
+            c.strokeRect(X - 6, Z - 6, 12, 12);
+            c.setLineDash([]);
           }
         });
         if (rk && cur.board) {
@@ -3659,6 +4023,11 @@
         OV = new THREE.Vector3();
       function loop() {
         requestAnimationFrame(loop);
+        if (pend && performance.now() > sayEnd) {
+          const p = pend;
+          pend = null;
+          say(p[0], p[1], p[2]);
+        }
         const dt = Math.min(clk.getDelta(), 0.05),
           t = clk.elapsedTime,
           vh = veh(),
@@ -3697,7 +4066,7 @@
               else if (cur.board && !lau.ready) {
                 lau.ready = 1;
                 say(
-                  "The rocket is right here, Kite! Press Board and Launch when you're ready.",
+                  "The rocket's right here. I'll board and launch when I'm ready.",
                 );
               }
             }
@@ -3754,9 +4123,9 @@
           vh.rotation.y += dy * Math.min(1, dt * (cur.sp ? 3.5 : 5));
           if (cur.sp) {
             const rl = cl(
-                -dy * 3.2 * (0.5 + Math.min(1, Math.abs(v) / 14)),
-                -0.7,
-                0.7,
+                -dy * 2.5 * (0.5 + Math.min(1, Math.abs(v) / 14)),
+                -0.56,
+                0.56,
               ),
               pt = -Math.asin(cl(T.y, -0.5, 0.5));
             vh.rotation.z += (rl - vh.rotation.z) * Math.min(1, dt * 3);
@@ -3815,18 +4184,19 @@
         }
         /* camera rig */
         const spd = Math.abs(v);
-        let back = cur.sp ? 10 + Math.min(9, spd * 0.4) : 10,
-          hgt = cur.sp ? 3.6 + Math.min(1.6, spd * 0.06) : 6;
+        let back = cur.sp ? 10 + Math.min(7.2, spd * 0.32) : 12.5,
+          hgt = cur.sp ? 3.6 + Math.min(1.3, spd * 0.05) : 6.8;
         fovT = cur.sp
-          ? 58 + Math.min(16, spd * 0.5)
-          : 58 + Math.min(5, spd * 1.1);
+          ? 58 + Math.min(12.8, spd * 0.4) * (SET.rm ? 0.5 : 1)
+          : 58 + Math.min(4, spd * 0.9) * (SET.rm ? 0.5 : 1);
         cd.set(P.x - T.x * back, vp.y + hgt, P.z - T.z * back);
-        tg.set(P.x + T.x * 4, vp.y + 1.8, P.z + T.z * 4);
+        const ah = cur.sp ? 4 : 7;
+        tg.set(P.x + T.x * ah, vp.y + 1.8, P.z + T.z * ah);
         if (rk && (cur.launch || cur.board) && (lau.ph >= 1 || cur.launch)) {
           const b = rk.userData.base,
             sh =
               lau.ph === 2 && !SET.rm
-                ? (Math.random() - 0.5) * 0.3 * Math.max(0, 1 - lau.t / 3)
+                ? (Math.random() - 0.5) * 0.24 * Math.max(0, 1 - lau.t / 3)
                 : 0;
           if (lau.ph === 2) {
             const tt = lau.t,
@@ -3903,7 +4273,7 @@
           }
         }
         if (!cur.sp) cd.y = Math.max(cd.y, gy(cd.x, cd.z) + 1.2);
-        let k = 1 - Math.exp(-dt * (SET.rm ? 8 : 3.2));
+        let k = 1 - Math.exp(-dt * (SET.rm ? 8 : 2.8));
         /* chapter transitions */
         if (tr) {
           cin = true;
@@ -3959,14 +4329,14 @@
                   ? 1 - 0.88 * sm((u - 0.5) / 0.3)
                   : 1 - 0.55 * sm((u - 0.6) / 0.2);
             cam.position.set(
-              Math.sin(t * 0.6) * 0.4,
-              Math.sin(t * 0.8) * 0.25,
+              Math.sin(t * 0.6) * (SET.rm ? 0.1 : 0.32),
+              Math.sin(t * 0.8) * (SET.rm ? 0.06 : 0.2),
               0,
             );
             lk.set(0, 0, -10);
             cam.lookAt(lk);
             ft = 0;
-            fovT = 62 + warp * 14;
+            fovT = 62 + warp * (SET.rm ? 5 : 11);
           } else {
             if (!tr.h) {
               tr.h = 1;
@@ -4025,10 +4395,10 @@
             (st === 0 ? "ok" : st === 2 ? "lock" : near === i ? "go" : "");
           h.lb.textContent =
             st === 0
-              ? "✓ " + hw.nm + " · " + fs(hw.km)
+              ? "✦ " + hw.nm + " · " + fs(hw.km)
               : st === 2
-                ? "🔒 Locked"
-                : (near === i ? "[ E ] " : "? ") +
+                ? "🔒 LOCKED"
+                : (near === i ? "◎ [ E ] " : "◎ ") +
                   hw.nm +
                   " · " +
                   fs(hw.km) +
@@ -4046,6 +4416,7 @@
             "px) translate(-50%,-100%)";
           h.bm.opacity =
             (st === 2 ? 0.14 : 0.3) +
+            (SET.mk ? 0.25 : 0) +
             (SET.rm || st !== 1 ? 0 : 0.08 * Math.sin(t * 3));
           if (free && act && !pn && !scn && d < 22 && !near1.has(i)) {
             near1.add(i);
@@ -4074,7 +4445,7 @@
           if (chatT > 24 && performance.now() > sayEnd + 2500) {
             chatT = 0;
             const a = cur.chat;
-            say(a[(Math.random() * a.length) | 0]);
+            say(a[(Math.random() * a.length) | 0], 0, 1);
           }
         }
         /* UI state */
@@ -4129,6 +4500,20 @@
         const sb = sd ? vp : cam.position;
         if (!sd) sd = [25, 14, 18];
         sun.position.set(sb.x + sd[0], sb.y + sd[1], sb.z + sd[2]);
+        acc.position.set(
+          vp.x + Math.sin(vh.rotation.y) * 3,
+          vp.y + 3,
+          vp.z + Math.cos(vh.rotation.y) * 3,
+        );
+        acc.intensity = tr
+          ? 0
+          : cur.id === "mars"
+            ? 0.9
+            : cur.id === "moon"
+              ? 0.7
+              : cur.sp
+                ? 0.5
+                : 0;
         sun.target.position.copy(sd && sb === vp ? vp : cam.position);
         stars.position.copy(cam.position);
         gal.position.copy(cam.position);
@@ -4188,13 +4573,13 @@
         stl.visible = warp > 0;
         if (warp > 0) {
           const a = stg.attributes.position;
-          stl.material.opacity = Math.min(1, warp * 1.2);
+          stl.material.opacity = Math.min(1, warp * (SET.rm ? 0.5 : 0.95));
           for (let i = 0; i < SN; i++) {
             const s = sx[i];
             s[2] += warp * 170 * dt;
             if (s[2] > 5) s[2] = -120;
             a.setXYZ(i * 2, s[0], s[1], s[2]);
-            a.setXYZ(i * 2 + 1, s[0], s[1], s[2] - warp * 16);
+            a.setXYZ(i * 2 + 1, s[0], s[1], s[2] - warp * (SET.rm ? 6 : 12.8));
           }
           a.needsUpdate = true;
         }
