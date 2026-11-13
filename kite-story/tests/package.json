@@ -1,0 +1,1 @@
+{"name":"kite-story-validation","private":true,"scripts":{"test":"node runtime.cjs"},"devDependencies":{"@napi-rs/canvas":"0.1.100"}}

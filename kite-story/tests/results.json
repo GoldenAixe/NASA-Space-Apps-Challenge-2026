@@ -1,0 +1,22 @@
+{
+  "passed": [
+    "All 22 scenes, six chapters and 12 hardware model factories initialize",
+    "All source narrative/dialogue text retained in order",
+    "Starting begins at scene 1 with visible Kite and unique voice assignments",
+    "Narration completion gates progression regardless of elapsed time",
+    "Pause freezes story position, captions and timers; stale speech cannot advance",
+    "Full Auto Play traverses all 96 utterances and marks only completed encounters",
+    "Continue restores completed adventure; Start clears previous progress",
+    "Unfinished dialogue resumes at saved line; completed lines are not re-spoken",
+    "Hardware information preserves dialogue and does not complete encounters",
+    "All hardware panels render complete factual fields",
+    "Wheel changes camera only in manual mode; never changes line or chapter",
+    "Reduced motion and all environment transitions execute",
+    "No voices: complete timed subtitle fallback reaches ending",
+    "Missing/corrupt saves are rejected safely"
+  ],
+  "utterances": 96,
+  "limitations": [
+    "Node VM with actual Three.js geometry and mocked WebGL/DOM/speech; not a real-browser or audio-quality test."
+  ]
+}
