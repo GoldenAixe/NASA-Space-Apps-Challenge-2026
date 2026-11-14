@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#06132b" />
+    <title>KITE · A Little Robot with a Big Dream</title>
+    <link
+      media="print"
+      onload="this.media = 'all'"
+      href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Chakra+Petch:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+      <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="intro-mode">
+    <div id="loading" role="status">
+      <h1>KITE</h1>
+      <p id="loadText">Preparing your adventure…</p>
+      <progress id="loadProgress" max="4" value="0"></progress>
+    </div>
+    <div id="failure" hidden role="alert">
+      <h1>The adventure couldn’t load</h1>
+      <p id="errorText"></p>
+      <button onclick="location.reload()" class="pb">Try loading again</button>
+    </div>
+    <div id="vg"></div>
+    <div class="bar" id="bt"></div>
+    <div class="bar" id="bb"></div>
+    <div id="fl"></div>
+    <div id="ti">
+      <div>
+        <h3 class="f"></h3>
+        <h1 class="f"></h1>
+        <p></p>
+      </div>
+    </div>
+    <div id="tp" class="px" hidden>
+      <div class="f yl" id="tpn"></div>
+      <div id="tpb"><div id="tpf"></div></div>
+    </div>
+    <header id="hud">
+      <div id="lt">
+        <div id="chp" class="px f"></div>
+        <div id="cmp" class="px">
+          <div class="f yl">Current mission</div>
+          <div id="cm"></div>
+          <progress
+            id="storyProgress"
+            value="0"
+            max="22"
+            aria-label="Story progress"
+          ></progress>
+          <div id="storyCount"></div>
+        </div>
+        <div id="dst" class="px">
+          <div class="f yl">Distance from Earth</div>
+          <div id="dv"></div>
+          <div id="dl"></div>
+        </div>
+      </div>
+      <div id="rt">
+        <button class="bb" id="sound" data-a="sound" aria-pressed="true">Voice: ON</button>
+        <button class="bb" id="captions" data-a="captions" aria-pressed="true">Subtitles: ON</button>
+        <button class="bb" data-a="pause">Menu</button>
+        <div id="tools">
+          <button id="ap" class="yb" data-a="auto" aria-pressed="true">Auto Play: ON</button>
+          <label for="volume">Volume</label><input id="volume" type="range" min="0" max="1" step=".05" value=".9" />
+        </div>
+      </div>
+    </header>
+    <div id="mmw" class="px">
+      <canvas
+        id="mm"
+        width="132"
+        height="132"
+        aria-label="Local story map"
+      ></canvas>
+    </div>
+    <div id="lbs"></div>
+    <div id="hw"><div id="hwn" class="f"></div></div>
+    <section
+      id="pn"
+      class="px"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Hardware information"
+      hidden
+    ></section>
+    <div id="parts" hidden></div>
+    <div id="trk" class="px">
+      <div class="f yl">Navigation · live distance</div>
+      <div id="trkRows"></div>
+    </div>
+    
+    <div id="trackControls" class="px" hidden>
+      <button type="button" class="bb" data-dir="-1" aria-label="Move backward">
+        ↓</button
+      ><span
+        ><strong id="destination"></strong
+        ><small id="movementHint">Auto Play moves Kite for you</small></span
+      ><button type="button" class="yb" data-dir="1" aria-label="Move forward">
+        ↑
+      </button>
+    </div>
+    <button id="lc" class="pb" data-a="launch" hidden>Launch spaceship</button>
+    <div id="cd" class="f" role="status" hidden></div>
+    <div id="nb" aria-live="polite" hidden>
+      <div id="rbw">
+        <img id="speakerIcon" width="60" height="60" alt="Narrator — girl robot" />
+      </div>
+      <div id="nbt" class="px">
+        <div id="sn" class="f yl"></div>
+        <div id="nt"></div>
+        <span id="badge"></span
+        ><button id="advance" data-a="continue" class="pb" hidden>
+          Continue
+        </button>
+      </div>
+    </div>
+    <div id="intro" class="ov">
+      <div class="px">
+        <div class="eyebrow">AN EDUCATIONAL SPACE ADVENTURE</div>
+        <h1>KITE</h1>
+        <h2>Knowledgeable Interplanetary Traveler and Explorer</h2>
+        <p>
+          Once upon a time, there was a little robot named Kite.<br />He was
+          curious, cheerful, and always dreaming of exploring distant planets.
+        </p>
+        <button class="pb" data-a="start">Start Adventure</button>
+        <p class="note">
+          A fictional adventure with real space exploration history. Talking
+          machines and shared repair parts are story elements. The historical
+          hardware is retired.
+        </p>
+      </div>
+    </div>
+    <div
+      id="pm"
+      class="ov"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Paused"
+      hidden
+    >
+      <div class="px">
+        <h1>Paused</h1>
+        <button class="pb" data-a="unpause">Continue</button
+        ><button class="pb alt" data-a="exit">Exit</button>
+      </div>
+    </div>
+    <div id="end" class="ov" hidden>
+      <div class="px">
+        <div class="eyebrow">THE END</div>
+        <h1>Kite’s Own Adventure</h1>
+        <p>
+          “Whenever you fall, believe in yourself, get back up on your own two
+          feet, and try again!”
+        </p>
+        <p id="endCount"></p>
+        <button class="pb" data-a="almanac">Explorer Almanac</button>
+        <button class="pb alt" data-a="exit">Exit</button>
+      </div>
+    </div>
+    <section id="almanac" role="dialog" aria-modal="true" aria-labelledby="almanacTitle" hidden>
+      <header><div><div class="eyebrow">NASA DATA &amp; RESOURCES · NSSDCA</div><h1 id="almanacTitle">Explorer Almanac</h1><p>Meet the real machines behind Kite’s adventure.</p></div><button class="pb alt" data-a="close-almanac">Back to ending</button></header>
+      <p class="almanac-note">Historical facts and equipment images come only from NASA’s Space Science Data Coordinated Archive. Talking machines and borrowed repair parts belong to Kite’s fictional story. The equipment locations in this adventure are compressed for storytelling.</p>
+      <div class="almanac-layout"><nav id="almanacGrid" aria-label="Choose an explorer"></nav><article id="almanacDetail" aria-live="polite" tabindex="0"></article></div>
+    </section>
+    <div id="toast" role="status" hidden></div>
+      <script defer src="js/vendor/three.js"></script>
+    <script defer src="js/error-handler.js"></script>
+    <script defer src="js/data/story.js"></script>
+    <script defer src="js/data/almanac-data.js"></script>
+    <script defer src="js/data/recordings.js"></script>
+    <script defer src="js/scene.js"></script>
+    <script defer src="js/state.js"></script>
+    <script defer src="js/audio/speech.js"></script>
+    <script defer src="js/story-controller.js"></script>
+    <script defer src="js/animation.js"></script>
+    <script defer src="js/navigation.js"></script>
+    <script defer src="js/audio/effects.js"></script>
+    <script defer src="js/audio/music.js"></script>
+    <script defer src="js/kite-rig.js"></script>
+    <script defer src="js/almanac.js"></script>
+    <script defer src="js/collisions.js"></script>
+    <script defer src="js/speaker-icons.js"></script>
+    <script defer src="js/audio/recorded-voices.js"></script>
+    <script defer src="js/main.js"></script>
+  </body>
+</html>
