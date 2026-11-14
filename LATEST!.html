@@ -1298,10 +1298,6 @@
       <div id="trkRows"></div>
     </div>
     <div id="sceneNote"></div>
-    <div id="hint">
-      Drag to look around. Press E to inspect nearby hardware. Auto Play
-      advances dialogue.
-    </div>
     <div id="trackControls" class="px" hidden>
       <button type="button" class="bb" data-dir="-1" aria-label="Move backward">
         ↓</button
@@ -32480,11 +32476,7 @@
         if (s.id === 3) {
           pos = targetPos = 0.8 * PL;
         }
-        $("sceneNote").textContent = s.hardware
-          ? "Story illustration • Real hardware remains retired."
-          : s.id === 11
-            ? "Kite’s fictional repair • Four friends, four contributions."
-            : "";
+
         if (started && s.chapter !== lastCh) {
           lastCh = s.chapter;
           chTitle(s);
