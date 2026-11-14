@@ -770,17 +770,6 @@
         text-align: left;
         font-size: 10px;
       }
-      #sceneNote {
-        position: fixed;
-        left: 16px;
-        bottom: 165px;
-        z-index: 3;
-        font-size: 11px;
-        color: #d9e4f5;
-        background: #07132bce;
-        padding: 6px 8px;
-        max-width: 440px;
-      }
       #pn {
         z-index: 12;
         max-height: 72dvh;
@@ -852,7 +841,7 @@
       body.intro-mode #hud,
       body.intro-mode #mmw,
       body.intro-mode #hint,
-      body.intro-mode #sceneNote,
+  
       body.intro-mode #lbs {
         display: none;
       }
@@ -1003,12 +992,7 @@
           padding: 7px;
           margin-top: 6px;
         }
-        #sceneNote {
-          left: 10px;
-          bottom: 210px;
-          font-size: 9px;
-          max-width: 220px;
-        }
+    
         #hint {
           display: none;
         }
@@ -1060,7 +1044,7 @@
         }
         #parts,
         #mmw,
-        #sceneNote,
+    
         #hint {
           display: none;
         }
@@ -1129,7 +1113,6 @@
       #lc {
         bottom: 10%;
       }
-      body.travel #sceneNote,
       body.travel #hint,
       body.travel #nb {
         display: none;
@@ -1153,9 +1136,7 @@
       #hint {
         bottom: 212px !important;
       }
-      #sceneNote {
-        bottom: 176px !important;
-      }
+    
       #trk {
         position: fixed;
         left: 16px;
@@ -1297,7 +1278,7 @@
       <div class="f yl">Navigation · live distance</div>
       <div id="trkRows"></div>
     </div>
-    <div id="sceneNote"></div>
+    
     <div id="trackControls" class="px" hidden>
       <button type="button" class="bb" data-dir="-1" aria-label="Move backward">
         ↓</button
