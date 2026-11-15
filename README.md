@@ -1,4 +1,4 @@
-# KITE Adventure
+# AstroQuest 
 
 The game is separated into HTML, CSS, JavaScript, pictures, icons, and audio files.
 There is no build step and no JavaScript package installation.
